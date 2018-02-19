@@ -29,6 +29,10 @@ private:
     QVBoxLayout _botsLayout;
     QList<BotInstanceWidget*> _bots;
     DllInjector _injector;
+
+private slots:
+    void attach();
+    void updateUI();
 };
 
 #endif // MAINWINDOW_H

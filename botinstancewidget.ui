@@ -31,7 +31,15 @@
   <property name="frameShadow">
    <enum>QFrame::Sunken</enum>
   </property>
-  <layout class="QGridLayout" name="gridLayout"/>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="lblMessage">
+     <property name="text">
+      <string>message</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

@@ -30,7 +30,9 @@ SOURCES += \
     dllinjector.cpp \
     botinstance.cpp \
     optionswindow.cpp \
-    options.cpp
+    options.cpp \
+    ipcmanager.cpp \
+    botmanager.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -39,7 +41,9 @@ HEADERS += \
     dllinjector.h \
     botinstance.h \
     optionswindow.h \
-    options.h
+    options.h \
+    ipcmanager.h \
+    botmanager.h
 
 FORMS += \
         mainwindow.ui \
