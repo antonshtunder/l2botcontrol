@@ -30,9 +30,13 @@ private:
     QList<BotInstanceWidget*> _bots;
     DllInjector _injector;
 
+    QTimer _testClientsTimer;
+    QTimer _refreshDataTimer;
+
 private slots:
     void attach();
     void updateUI();
+    void clientDisconnected(BotInstance* botInstance);
 };
 
 #endif // MAINWINDOW_H

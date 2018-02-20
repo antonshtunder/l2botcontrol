@@ -16,9 +16,18 @@ BotInstanceWidget::~BotInstanceWidget()
     delete ui;
 }
 
-void BotInstanceWidget::update()
+void BotInstanceWidget::updateInfo()
 {
-
+    if(_botInstance->isInGame())
+    {
+        qDebug("inGame3");
+        ui->lblMessage->setText(QString::fromUtf16(_botInstance->l2representation.character.name));
+        qDebug("inGame4");
+    }
+    else
+    {
+        ui->lblMessage->setText("Not in game");
+    }
 }
 
 void BotInstanceWidget::mousePressEvent(QMouseEvent*)

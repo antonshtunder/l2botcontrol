@@ -18,6 +18,11 @@ QList<BotInstance*>& BotManager::getBotInstances()
     return _botInstances;
 }
 
+BotInstance *BotManager::getCurrentBotInstance()
+{
+    return _botInstance;
+}
+
 BotManager::BotManager()
 {
     connectSignalsAndSlots();
@@ -41,7 +46,38 @@ void BotManager::setBotInstance(BotInstance *botInstance)
 
 void BotManager::newBotInstance(BotInstance *botInstance)
 {
+    QObject::connect(botInstance, SIGNAL(clientDisconnected(BotInstance*)), this, SLOT(clientDisconnectedSlot(BotInstance*)));
     _botInstances.append(botInstance);
     setBotInstance(botInstance);
     qDebug("added");
+}
+
+void BotManager::testClients()
+{
+    for(auto instance : _botInstances)
+    {
+        instance->testClient();
+    }
+}
+
+void BotManager::refreshData()
+{
+    for(auto instance : _botInstances)
+    {
+        instance->refreshData();
+    }
+    emit updateUISignal();
+}
+
+void BotManager::clientDisconnectedSlot(BotInstance *botInstance)
+{
+    _botInstances.removeOne(botInstance);
+    if(_botInstance == botInstance)
+    {
+        if(!_botInstances.isEmpty())
+        {
+            _botInstance = _botInstances.at(0);
+        }
+    }
+    emit clientDisconnected(botInstance);
 }

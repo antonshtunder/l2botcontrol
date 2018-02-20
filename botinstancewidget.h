@@ -18,7 +18,7 @@ public:
     explicit BotInstanceWidget(BotInstance *botInstance, QWidget *parent = 0);
     ~BotInstanceWidget();
 
-    void update();
+    void updateInfo();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;

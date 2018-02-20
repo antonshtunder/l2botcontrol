@@ -32,23 +32,29 @@ SOURCES += \
     optionswindow.cpp \
     options.cpp \
     ipcmanager.cpp \
-    botmanager.cpp
+    botmanager.cpp \
+    widgets/mapwidget.cpp \
+    threads/commandpipeconnectionthread.cpp \
+    threads/datamanagmentpipeconnectionthread.cpp
 
 HEADERS += \
         mainwindow.h \
     botinstancewidget.h \
-    ../../l2ipc.h \
     dllinjector.h \
     botinstance.h \
     optionswindow.h \
     options.h \
     ipcmanager.h \
-    botmanager.h
+    botmanager.h \
+    widgets/mapwidget.h \
+    threads/commandpipeconnectionthread.h \
+    threads/datamanagmentpipeconnectionthread.h
 
 FORMS += \
         mainwindow.ui \
     botinstancewidget.ui \
-    optionswindow.ui
+    optionswindow.ui \
+    widgets/mapwidget.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/release/ -llineageIPC
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/debug/ -llineageIPC

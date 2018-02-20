@@ -13,6 +13,8 @@ public:
 
     QList<BotInstance *>& getBotInstances();
 
+    BotInstance* getCurrentBotInstance();
+
 private:
     BotManager();
 
@@ -25,11 +27,15 @@ private:
 
 public slots:
     void attack();
+    void clientDisconnectedSlot(BotInstance*);
     void setBotInstance(BotInstance *botInstance);
     void newBotInstance(BotInstance *botInstance);
+    void testClients();
+    void refreshData();
 
 signals:
     void updateUISignal();
+    void clientDisconnected(BotInstance*);
 };
 
 #endif // BOTMANAGER_H

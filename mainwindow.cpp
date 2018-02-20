@@ -5,7 +5,8 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    _testClientsTimer(this)
 {
     ui->setupUi(this);
     _optionsWindow = new OptionsWindow;
@@ -19,6 +20,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->gameInfoContainer->setCurrentIndex(1);
 */
     connectSlotsAndSignals();
+
+    _testClientsTimer.start(200);
+    _refreshDataTimer.start(200);
 }
 
 
@@ -34,6 +38,10 @@ void MainWindow::connectSlotsAndSignals()
     QObject::connect(ui->actionAttach, SIGNAL(triggered(bool)), SLOT(attach()));
     QObject::connect(ui->btnAttack, SIGNAL(pressed()), BotManager::instance(), SLOT(attack()));
     QObject::connect(BotManager::instance(), SIGNAL(updateUISignal()), SLOT(updateUI()));
+    QObject::connect(BotManager::instance(), SIGNAL(clientDisconnected(BotInstance*)), SLOT(clientDisconnected(BotInstance*)));
+
+    QObject::connect(&_testClientsTimer, SIGNAL(timeout()), BotManager::instance(), SLOT(testClients()));
+    QObject::connect(&_refreshDataTimer, SIGNAL(timeout()), BotManager::instance(), SLOT(refreshData()));
 }
 
 void MainWindow::attach()
@@ -48,5 +56,29 @@ void MainWindow::attach()
 
 void MainWindow::updateUI()
 {
+    auto botInstances = BotManager::instance()->getBotInstances();
+    if(botInstances.isEmpty())
+    {
+        ui->lblBotInstance->setText("no bot instance");
+    }
+    else
+    {
+        ui->lblBotInstance->setText(BotManager::instance()->getCurrentBotInstance()->name);
+        for(auto instance : botInstances)
+        {
+            auto instanceWidget = instance->getWidget();
+            if(instanceWidget->parent() == NULL)
+            {
+                _botsLayout.addWidget(instanceWidget);
+            }
+            instanceWidget->updateInfo();
+        }
+    }
+}
 
+void MainWindow::clientDisconnected(BotInstance *botInstance)
+{
+    _botsLayout.removeWidget(botInstance->getWidget());
+    delete botInstance;
+    updateUI();
 }

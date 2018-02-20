@@ -86,6 +86,19 @@
          <string>Pickup</string>
         </property>
        </widget>
+       <widget class="QLabel" name="lblBotInstance">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>190</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>no bot instance</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="inventoryTab">
        <attribute name="title">
