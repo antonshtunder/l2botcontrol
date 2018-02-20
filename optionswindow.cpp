@@ -19,6 +19,7 @@ void OptionsWindow::showEvent(QShowEvent*)
 {
     ui->txtDllPath->setText(Options::instance.dllPath());
     ui->txtProcName->setText(Options::instance.processName());
+    ui->sbMapWidth->setValue(Options::instance.mapWidth());
 }
 
 void OptionsWindow::connectSignalsAndSlots()
@@ -32,4 +33,5 @@ void OptionsWindow::saveState()
 {
     Options::instance.setDllPath(ui->txtDllPath->text());
     Options::instance.setProcessName(ui->txtProcName->text());
+    Options::instance.setMapWidth(ui->sbMapWidth->value());
 }

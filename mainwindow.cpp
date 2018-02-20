@@ -10,15 +10,15 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     _optionsWindow = new OptionsWindow;
+    _mapWidget = new MapWidget;
+
+    QVBoxLayout *mapTabLayout = new QVBoxLayout;
+    mapTabLayout->addWidget(_mapWidget);
+    ui->mapTab->setLayout(mapTabLayout);
 
     ui->botsCointainer->setLayout(&_botsLayout);
     _botsLayout.setAlignment(Qt::AlignTop);
 
-/*
-    _botsLayout.addWidget(new BotInstanceWidget(ui->botsCointainer));
-    _botsLayout.addWidget(new BotInstanceWidget(ui->botsCointainer));
-    ui->gameInfoContainer->setCurrentIndex(1);
-*/
     connectSlotsAndSignals();
 
     _testClientsTimer.start(200);
@@ -73,6 +73,7 @@ void MainWindow::updateUI()
             }
             instanceWidget->updateInfo();
         }
+        _mapWidget->updateInfo();
     }
 }
 

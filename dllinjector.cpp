@@ -19,7 +19,6 @@ bool DllInjector::InjectToWindow(LPCWSTR windowTitle, LPCWSTR dllPath)
     auto window = FindWindowW(NULL, windowTitle);
     if(window == NULL)
     {
-        qDebug("window not found");
         return false;
     }
 

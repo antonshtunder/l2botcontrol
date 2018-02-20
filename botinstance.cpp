@@ -70,10 +70,8 @@ void BotInstance::refreshData()
     }
     else
     {
-        qDebug("inGame1");
         _inGame = true;
         l2representation.fromData(_sharedMemoryData);
-        qDebug("inGame2");
     }
     _refreshed = true;
 }

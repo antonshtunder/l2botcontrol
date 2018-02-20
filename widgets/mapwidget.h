@@ -16,11 +16,32 @@ public:
     explicit MapWidget(QWidget *parent = 0);
     ~MapWidget();
 
-    void updateInfo(BotInstance *botInstance);
+    void updateInfo();
+
+protected:
+    void mousePressEvent(QMouseEvent*) override;
+    void dragMoveEvent(QDragMoveEvent*) override;
+    void wheelEvent(QWheelEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
 private:
+    void scaleMap(double factor);
+    void adjustMapDimensions();
+    void moveMap(double deltaX, double deltaY);
+    void paintMap();
+    void drawMapState(QPainter &painter);
+
     Ui::MapWidget *ui;
     QLabel *_imageLabel;
+
+    double _scaleFactor = 1.0;
+    double _imageX = 2000.0, _imageY = 2000.0;
+    double _pixelsPerUnit;
+    QPixmap _image;
+    QPointF _previousMousePos;
+    const QPointF _noPreviousMousePos = {-1.0e10, -1.0e10};
 };
 
 #endif // MAPWIDGET_H

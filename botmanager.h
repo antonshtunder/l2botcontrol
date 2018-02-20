@@ -20,7 +20,7 @@ private:
 
     void connectSignalsAndSlots();
 
-    BotInstance *_botInstance;
+    BotInstance *_botInstance = 0;
     QList<BotInstance*> _botInstances;
 
     static BotManager *_instance;

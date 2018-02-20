@@ -8,6 +8,16 @@ Options::Options()
     _processName = "AsteriosGame.exe";
 }
 
+double Options::mapWidth() const
+{
+    return _mapWidth;
+}
+
+void Options::setMapWidth(double mapWidth)
+{
+    _mapWidth = mapWidth;
+}
+
 QString Options::processName() const
 {
     return _processName;

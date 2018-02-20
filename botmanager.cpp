@@ -78,6 +78,10 @@ void BotManager::clientDisconnectedSlot(BotInstance *botInstance)
         {
             _botInstance = _botInstances.at(0);
         }
+        else
+        {
+            _botInstance = NULL;
+        }
     }
     emit clientDisconnected(botInstance);
 }

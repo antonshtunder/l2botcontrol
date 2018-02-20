@@ -20,7 +20,6 @@ const QMap<DWORD, BotInstance*>& IPCManager::getBotInstances() const
 
 IPCManager::IPCManager()
 {
-    qDebug("q");
     _commandPipeConnectionThread.start();
     _dataManagmentPipeConnectionThread.start();
 }

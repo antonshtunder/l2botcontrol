@@ -6,6 +6,7 @@
 #include "botinstancewidget.h"
 #include "dllinjector.h"
 #include "optionswindow.h"
+#include "widgets/mapwidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,6 +26,7 @@ private:
     Ui::MainWindow *ui;
 
     OptionsWindow *_optionsWindow;
+    MapWidget *_mapWidget;
 
     QVBoxLayout _botsLayout;
     QList<BotInstanceWidget*> _bots;
