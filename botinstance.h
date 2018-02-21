@@ -4,6 +4,8 @@
 #include <Windows.h>
 #include "botinstancewidget.h"
 #include "lineagerepresentation.h"
+#include "threads/bottingthread.h"
+#include "lineageipc.h"
 
 class BotInstance : public QObject
 {
@@ -21,6 +23,14 @@ public:
     void initDataManagmentPipe(HANDLE pipe);
     void refreshData();
 
+    l2ipc::Command performActionOn(DWORD instanceID, DWORD instanceAddress, Representations instanceType);
+    l2ipc::Command attack();
+    l2ipc::Command isDead(DWORD mobAddress);
+
+    MobRepresentation focusNextMob();
+    MobRepresentation getMobWithID(DWORD id);
+    MobRepresentation findNearestMonster();
+
     bool isInGame();
     bool isRefreshed();
 
@@ -29,6 +39,8 @@ public:
 
     LineageRepresentation l2representation;
 
+    MobRepresentation makeInvalidMob();
+
 private:
     HANDLE _commandPipe;
     HANDLE _dataManagmentPipe;
@@ -36,6 +48,7 @@ private:
     BYTE *_sharedMemoryData = NULL;
 
     BotInstanceWidget *_widget = NULL;
+    BottingThread _bottingThread;
 
     QTimer *_pipeTestTimer;
 
@@ -43,7 +56,8 @@ private:
     bool _refreshed = true;
 
 public slots:
-    void attack() const;
+    void startBotting();
+    void stopBotting();
     void testClient();
 
 signals:

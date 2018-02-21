@@ -18,6 +18,7 @@ public:
 
     void updateInfo();
 
+
 protected:
     void mousePressEvent(QMouseEvent*) override;
     void dragMoveEvent(QDragMoveEvent*) override;
@@ -32,6 +33,7 @@ private:
     void moveMap(double deltaX, double deltaY);
     void paintMap();
     void drawMapState(QPainter &painter);
+    QRectF getDrawingArea();
 
     Ui::MapWidget *ui;
     QLabel *_imageLabel;

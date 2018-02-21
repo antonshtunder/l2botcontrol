@@ -9,6 +9,9 @@ BotInstanceWidget::BotInstanceWidget(BotInstance *botInstance, QWidget *parent) 
     _botInstance(botInstance)
 {
     ui->setupUi(this);
+    qDebug() << "BotInstanceWidget()";
+    QObject::connect(ui->btnStart, SIGNAL(pressed()), SLOT(startBotting()));
+    QObject::connect(ui->btnStop, SIGNAL(pressed()), SLOT(stopBotting()));
 }
 
 BotInstanceWidget::~BotInstanceWidget()
@@ -31,4 +34,14 @@ void BotInstanceWidget::updateInfo()
 void BotInstanceWidget::mousePressEvent(QMouseEvent*)
 {
     BotManager::instance()->setBotInstance(_botInstance);
+}
+
+void BotInstanceWidget::startBotting()
+{
+    _botInstance->startBotting();
+}
+
+void BotInstanceWidget::stopBotting()
+{
+    _botInstance->stopBotting();
 }

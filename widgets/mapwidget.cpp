@@ -34,7 +34,14 @@ void MapWidget::updateInfo()
 
 void MapWidget::mousePressEvent(QMouseEvent *event)
 {
-    _previousMousePos = event->screenPos();
+    if(event->buttons() == Qt::RightButton)
+    {
+        _previousMousePos = event->screenPos();
+    }
+    else
+    {
+        LineagePainter::instance()->mousePressed(event, getDrawingArea());
+    }
 }
 
 void MapWidget::dragMoveEvent(QDragMoveEvent *)
@@ -47,7 +54,7 @@ void MapWidget::wheelEvent(QWheelEvent *event)
     auto deltaScale = event->delta() / 2000.0;
     auto newScale = _scaleFactor * (1.0 + deltaScale);
 
-    if(newScale < 1.0 || newScale > 5.0)
+    if(newScale < 1.0 || newScale > 12.0)
         return;
 
     auto pos = event->posF();
@@ -62,7 +69,7 @@ void MapWidget::wheelEvent(QWheelEvent *event)
 
 void MapWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    if(event->buttons() == Qt::LeftButton)
+    if(event->buttons() == Qt::RightButton)
     {
         double dx = (_previousMousePos.x() - event->screenPos().x()) / _scaleFactor;
         double dy = (_previousMousePos.y() - event->screenPos().y()) / _scaleFactor;
@@ -74,7 +81,7 @@ void MapWidget::mouseMoveEvent(QMouseEvent *event)
 
 void MapWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-    _previousMousePos = _noPreviousMousePos;
+    //_previousMousePos = _noPreviousMousePos;
 }
 
 void MapWidget::resizeEvent(QResizeEvent *event)
@@ -85,7 +92,6 @@ void MapWidget::resizeEvent(QResizeEvent *event)
 void MapWidget::scaleMap(double factor)
 {
     _scaleFactor *= factor;
-
     adjustMapDimensions();
 
 }
@@ -112,25 +118,27 @@ void MapWidget::moveMap(double deltaX, double deltaY)
 {
     _imageX += deltaX;
     _imageY += deltaY;
-    /*if(newX > 0.0 && newX < )
-    {
-        _imageX = newX;
-    }
-    if(newY > 0.0 && newY < )
-    {
-        _imageY = newY;
-    }*/
+}
+
+QRectF MapWidget::getDrawingArea()
+{
+    QRectF drawingArea = {_imageX * _scaleFactor, _imageY * _scaleFactor,
+                          static_cast<qreal>(_imageLabel->width()), static_cast<qreal>(_imageLabel->height())};
+
+    return drawingArea;
 }
 
 void MapWidget::paintMap()
 {
     _pixelsPerUnit = _image.width() / Options::instance.mapWidth();
-    QPixmap map = _image.copy(_imageX, _imageY,
-                              width() / _scaleFactor,
-                              height() / _scaleFactor);
+    QPixmap map = QPixmap(_imageLabel->width(), _imageLabel->height());
     QPainter painter(&map);
 
-    QRectF drawingArea = {_imageX, _imageY, _imageX + width() / _scaleFactor, _imageY + height() / _scaleFactor};
+    QPixmap mapImagePiece = _image.copy(_imageX, _imageY,
+                                        _imageLabel->width() / _scaleFactor,
+                                        _imageLabel->height() / _scaleFactor);
+    painter.drawPixmap(map.rect(), mapImagePiece);
+    QRectF drawingArea = getDrawingArea();
     LineagePainter::instance()->drawMap(drawingArea, _pixelsPerUnit, _scaleFactor, &painter);
 
     _imageLabel->setPixmap(map);

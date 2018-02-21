@@ -36,7 +36,9 @@ SOURCES += \
     widgets/mapwidget.cpp \
     threads/commandpipeconnectionthread.cpp \
     threads/datamanagmentpipeconnectionthread.cpp \
-    misc/lineagepainter.cpp
+    misc/lineagepainter.cpp \
+    misc/utils.cpp \
+    threads/bottingthread.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -50,7 +52,9 @@ HEADERS += \
     widgets/mapwidget.h \
     threads/commandpipeconnectionthread.h \
     threads/datamanagmentpipeconnectionthread.h \
-    misc/lineagepainter.h
+    misc/lineagepainter.h \
+    misc/utils.h \
+    threads/bottingthread.h
 
 FORMS += \
         mainwindow.ui \

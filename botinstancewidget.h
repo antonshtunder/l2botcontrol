@@ -27,6 +27,10 @@ private:
     Ui::BotInstanceWidget *ui;
     BotInstance *_botInstance;
 
+private slots:
+    void startBotting();
+    void stopBotting();
+
 signals:
 };
 
