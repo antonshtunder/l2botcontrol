@@ -2,9 +2,9 @@
 #include "botmanager.h"
 #include "utils.h"
 
-#define SQUARE_SIZE 7.0
+#define SQUARE_SIZE 9.0
 #define SQUARE_OFFSET -(SQUARE_SIZE - 1.0) / 2.0
-#define ROUND_SIZE 5.0
+#define ROUND_SIZE 7.0
 #define ROUND_OFFSET -(ROUND_SIZE - 1.0) / 2.0
 
 LineagePainter *LineagePainter::_instance = nullptr;
@@ -49,6 +49,7 @@ void LineagePainter::mousePressed(QMouseEvent *event, QRectF area)
         {
             if(checkIfPressed(mouseLoc, {mob.x, mob.y}, SQUARE_SIZE, SQUARE_OFFSET))
             {
+                instance->stopBotting();
                 instance->performActionOn(mob.id, mob.address, Representations::MOB);
                 qDebug() << "mob pressed1";
             }
@@ -58,6 +59,7 @@ void LineagePainter::mousePressed(QMouseEvent *event, QRectF area)
         {
             if(checkIfPressed(mouseLoc, {item.x, item.y}, ROUND_SIZE, ROUND_OFFSET))
             {
+                instance->stopBotting();
                 instance->performActionOn(item.id, item.address, Representations::DROPPED_ITEM);
                 qDebug() << "item pressed";
             }
@@ -72,18 +74,20 @@ void LineagePainter::drawCharacter()
 {
     _painter->setBrush(Qt::white);
     _painter->setPen(Qt::yellow);
-    drawSquareInstance({_l2r.character.x, _l2r.character.y});
+
+    auto pos = translateCoordinates({_l2r.character.x, _l2r.character.y});
+    if(checkIfContains(pos))
+    {
+        drawSquareInstance(pos);
+    }
 }
 
 void LineagePainter::drawSquareInstance(QPointF pos)
 {
-    auto instancePos = translateCoordinates(pos);
-    if(checkIfContains(instancePos))
-    {
-        _painter->drawRect(instancePos.x() - _area.x() + SQUARE_OFFSET,
-                           instancePos.y() - _area.y() + SQUARE_OFFSET,
+        _painter->drawRect(pos.x() - _area.x() + SQUARE_OFFSET,
+                           pos.y() - _area.y() + SQUARE_OFFSET,
                            SQUARE_SIZE, SQUARE_SIZE);
-    }
+
 }
 
 void LineagePainter::drawRoundInstance(QPointF pos)
@@ -96,6 +100,7 @@ void LineagePainter::drawRoundInstance(QPointF pos)
 void LineagePainter::drawMobs()
 {
     _painter->setBrush(Qt::NoBrush);
+    auto charZ = _l2r.character.z;
     for(auto mobRep : _l2r.mobs)
     {
         switch(mobRep.mobType)
@@ -116,13 +121,26 @@ void LineagePainter::drawMobs()
             _painter->setPen(Qt::green);
             break;
         }
-        drawSquareInstance({mobRep.x, mobRep.y});
+        auto pos = translateCoordinates({mobRep.x, mobRep.y});
+        if(checkIfContains(pos))
+        {
+            drawSquareInstance(pos);
+            if(charZ - mobRep.z < -1000.0)
+            {
+                drawArrowUp(pos, SQUARE_SIZE);
+            }
+            else if(charZ - mobRep.z > 1000.0)
+            {
+                drawArrowDown(pos, SQUARE_SIZE);
+            }
+        }
     }
 }
 
 void LineagePainter::drawItems()
 {
-    _painter->setPen(Qt::black);
+    auto charZ = _l2r.character.z;
+    _painter->setPen(Qt::blue);
     QColor defColor = QColor::fromRgb(108, 209, 41);
     for(auto droppedItemRep : _l2r.droppedItems)
     {
@@ -139,8 +157,35 @@ void LineagePainter::drawItems()
         {
             drawRoundInstance(pos);
             _painter->drawText(pos, QString::number(droppedItemRep.id, 16));
+            if(charZ - droppedItemRep.z < -1000.0)
+            {
+                drawArrowUp(pos, ROUND_SIZE);
+            }
+            else if(charZ - droppedItemRep.z > 1000.0)
+            {
+                drawArrowDown(pos, ROUND_SIZE);
+            }
         }
     }
+}
+
+void LineagePainter::drawArrowUp(QPointF loc, double size)
+{
+    size += 1.0;
+    auto offset = -(size - 1.0) / 2.0;
+    auto drawX = loc.x() - _area.x() + offset;
+    auto drawY = loc.y() - _area.y() + offset;
+    _painter->drawLine(drawX, drawY + size, drawX - offset, drawY);
+    _painter->drawLine(drawX - offset, drawY, drawX + size, drawY + size);
+}
+
+void LineagePainter::drawArrowDown(QPointF loc, double size)
+{
+    auto offset = -(size - 1.0) / 2.0;
+    auto drawX = loc.x() - _area.x() + offset;
+    auto drawY = loc.y() - _area.y() + offset;
+    _painter->drawLine(drawX, drawY, drawX - offset, drawY + size);
+    _painter->drawLine(drawX - offset, drawY + size, drawX + size, drawY);
 }
 
 QPointF LineagePainter::translateCoordinates(QPointF source)

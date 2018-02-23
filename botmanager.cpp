@@ -71,6 +71,7 @@ void BotManager::refreshData()
 
 void BotManager::clientDisconnectedSlot(BotInstance *botInstance)
 {
+    IPCManager::instance()->removeBotInstance(botInstance);
     _botInstances.removeOne(botInstance);
     if(_botInstance == botInstance)
     {

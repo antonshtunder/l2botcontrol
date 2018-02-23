@@ -2,6 +2,7 @@
 #include "ui_botinstancewidget.h"
 #include "botinstance.h"
 #include "botmanager.h"
+#include "mainwindow.h"
 
 BotInstanceWidget::BotInstanceWidget(BotInstance *botInstance, QWidget *parent) :
     QFrame(parent),
@@ -9,9 +10,9 @@ BotInstanceWidget::BotInstanceWidget(BotInstance *botInstance, QWidget *parent) 
     _botInstance(botInstance)
 {
     ui->setupUi(this);
-    qDebug() << "BotInstanceWidget()";
-    QObject::connect(ui->btnStart, SIGNAL(pressed()), SLOT(startBotting()));
-    QObject::connect(ui->btnStop, SIGNAL(pressed()), SLOT(stopBotting()));
+    connect(ui->btnStart, SIGNAL(pressed()), SLOT(startBotting()));
+    connect(ui->btnStop, SIGNAL(pressed()), SLOT(stopBotting()));
+    connect(ui->btnDetach, SIGNAL(pressed()), SLOT(detach()));
 }
 
 BotInstanceWidget::~BotInstanceWidget()
@@ -29,6 +30,14 @@ void BotInstanceWidget::updateInfo()
     {
         ui->lblMessage->setText("Not in game");
     }
+    if(_botInstance->isBotting())
+    {
+        ui->lblBotting->setText("botting");
+    }
+    else
+    {
+        ui->lblBotting->setText("not botting");
+    }
 }
 
 void BotInstanceWidget::mousePressEvent(QMouseEvent*)
@@ -44,4 +53,9 @@ void BotInstanceWidget::startBotting()
 void BotInstanceWidget::stopBotting()
 {
     _botInstance->stopBotting();
+}
+
+void BotInstanceWidget::detach()
+{
+    _botInstance->detach();
 }

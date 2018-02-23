@@ -18,12 +18,14 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    static MainWindow *instance();
     ~MainWindow();
 
 private:
     void connectSlotsAndSignals();
 
     Ui::MainWindow *ui;
+    static MainWindow *_instance;
 
     OptionsWindow *_optionsWindow;
     MapWidget *_mapWidget;
@@ -35,10 +37,12 @@ private:
     QTimer _testClientsTimer;
     QTimer _refreshDataTimer;
 
+public slots:
+    void clientDisconnected(BotInstance* botInstance);
+
 private slots:
     void attach();
     void updateUI();
-    void clientDisconnected(BotInstance* botInstance);
 };
 
 #endif // MAINWINDOW_H

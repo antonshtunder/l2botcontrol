@@ -3,12 +3,16 @@
 #include "lineageipc.h"
 #include "botmanager.h"
 
+MainWindow *MainWindow::_instance = NULL;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     _testClientsTimer(this)
 {
     ui->setupUi(this);
+    _instance = this;
+
     _optionsWindow = new OptionsWindow;
     _mapWidget = new MapWidget;
 
@@ -23,6 +27,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     _testClientsTimer.start(200);
     _refreshDataTimer.start(200);
+}
+
+MainWindow *MainWindow::instance()
+{
+    return _instance;
 }
 
 

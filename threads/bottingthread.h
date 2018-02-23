@@ -13,9 +13,11 @@ public:
 
     void stopBotting();
 
+    bool isBotting();
+
 private:
     BotInstance* _bot;
-    bool botting = false;
+    bool _botting = false;
 
     // QThread interface
 protected:

@@ -9,6 +9,7 @@ class BotInstanceWidget;
 }
 
 class BotInstance;
+class MainWindow;
 
 class BotInstanceWidget : public QFrame
 {
@@ -30,8 +31,10 @@ private:
 private slots:
     void startBotting();
     void stopBotting();
+    void detach();
 
 signals:
+    void detachSignal(BotInstance*);
 };
 
 #endif // BOTINSTANCEWIDGET_H

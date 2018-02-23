@@ -50,7 +50,6 @@ void MapWidget::dragMoveEvent(QDragMoveEvent *)
 
 void MapWidget::wheelEvent(QWheelEvent *event)
 {
-    qDebug(QString::number(event->delta()).toLatin1().data());
     auto deltaScale = event->delta() / 2000.0;
     auto newScale = _scaleFactor * (1.0 + deltaScale);
 

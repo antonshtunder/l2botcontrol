@@ -19,6 +19,8 @@ private:
     void drawCharacter();
     void drawMobs();
     void drawItems();
+    void drawArrowUp(QPointF loc, double size);
+    void drawArrowDown(QPointF loc, double size);
 
     QPointF translateCoordinates(QPointF source);
     bool checkIfContains(QPointF pos);

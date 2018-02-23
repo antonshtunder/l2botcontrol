@@ -18,6 +18,7 @@ public:
     static IPCManager *instance();
 
     const QMap<DWORD, BotInstance*>& getBotInstances() const;
+    void removeBotInstance(BotInstance *botInstance);
 
 private:
     static IPCManager *_instance;

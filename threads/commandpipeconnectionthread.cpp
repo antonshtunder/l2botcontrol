@@ -21,7 +21,7 @@ void CommandPipeConnectionThread::run()
             if(!IPCManager::instance()->_botInstances.keys().contains(PID))
             {
                 qDebug("a");
-                IPCManager::instance()->addBotInstance(PID, new BotInstance());
+                IPCManager::instance()->addBotInstance(PID, new BotInstance(PID));
             }
             IPCManager::instance()->_botInstances[PID]->initCommandPipe(pipe);
         }

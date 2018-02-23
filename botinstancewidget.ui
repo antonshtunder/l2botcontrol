@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>190</width>
-    <height>50</height>
+    <width>182</width>
+    <height>100</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="maximumSize">
    <size>
     <width>16777215</width>
-    <height>50</height>
+    <height>100</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -41,14 +41,14 @@
     </rect>
    </property>
    <property name="text">
-    <string>message</string>
+    <string>name</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btnStart">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>10</y>
+     <x>10</x>
+     <y>30</y>
      <width>51</width>
      <height>21</height>
     </rect>
@@ -60,14 +60,40 @@
   <widget class="QPushButton" name="btnStop">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>10</y>
+     <x>120</x>
+     <y>30</y>
      <width>51</width>
      <height>23</height>
     </rect>
    </property>
    <property name="text">
     <string>Stop</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnDetach">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>60</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Detach</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblBotting">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>60</y>
+     <width>71</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>not botting</string>
    </property>
   </widget>
  </widget>

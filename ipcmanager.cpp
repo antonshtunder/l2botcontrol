@@ -18,6 +18,11 @@ const QMap<DWORD, BotInstance*>& IPCManager::getBotInstances() const
     return _botInstances;
 }
 
+void IPCManager::removeBotInstance(BotInstance *botInstance)
+{
+    _botInstances.remove(botInstance->getPID());
+}
+
 IPCManager::IPCManager()
 {
     _commandPipeConnectionThread.start();
