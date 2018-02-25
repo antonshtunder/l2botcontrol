@@ -38,7 +38,9 @@ SOURCES += \
     threads/datamanagmentpipeconnectionthread.cpp \
     misc/lineagepainter.cpp \
     misc/utils.cpp \
-    threads/bottingthread.cpp
+    threads/bottingthread.cpp \
+    widgets/skillwidget.cpp \
+    widgets/skilllistwidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -54,13 +56,17 @@ HEADERS += \
     threads/datamanagmentpipeconnectionthread.h \
     misc/lineagepainter.h \
     misc/utils.h \
-    threads/bottingthread.h
+    threads/bottingthread.h \
+    widgets/skillwidget.h \
+    widgets/skilllistwidget.h
 
 FORMS += \
         mainwindow.ui \
     botinstancewidget.ui \
     optionswindow.ui \
-    widgets/mapwidget.ui
+    widgets/mapwidget.ui \
+    widgets/skillwidget.ui \
+    widgets/skilllistwidget.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/release/ -llineageIPC
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/debug/ -llineageIPC

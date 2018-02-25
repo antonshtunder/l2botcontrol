@@ -7,6 +7,8 @@
 #include "threads/bottingthread.h"
 #include "lineageipc.h"
 #include <vector>
+#include "widgets/skillwidget.h"
+#include "widgets/skilllistwidget.h"
 
 class BotInstance : public QObject
 {
@@ -33,16 +35,22 @@ public:
     void pickup();
     std::vector<DroppedItemRepresentation> getItemsInRadius(QPointF center, double radius);
 
-    MobRepresentation focusNextMob();
+    MobRepresentation focusNextMob(double radius, bool ignoreHP);
     MobRepresentation getMobWithID(DWORD id);
-    MobRepresentation findNearestMonster();
+    MobRepresentation findNearestMonsterInRadius(double radius, bool ignoreHP);
 
     bool isInGame();
     bool isRefreshed();
     bool isDecreasedPerformance();
     bool isBotting();
+    bool doesHasTarget();
 
     BotInstanceWidget* getWidget();
+    QVector<SkillWidget*> getSkillWidgets();
+    SkillListWidget *getSkillListWidget();
+
+    QLayout *getActiveSkillsLayout();
+    void updateWidgets();
     QString name;
 
     LineageRepresentation l2representation;
@@ -57,6 +65,10 @@ private:
     DWORD _PID;
 
     BotInstanceWidget *_widget = NULL;
+    SkillListWidget *_skillListWidget = NULL;
+    QVector<SkillWidget*> _skillWidgets;
+    QGridLayout *_skillWidgetLayout;
+
     BottingThread _bottingThread;
 
     QTimer *_pipeTestTimer;

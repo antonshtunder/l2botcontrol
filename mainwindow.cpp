@@ -82,6 +82,13 @@ void MainWindow::updateUI()
             }
             instanceWidget->updateInfo();
         }
+        auto currentBotInstance = BotManager::instance()->getCurrentBotInstance();
+        if(currentBotInstance != NULL)
+        {
+            ui->skillsLayout->takeAt(0);
+            ui->skillsLayout->addWidget(currentBotInstance->getSkillListWidget());
+            currentBotInstance->updateWidgets();
+        }
         _mapWidget->updateInfo();
     }
 }

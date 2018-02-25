@@ -28,6 +28,7 @@ BotInstance::~BotInstance()
     while(_bottingThread.isRunning())
         QThread::msleep(20);
     delete _widget;
+    delete _skillListWidget;
     CloseHandle(_dataManagmentPipe);
     CloseHandle(_commandPipe);
     UnmapViewOfFile(_sharedMemoryData);
@@ -215,18 +216,18 @@ void BotInstance::stopBotting()
     _bottingThread.stopBotting();
 }
 
-MobRepresentation BotInstance::findNearestMonster()
+MobRepresentation BotInstance::findNearestMonsterInRadius(double radius, bool ignoreHP)
 {
     auto mobs = l2representation.mobs;
     auto character = l2representation.character;
     size_t minDistanceIndex = 0;
-    double minDistance = 100000.0;
+    double minDistance = radius;
     QPointF myLoc(character.x, character.y);
     double distance;
 
     for(size_t i = 0; i < mobs.size(); ++i)
     {
-        if(mobs.at(i).mobType != MobType::MONSTER || mobs.at(i).hp < mobs.at(i).maxHp)
+        if(mobs.at(i).mobType != MobType::MONSTER || (mobs.at(i).hp < mobs.at(i).maxHp && !ignoreHP))
             continue;
 
         if(qAbs(mobs.at(i).z - character.z) > 250.0)
@@ -243,7 +244,7 @@ MobRepresentation BotInstance::findNearestMonster()
         }
     }
 
-    if(minDistance < 100000.0)
+    if(minDistance < radius)
         return mobs.at(minDistanceIndex);
     else
     {
@@ -251,12 +252,11 @@ MobRepresentation BotInstance::findNearestMonster()
     }
 }
 
-MobRepresentation BotInstance::focusNextMob()
+MobRepresentation BotInstance::focusNextMob(double radius, bool ignoreHP)
 {
-    auto mob = findNearestMonster();
-    if(mob.id == 0)
-        return mob;
-    performActionOn(mob.id, mob.address, Representations::MOB);
+    auto mob = findNearestMonsterInRadius(radius, ignoreHP);
+    if(mob.id != 0)
+        performActionOn(mob.id, mob.address, Representations::MOB);
     return mob;
 }
 
@@ -305,6 +305,11 @@ bool BotInstance::isBotting()
     return _bottingThread.isBotting();
 }
 
+bool BotInstance::doesHasTarget()
+{
+    return l2representation.character.targetModelAddress != 0;
+}
+
 l2ipc::Command BotInstance::attack()
 {
     DWORD command = l2ipc::Command::ATTACK;
@@ -331,4 +336,63 @@ BotInstanceWidget* BotInstance::getWidget()
         _widget = new BotInstanceWidget(this);
     }
     return _widget;
+}
+
+QVector<SkillWidget*> BotInstance::getSkillWidgets()
+{
+    return _skillWidgets;
+}
+
+SkillListWidget *BotInstance::getSkillListWidget()
+{
+    if(_skillListWidget == NULL)
+    {
+        _skillListWidget = new SkillListWidget;
+        _skillWidgetLayout = new QGridLayout;
+        _skillListWidget->setLayout(_skillWidgetLayout);
+        updateWidgets();
+    }
+    return _skillListWidget;
+}
+
+QLayout *BotInstance::getActiveSkillsLayout()
+{
+    return _skillWidgetLayout;
+}
+
+void BotInstance::updateWidgets()
+{
+    //_widget->updateInfo();
+    int activeSkillSizeDifference = _skillWidgets.size() - l2representation.activeSkills.size();
+    qDebug() << l2representation.activeSkills.size();
+    qDebug() << _skillWidgets.size();
+    auto layoutChildren = _skillWidgetLayout->children();
+    for(auto child : layoutChildren)
+    {
+        _skillWidgetLayout->removeWidget(qobject_cast<QWidget*>(child));
+    }
+    delete _skillWidgetLayout;
+    _skillWidgetLayout = new QGridLayout;
+    _skillListWidget->setLayout(_skillWidgetLayout);
+    if(activeSkillSizeDifference < 0)
+    {
+        for(int i = 0; i < qAbs(activeSkillSizeDifference); ++i)
+        {
+            auto skillWgt = new SkillWidget(SkillRepresentation());
+            _skillWidgets.push_back(skillWgt);
+        }
+    }
+    else if(activeSkillSizeDifference > 0)
+    {
+        for(int i = 0; i < activeSkillSizeDifference; ++i)
+        {
+            auto skillWgt = _skillWidgets.takeLast();
+            delete skillWgt;
+        }
+    }
+    for(int i = 0; i < _skillWidgets.size(); ++i)
+    {
+        _skillWidgets.at(i)->update(l2representation.activeSkills.at(i));
+        _skillWidgetLayout->addWidget(_skillWidgets.at(i), i / 5, i % 5);
+    }
 }

@@ -49,7 +49,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="mapTab">
        <attribute name="title">
@@ -109,6 +109,11 @@
        <attribute name="title">
         <string>Skills</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <layout class="QGridLayout" name="skillsLayout"/>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="scriptsTab">
        <attribute name="title">
