@@ -1,39 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>SkillWidget</class>
- <widget class="QWidget" name="SkillWidget">
+ <widget class="QFrame" name="SkillWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>50</width>
-    <height>50</height>
+    <width>25</width>
+    <height>33</height>
    </rect>
   </property>
   <property name="maximumSize">
    <size>
-    <width>50</width>
-    <height>50</height>
+    <width>100</width>
+    <height>100</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="toolTip">
+   <string>hey bitch</string>
+  </property>
   <property name="styleSheet">
    <string notr="true"/>
   </property>
+  <property name="frameShape">
+   <enum>QFrame::Box</enum>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="lblId">
+    <widget class="QLabel" name="lblIcon">
      <property name="text">
-      <string>0</string>
+      <string/>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="lblLevel">
-     <property name="text">
-      <string>0</string>
+     <property name="pixmap">
+      <pixmap>../../../../../../../l2data/convertedIcons/001_05.bmp</pixmap>
      </property>
     </widget>
    </item>

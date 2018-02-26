@@ -33,6 +33,7 @@ public:
     l2ipc::Command isDead(DWORD mobAddress);
     void pickupInRadius(double radius);
     void pickup();
+    void useSkill(DWORD id);
     std::vector<DroppedItemRepresentation> getItemsInRadius(QPointF center, double radius);
 
     MobRepresentation focusNextMob(double radius, bool ignoreHP);

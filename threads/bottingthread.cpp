@@ -1,7 +1,7 @@
 #include "bottingthread.h"
 #include "botinstance.h"
 
-#define PICKUP_RADIUS 400.0
+#define PICKUP_RADIUS 200.0
 
 BottingThread::BottingThread(BotInstance *botInstance)
 {
@@ -26,7 +26,7 @@ void BottingThread::run()
     while(_botting)
     {
         auto mob = _bot->focusNextMob(10000.0, false);
-        qDebug() << "new mob id = " << (LPVOID)mob.id;
+        qDebug() << "1new mob id = " << (LPVOID)mob.id;
         if(mob.id == 0)
         {
             msleep(200);
@@ -37,17 +37,18 @@ void BottingThread::run()
             if(!_botting)
                 break;
             msleep(300);
-            if(!_bot->doesHasTarget())
-                break;
-            _bot->attack();
             if(_bot->isDead(mob.address) == l2ipc::Command::REPLY_YES)
             {
-                mob = _bot->focusNextMob(300.0, true);
+                qDebug() << "mob dead";
+                mob = _bot->focusNextMob(150.0, true);
                 if(mob.id != 0)
                     continue;
                 _bot->pickupInRadius(PICKUP_RADIUS);
                 break;
             }
+            if(!_bot->doesHasTarget())
+                break;
+            _bot->attack();
         }
     }
 }

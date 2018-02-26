@@ -40,7 +40,9 @@ SOURCES += \
     misc/utils.cpp \
     threads/bottingthread.cpp \
     widgets/skillwidget.cpp \
-    widgets/skilllistwidget.cpp
+    widgets/skilllistwidget.cpp \
+    instanceinfo/skillinfo.cpp \
+    instanceinfo/instanceinfobank.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -58,7 +60,9 @@ HEADERS += \
     misc/utils.h \
     threads/bottingthread.h \
     widgets/skillwidget.h \
-    widgets/skilllistwidget.h
+    widgets/skilllistwidget.h \
+    instanceinfo/skillinfo.h \
+    instanceinfo/instanceinfobank.h
 
 FORMS += \
         mainwindow.ui \

@@ -1,12 +1,14 @@
 #include "skillwidget.h"
 #include "ui_skillwidget.h"
+#include "botinstance.h"
+#include "instanceinfo/instanceinfobank.h"
 
-SkillWidget::SkillWidget(SkillRepresentation skill, QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::SkillWidget)
+SkillWidget::SkillWidget(BotInstance *botInstance, QWidget *parent) :
+    QFrame(parent),
+    ui(new Ui::SkillWidget),
+    _botInstance(botInstance)
 {
     ui->setupUi(this);
-    update(skill);
 }
 
 SkillWidget::~SkillWidget()
@@ -16,7 +18,15 @@ SkillWidget::~SkillWidget()
 
 void SkillWidget::update(SkillRepresentation skill)
 {
+    SkillInfo &skillInfo = InstanceInfoBank::instance()->getSkillInfo(skill.id);
     _skill = skill;
-    ui->lblId->setText(QString::number(skill.id));
-    ui->lblLevel->setText(QString::number(skill.level));
+    ui->lblIcon->setPixmap(skillInfo.getIcon());
+
+    setToolTip(QString("Id = %1\nLevel = %2\nName = %3").arg(skill.id).arg(skill.level).arg(skillInfo.getName()));
+}
+
+void SkillWidget::mousePressEvent(QMouseEvent *event)
+{
+    _botInstance->useSkill(_skill.id);
+    qDebug() << "use skill, id = " << _skill.id;
 }

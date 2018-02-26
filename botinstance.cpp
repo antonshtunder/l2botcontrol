@@ -3,6 +3,8 @@
 #include "misc/utils.h"
 #include <QtMath>
 
+#define ICON_SIZE 32
+
 using namespace std;
 
 BotInstance &BotInstance::BotInstance::operator=(const BotInstance &botInstance)
@@ -176,6 +178,14 @@ void BotInstance::pickup()
     l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
 }
 
+void BotInstance::useSkill(DWORD id)
+{
+    DWORD command[2];
+    command[0] = l2ipc::Command::USE_SKILL;
+    command[1] = id;
+    l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
+}
+
 std::vector<DroppedItemRepresentation> BotInstance::getItemsInRadius(QPointF loc, double radius)
 {
     vector<DroppedItemRepresentation> result;
@@ -227,13 +237,13 @@ MobRepresentation BotInstance::findNearestMonsterInRadius(double radius, bool ig
 
     for(size_t i = 0; i < mobs.size(); ++i)
     {
+        if(mobs.at(i).hp == 0)
+            continue;
+
         if(mobs.at(i).mobType != MobType::MONSTER || (mobs.at(i).hp < mobs.at(i).maxHp && !ignoreHP))
             continue;
 
         if(qAbs(mobs.at(i).z - character.z) > 250.0)
-            continue;
-
-        if((qAbs(mobs.at(i).z - character.z) / distance) > (1.0 / 3.0))
             continue;
 
         distance = getDistance(myLoc, {mobs.at(i).x, mobs.at(i).y});
@@ -364,8 +374,6 @@ void BotInstance::updateWidgets()
 {
     //_widget->updateInfo();
     int activeSkillSizeDifference = _skillWidgets.size() - l2representation.activeSkills.size();
-    qDebug() << l2representation.activeSkills.size();
-    qDebug() << _skillWidgets.size();
     auto layoutChildren = _skillWidgetLayout->children();
     for(auto child : layoutChildren)
     {
@@ -378,7 +386,7 @@ void BotInstance::updateWidgets()
     {
         for(int i = 0; i < qAbs(activeSkillSizeDifference); ++i)
         {
-            auto skillWgt = new SkillWidget(SkillRepresentation());
+            auto skillWgt = new SkillWidget(this);
             _skillWidgets.push_back(skillWgt);
         }
     }
@@ -390,9 +398,12 @@ void BotInstance::updateWidgets()
             delete skillWgt;
         }
     }
+    //qDebug() << _skillListWidget->width();
+    int rowNum = _skillListWidget->width() / ICON_SIZE - 5;
+    qDebug() << rowNum;
     for(int i = 0; i < _skillWidgets.size(); ++i)
     {
         _skillWidgets.at(i)->update(l2representation.activeSkills.at(i));
-        _skillWidgetLayout->addWidget(_skillWidgets.at(i), i / 5, i % 5);
+        _skillWidgetLayout->addWidget(_skillWidgets.at(i), i / rowNum, i % rowNum);
     }
 }
