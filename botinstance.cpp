@@ -28,7 +28,6 @@ BotInstance::~BotInstance()
     while(_bottingThread.isRunning())
         QThread::msleep(20);
     delete _widget;
-    delete _skillListWidget;
     CloseHandle(_dataManagmentPipe);
     CloseHandle(_commandPipe);
     UnmapViewOfFile(_sharedMemoryData);
@@ -344,19 +343,4 @@ BotInstanceWidget* BotInstance::getWidget()
         _widget = new BotInstanceWidget(this);
     }
     return _widget;
-}
-
-SkillListWidget *BotInstance::getSkillListWidget()
-{
-    if(_skillListWidget == NULL)
-    {
-        _skillListWidget = new SkillListWidget(this);
-        updateWidgets();
-    }
-    return _skillListWidget;
-}
-
-void BotInstance::updateWidgets()
-{
-    _skillListWidget->update();
 }

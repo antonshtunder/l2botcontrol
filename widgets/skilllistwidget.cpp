@@ -4,10 +4,9 @@
 
 #define ICON_SIZE 32
 
-SkillListWidget::SkillListWidget(BotInstance *botInstance, QWidget *parent) :
+SkillListWidget::SkillListWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::SkillListWidget),
-    _botInstance(botInstance)
+    ui(new Ui::SkillListWidget)
 {
     ui->setupUi(this);
     connect(&_resizeTimer, SIGNAL(timeout()), SLOT(resizeEnded()));
@@ -23,6 +22,9 @@ void SkillListWidget::update(BotInstance *botInstance)
     _botInstance = botInstance;
 
     clearLayout();
+
+    if(_botInstance == NULL)
+        return;
 
     int activeSkillSizeDifference = _skillWidgets.size() - _botInstance->l2representation.activeSkills.size();
     if(activeSkillSizeDifference < 0)
@@ -70,6 +72,9 @@ void SkillListWidget::clearLayout()
 
 void SkillListWidget::resizeEvent(QResizeEvent *event)
 {
+    if(_botInstance == NULL)
+        return;
+
     _resizeTimer.start(200);
     setMinimumWidth(ICON_SIZE * 6);
 }

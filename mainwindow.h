@@ -29,6 +29,7 @@ private:
 
     OptionsWindow *_optionsWindow;
     MapWidget *_mapWidget;
+    SkillListWidget *_skillListWidget;
 
     QVBoxLayout _botsLayout;
     QList<BotInstanceWidget*> _bots;

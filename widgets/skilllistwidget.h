@@ -18,7 +18,7 @@ class SkillListWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit SkillListWidget(BotInstance *botInstance, QWidget *parent = 0);
+    explicit SkillListWidget(QWidget *parent = 0);
     ~SkillListWidget();
 
     void update(BotInstance *botInstance);
@@ -27,7 +27,7 @@ public:
 private:
     Ui::SkillListWidget *ui;
 
-    BotInstance *_botInstance;
+    BotInstance *_botInstance = NULL;
     QVector<SkillWidget*> _skillWidgets;
     QGridLayout *_skillWidgetLayout = NULL;
 

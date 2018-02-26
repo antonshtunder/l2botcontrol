@@ -8,6 +8,7 @@ MainWindow *MainWindow::_instance = NULL;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
+    _skillListWidget(new SkillListWidget()),
     _testClientsTimer(this)
 {
     ui->setupUi(this);
@@ -22,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->botsCointainer->setLayout(&_botsLayout);
     _botsLayout.setAlignment(Qt::AlignTop);
+    ui->skillsLayout->addWidget(_skillListWidget);
 
     connectSlotsAndSignals();
 
@@ -83,19 +85,7 @@ void MainWindow::updateUI()
             instanceWidget->updateInfo();
         }
         auto currentBotInstance = BotManager::instance()->getCurrentBotInstance();
-        if(currentBotInstance != NULL)
-        {
-            qDebug() << QString::fromUtf16(currentBotInstance->l2representation.character.name);
-            auto children = ui->skillsLayout->children();
-            if(children.size() > 0)
-            {
-                qDebug() << children.size();
-                ui->skillsLayout->removeWidget(qobject_cast<QWidget*>(children[0]));
-            }
-
-            ui->skillsLayout->addWidget(currentBotInstance->getSkillListWidget());
-            currentBotInstance->updateWidgets();
-        }
+        _skillListWidget->update(currentBotInstance);
         _mapWidget->updateInfo();
     }
 }

@@ -47,7 +47,6 @@ public:
     bool doesHasTarget();
 
     BotInstanceWidget* getWidget();
-    SkillListWidget *getSkillListWidget();
 
     void updateWidgets();
     QString name;
@@ -64,7 +63,6 @@ private:
     DWORD _PID;
 
     BotInstanceWidget *_widget = NULL;
-    SkillListWidget *_skillListWidget = NULL;
 
     BottingThread _bottingThread;
 
