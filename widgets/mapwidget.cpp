@@ -2,6 +2,7 @@
 #include "ui_mapwidget.h"
 #include "botmanager.h"
 #include "misc/lineagepainter.h"
+#include "misc/utils.h"
 #include "options.h"
 
 #define MAP_WIDTH 558500.0
@@ -86,6 +87,22 @@ void MapWidget::mouseReleaseEvent(QMouseEvent *event)
 void MapWidget::resizeEvent(QResizeEvent *event)
 {
     adjustMapDimensions();
+}
+
+void MapWidget::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if(event->buttons() == Qt::RightButton)
+    {
+        auto botInstance = BotManager::instance()->getCurrentBotInstance();
+        if(botInstance == NULL)
+            return;
+
+        QPointF charOrigPos(botInstance->l2representation.character.x, botInstance->l2representation.character.y);
+        auto charMapPos = translateCoordinates(charOrigPos, _scaleFactor, _pixelsPerUnit);
+        _imageX = (charMapPos.x() - width() / 2.0) / _scaleFactor;
+        _imageY = (charMapPos.y() - height() / 2.0) / _scaleFactor;
+        adjustMapDimensions();
+    }
 }
 
 void MapWidget::scaleMap(double factor)

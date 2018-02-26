@@ -2,6 +2,7 @@
 #include "ui_skillwidget.h"
 #include "botinstance.h"
 #include "instanceinfo/instanceinfobank.h"
+#include "dialogs/skillusagedialog.h"
 
 SkillWidget::SkillWidget(BotInstance *botInstance, QWidget *parent) :
     QLabel(parent),
@@ -27,6 +28,14 @@ void SkillWidget::update(SkillRepresentation skill)
 
 void SkillWidget::mousePressEvent(QMouseEvent *event)
 {
-    _botInstance->useSkill(_skill.id);
-    qDebug() << "use skill, mpCost = " << InstanceInfoBank::instance()->getSkillInfo(_skill.id).getMpCost(_skill.level);
+    if(event->buttons() == Qt::LeftButton)
+    {
+        _botInstance->useSkill(_skill.id);
+        qDebug() << "use skill, mpCost = " << InstanceInfoBank::instance()->getSkillInfo(_skill.id).getMpCost(_skill.level);
+    }
+    else if(event->buttons() == Qt::RightButton)
+    {
+        SkillUsageDialog suDialog(_botInstance->getSkillUsage(_skill), this);
+        suDialog.exec();
+    }
 }

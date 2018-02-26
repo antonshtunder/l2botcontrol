@@ -37,6 +37,7 @@ void BottingThread::run()
             if(!_botting)
                 break;
             msleep(300);
+            _bot->useSkills();
             if(_bot->isDead(mob.address) == l2ipc::Command::REPLY_YES)
             {
                 qDebug() << "mob dead";

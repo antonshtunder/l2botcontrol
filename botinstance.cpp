@@ -183,6 +183,14 @@ void BotInstance::useSkill(DWORD id)
     l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
 }
 
+void BotInstance::useSkills()
+{
+    for(auto skillUsage : _skillUsages.values())
+    {
+        skillUsage.use();
+    }
+}
+
 std::vector<DroppedItemRepresentation> BotInstance::getItemsInRadius(QPointF loc, double radius)
 {
     vector<DroppedItemRepresentation> result;
@@ -257,6 +265,25 @@ MobRepresentation BotInstance::findNearestMonsterInRadius(double radius, bool ig
     {
         return makeInvalidMob();
     }
+}
+
+MobRepresentation BotInstance::getTargetedMob()
+{
+    for(auto mob : l2representation.mobs)
+    {
+        //if(l2representation.character.targetModelAddress == mob.)
+        qDebug() << "not implemented";
+    }
+    return makeInvalidMob();
+}
+
+SkillUsage *BotInstance::getSkillUsage(SkillRepresentation &skillRepresentation)
+{
+    if(!_skillUsages.contains(skillRepresentation.id))
+    {
+        _skillUsages[skillRepresentation.id] = SkillUsage(this, skillRepresentation);
+    }
+    return &_skillUsages[skillRepresentation.id];
 }
 
 MobRepresentation BotInstance::focusNextMob(double radius, bool ignoreHP)

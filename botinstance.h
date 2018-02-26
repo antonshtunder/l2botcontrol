@@ -9,6 +9,7 @@
 #include <vector>
 #include "widgets/skillwidget.h"
 #include "widgets/skilllistwidget.h"
+#include "botcommands/skillusage.h"
 
 class BotInstance : public QObject
 {
@@ -34,11 +35,15 @@ public:
     void pickupInRadius(double radius);
     void pickup();
     void useSkill(DWORD id);
+    void useSkills();
     std::vector<DroppedItemRepresentation> getItemsInRadius(QPointF center, double radius);
 
     MobRepresentation focusNextMob(double radius, bool ignoreHP);
     MobRepresentation getMobWithID(DWORD id);
     MobRepresentation findNearestMonsterInRadius(double radius, bool ignoreHP);
+    MobRepresentation getTargetedMob();
+
+    SkillUsage *getSkillUsage(SkillRepresentation &skillRepresentation);
 
     bool isInGame();
     bool isRefreshed();
@@ -74,6 +79,8 @@ private:
 
     QWaitCondition _stateRefreshed;
     QMutex _mutex;
+
+    QMap<DWORD, SkillUsage> _skillUsages;
 
 public slots:
     void startBotting();

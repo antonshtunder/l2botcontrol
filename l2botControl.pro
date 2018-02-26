@@ -43,7 +43,11 @@ SOURCES += \
     widgets/skilllistwidget.cpp \
     instanceinfo/skillinfo.cpp \
     instanceinfo/instanceinfobank.cpp \
-    botcommands/skillusage.cpp
+    botcommands/skillusage.cpp \
+    dialogs/skillusagedialog.cpp \
+    conditions/condition.cpp \
+    conditions/relativepointscondition.cpp \
+    dialogs/addconditiondialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -64,7 +68,11 @@ HEADERS += \
     widgets/skilllistwidget.h \
     instanceinfo/skillinfo.h \
     instanceinfo/instanceinfobank.h \
-    botcommands/skillusage.h
+    botcommands/skillusage.h \
+    dialogs/skillusagedialog.h \
+    conditions/condition.h \
+    conditions/relativepointscondition.h \
+    dialogs/addconditiondialog.h
 
 FORMS += \
         mainwindow.ui \
@@ -72,7 +80,9 @@ FORMS += \
     optionswindow.ui \
     widgets/mapwidget.ui \
     widgets/skillwidget.ui \
-    widgets/skilllistwidget.ui
+    widgets/skilllistwidget.ui \
+    dialogs/skillusagedialog.ui \
+    dialogs/addconditiondialog.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/release/ -llineageIPC
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/debug/ -llineageIPC
