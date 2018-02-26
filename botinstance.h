@@ -47,10 +47,8 @@ public:
     bool doesHasTarget();
 
     BotInstanceWidget* getWidget();
-    QVector<SkillWidget*> getSkillWidgets();
     SkillListWidget *getSkillListWidget();
 
-    QLayout *getActiveSkillsLayout();
     void updateWidgets();
     QString name;
 
@@ -67,8 +65,6 @@ private:
 
     BotInstanceWidget *_widget = NULL;
     SkillListWidget *_skillListWidget = NULL;
-    QVector<SkillWidget*> _skillWidgets;
-    QGridLayout *_skillWidgetLayout;
 
     BottingThread _bottingThread;
 

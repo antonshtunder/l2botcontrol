@@ -2,6 +2,7 @@
 #define SKILLWIDGET_H
 
 #include <QFrame>
+#include <QLabel>
 #include <QWidget>
 #include "skillrepresentation.h"
 
@@ -11,7 +12,7 @@ class SkillWidget;
 
 class BotInstance;
 
-class SkillWidget : public QFrame
+class SkillWidget : public QLabel
 {
     Q_OBJECT
 

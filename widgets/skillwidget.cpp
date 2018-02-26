@@ -4,7 +4,7 @@
 #include "instanceinfo/instanceinfobank.h"
 
 SkillWidget::SkillWidget(BotInstance *botInstance, QWidget *parent) :
-    QFrame(parent),
+    QLabel(parent),
     ui(new Ui::SkillWidget),
     _botInstance(botInstance)
 {
@@ -20,7 +20,7 @@ void SkillWidget::update(SkillRepresentation skill)
 {
     SkillInfo &skillInfo = InstanceInfoBank::instance()->getSkillInfo(skill.id);
     _skill = skill;
-    ui->lblIcon->setPixmap(skillInfo.getIcon());
+    setPixmap(skillInfo.getIcon());
 
     setToolTip(QString("Id = %1\nLevel = %2\nName = %3").arg(skill.id).arg(skill.level).arg(skillInfo.getName()));
 }
@@ -28,5 +28,5 @@ void SkillWidget::update(SkillRepresentation skill)
 void SkillWidget::mousePressEvent(QMouseEvent *event)
 {
     _botInstance->useSkill(_skill.id);
-    qDebug() << "use skill, id = " << _skill.id;
+    qDebug() << "use skill, mpCost = " << InstanceInfoBank::instance()->getSkillInfo(_skill.id).getMpCost(_skill.level);
 }

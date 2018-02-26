@@ -3,8 +3,6 @@
 #include "misc/utils.h"
 #include <QtMath>
 
-#define ICON_SIZE 32
-
 using namespace std;
 
 BotInstance &BotInstance::BotInstance::operator=(const BotInstance &botInstance)
@@ -348,62 +346,17 @@ BotInstanceWidget* BotInstance::getWidget()
     return _widget;
 }
 
-QVector<SkillWidget*> BotInstance::getSkillWidgets()
-{
-    return _skillWidgets;
-}
-
 SkillListWidget *BotInstance::getSkillListWidget()
 {
     if(_skillListWidget == NULL)
     {
-        _skillListWidget = new SkillListWidget;
-        _skillWidgetLayout = new QGridLayout;
-        _skillListWidget->setLayout(_skillWidgetLayout);
+        _skillListWidget = new SkillListWidget(this);
         updateWidgets();
     }
     return _skillListWidget;
 }
 
-QLayout *BotInstance::getActiveSkillsLayout()
-{
-    return _skillWidgetLayout;
-}
-
 void BotInstance::updateWidgets()
 {
-    //_widget->updateInfo();
-    int activeSkillSizeDifference = _skillWidgets.size() - l2representation.activeSkills.size();
-    auto layoutChildren = _skillWidgetLayout->children();
-    for(auto child : layoutChildren)
-    {
-        _skillWidgetLayout->removeWidget(qobject_cast<QWidget*>(child));
-    }
-    delete _skillWidgetLayout;
-    _skillWidgetLayout = new QGridLayout;
-    _skillListWidget->setLayout(_skillWidgetLayout);
-    if(activeSkillSizeDifference < 0)
-    {
-        for(int i = 0; i < qAbs(activeSkillSizeDifference); ++i)
-        {
-            auto skillWgt = new SkillWidget(this);
-            _skillWidgets.push_back(skillWgt);
-        }
-    }
-    else if(activeSkillSizeDifference > 0)
-    {
-        for(int i = 0; i < activeSkillSizeDifference; ++i)
-        {
-            auto skillWgt = _skillWidgets.takeLast();
-            delete skillWgt;
-        }
-    }
-    //qDebug() << _skillListWidget->width();
-    int rowNum = _skillListWidget->width() / ICON_SIZE - 5;
-    qDebug() << rowNum;
-    for(int i = 0; i < _skillWidgets.size(); ++i)
-    {
-        _skillWidgets.at(i)->update(l2representation.activeSkills.at(i));
-        _skillWidgetLayout->addWidget(_skillWidgets.at(i), i / rowNum, i % rowNum);
-    }
+    _skillListWidget->update();
 }
