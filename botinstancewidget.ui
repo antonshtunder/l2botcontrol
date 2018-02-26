@@ -37,71 +37,43 @@
   <property name="frameShadow">
    <enum>QFrame::Sunken</enum>
   </property>
-  <widget class="QLabel" name="lblMessage">
-   <property name="geometry">
-    <rect>
-     <x>11</x>
-     <y>11</y>
-     <width>168</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>name</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnStart">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>30</y>
-     <width>51</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Start</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnStop">
-   <property name="geometry">
-    <rect>
-     <x>120</x>
-     <y>30</y>
-     <width>51</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Stop</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnDetach">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>60</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Detach</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lblBotting">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>60</y>
-     <width>71</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>not botting</string>
-   </property>
-  </widget>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="lblMessage">
+     <property name="text">
+      <string>name</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="lblBotting">
+     <property name="text">
+      <string>not botting</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="lblCP">
+     <property name="text">
+      <string>CP</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="lblHP">
+     <property name="text">
+      <string>HP</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="lblMP">
+     <property name="text">
+      <string>MP</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

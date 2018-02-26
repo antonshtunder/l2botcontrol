@@ -20,9 +20,9 @@ public:
     QPixmap getIcon() const;
 
 private:
-    QString name;
+    QString name = 0;
     QPixmap icon;
-    int cooldown, castRange;
+    int cooldown = 0, castRange = 0;
     std::vector<int> mpCost;
     std::vector<int> hpCost;
 };

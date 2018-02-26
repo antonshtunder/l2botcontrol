@@ -14,9 +14,6 @@ BotInstanceWidget::BotInstanceWidget(BotInstance *botInstance, QWidget *parent) 
     _detachAction("Detach bot", this)
 {
     ui->setupUi(this);
-    connect(ui->btnStart, SIGNAL(pressed()), SLOT(startBotting()));
-    connect(ui->btnStop, SIGNAL(pressed()), SLOT(stopBotting()));
-    connect(ui->btnDetach, SIGNAL(pressed()), SLOT(detach()));
 
     connect(&_startAction, SIGNAL(triggered()), SLOT(startBotting()));
     _contextMenu.addAction(&_startAction);
@@ -42,6 +39,12 @@ void BotInstanceWidget::updateInfo()
     if(_botInstance->isInGame())
     {
         ui->lblMessage->setText(QString::fromUtf16(_botInstance->l2representation.character.name));
+        ui->lblHP->setText(QString("%1/%2").arg(QString::number(_botInstance->l2representation.character.hp))
+                           .arg(QString::number(_botInstance->l2representation.character.maxHp)));
+        ui->lblMP->setText(QString("%1/%2").arg(QString::number(_botInstance->l2representation.character.mp))
+                           .arg(QString::number(_botInstance->l2representation.character.maxMp)));
+        ui->lblCP->setText(QString("%1/%2").arg(QString::number(_botInstance->l2representation.character.cp))
+                           .arg(QString::number(_botInstance->l2representation.character.maxCp)));
     }
     else
     {

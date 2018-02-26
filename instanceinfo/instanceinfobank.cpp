@@ -6,6 +6,7 @@ SkillInfo &InstanceInfoBank::getSkillInfo(DWORD id)
 {
     if(_skillInfoBank.count(id) == 0)
     {
+        qDebug() << "skill not found";
         SkillInfo skillInfo(id);
         _skillInfoBank[id] = skillInfo;
     }

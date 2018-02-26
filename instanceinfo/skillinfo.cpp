@@ -36,6 +36,7 @@ SkillInfo::SkillInfo(DWORD id)
             if(xmlReader.name() == "skill" && xmlReader.attributes().value("", "id").toInt() == id)
             {
                 name = xmlReader.attributes().value("", "name").toString();
+                qDebug() << name;
                 while(true)
                 {
                     auto token = xmlReader.readNext();
@@ -46,13 +47,13 @@ SkillInfo::SkillInfo(DWORD id)
 
                         //MP consume read
                         if(element == "#mpConsume2")
-                            mpCost = strToIntVector(xmlReader.readElementText());
+                            mpCost = strToIntVector(xmlReader.readElementText().trimmed());
                         else if(element == "mpConsume2" && mpCost.size() == 0)
                             mpCost.push_back(xmlReader.attributes().value("", "val").toInt());
 
                         //HP consume read
                         else if(element == "#hpConsume")
-                            hpCost = strToIntVector(xmlReader.readElementText());
+                            hpCost = strToIntVector(xmlReader.readElementText().trimmed());
                         else if(element == "hpConsume" && mpCost.size() == 0)
                             hpCost.push_back(xmlReader.attributes().value("", "val").toInt());
 
@@ -87,7 +88,7 @@ SkillInfo::SkillInfo()
 
 int SkillInfo::getHpCost(int level) const
 {
-    if(hpCost.size() < level - 1)
+    if(hpCost.size() == 0)
         return 0;
     return hpCost.at(level);
 }
@@ -109,9 +110,12 @@ int SkillInfo::getCastRange() const
 
 int SkillInfo::getMpCost(int level) const
 {
-    if(mpCost.size() < level - 1)
+    qDebug() << "get mp cost";
+    if(mpCost.size() == 0)
+    {
         return 0;
-    return mpCost.at(level);
+    }
+    return mpCost.at(level - 1);
 }
 
 QPixmap SkillInfo::getIcon() const
