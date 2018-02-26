@@ -85,7 +85,14 @@ void MainWindow::updateUI()
         auto currentBotInstance = BotManager::instance()->getCurrentBotInstance();
         if(currentBotInstance != NULL)
         {
-            ui->skillsLayout->takeAt(0);
+            qDebug() << QString::fromUtf16(currentBotInstance->l2representation.character.name);
+            auto children = ui->skillsLayout->children();
+            if(children.size() > 0)
+            {
+                qDebug() << children.size();
+                ui->skillsLayout->removeWidget(qobject_cast<QWidget*>(children[0]));
+            }
+
             ui->skillsLayout->addWidget(currentBotInstance->getSkillListWidget());
             currentBotInstance->updateWidgets();
         }

@@ -7,12 +7,29 @@
 BotInstanceWidget::BotInstanceWidget(BotInstance *botInstance, QWidget *parent) :
     QFrame(parent),
     ui(new Ui::BotInstanceWidget),
-    _botInstance(botInstance)
+    _botInstance(botInstance),
+    _contextMenu(tr("Context menu"), this),
+    _startAction("Start botting", this),
+    _stopAction("Stop botting", this),
+    _detachAction("Detach bot", this)
 {
     ui->setupUi(this);
     connect(ui->btnStart, SIGNAL(pressed()), SLOT(startBotting()));
     connect(ui->btnStop, SIGNAL(pressed()), SLOT(stopBotting()));
     connect(ui->btnDetach, SIGNAL(pressed()), SLOT(detach()));
+
+    connect(&_startAction, SIGNAL(triggered()), SLOT(startBotting()));
+    _contextMenu.addAction(&_startAction);
+
+    connect(&_stopAction, SIGNAL(triggered()), SLOT(stopBotting()));
+    _contextMenu.addAction(&_stopAction);
+
+    connect(&_detachAction, SIGNAL(triggered()), SLOT(detach()), Qt::QueuedConnection);
+    _contextMenu.addAction(&_detachAction);
+
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
+            this, SLOT(showContextMenu(const QPoint &)));
 }
 
 BotInstanceWidget::~BotInstanceWidget()
@@ -58,4 +75,9 @@ void BotInstanceWidget::stopBotting()
 void BotInstanceWidget::detach()
 {
     _botInstance->detach();
+}
+
+void BotInstanceWidget::showContextMenu(const QPoint &pos)
+{
+   _contextMenu.exec(mapToGlobal(pos));
 }

@@ -21,7 +21,7 @@ public:
     explicit SkillListWidget(BotInstance *botInstance, QWidget *parent = 0);
     ~SkillListWidget();
 
-    void update();
+    void update(BotInstance *botInstance);
     void clearLayout();
 
 private:

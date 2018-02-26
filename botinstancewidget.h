@@ -28,10 +28,15 @@ private:
     Ui::BotInstanceWidget *ui;
     BotInstance *_botInstance;
 
+    QMenu _contextMenu;
+    QAction _startAction;
+    QAction _stopAction;
+    QAction _detachAction;
 private slots:
     void startBotting();
     void stopBotting();
     void detach();
+    void showContextMenu(const QPoint &);
 
 signals:
     void detachSignal(BotInstance*);

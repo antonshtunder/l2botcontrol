@@ -42,7 +42,8 @@ SOURCES += \
     widgets/skillwidget.cpp \
     widgets/skilllistwidget.cpp \
     instanceinfo/skillinfo.cpp \
-    instanceinfo/instanceinfobank.cpp
+    instanceinfo/instanceinfobank.cpp \
+    botcommands/skillusage.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -62,7 +63,8 @@ HEADERS += \
     widgets/skillwidget.h \
     widgets/skilllistwidget.h \
     instanceinfo/skillinfo.h \
-    instanceinfo/instanceinfobank.h
+    instanceinfo/instanceinfobank.h \
+    botcommands/skillusage.h
 
 FORMS += \
         mainwindow.ui \

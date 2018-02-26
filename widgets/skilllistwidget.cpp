@@ -18,14 +18,11 @@ SkillListWidget::~SkillListWidget()
     delete ui;
 }
 
-void SkillListWidget::update()
+void SkillListWidget::update(BotInstance *botInstance)
 {
+    _botInstance = botInstance;
+
     clearLayout();
-    /*if(_resizing)
-    {
-        qDebug() << "resizing";
-        return;
-    }*/
 
     int activeSkillSizeDifference = _skillWidgets.size() - _botInstance->l2representation.activeSkills.size();
     if(activeSkillSizeDifference < 0)
@@ -83,5 +80,5 @@ void SkillListWidget::mouseMoveEvent(QMouseEvent *event)
 
 void SkillListWidget::resizeEnded()
 {
-    update();
+    update(_botInstance);
 }
