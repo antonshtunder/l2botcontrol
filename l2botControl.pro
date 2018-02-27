@@ -47,7 +47,8 @@ SOURCES += \
     dialogs/skillusagedialog.cpp \
     conditions/condition.cpp \
     conditions/relativepointscondition.cpp \
-    dialogs/addconditiondialog.cpp
+    dialogs/addconditiondialog.cpp \
+    widgets/effectwidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -72,7 +73,8 @@ HEADERS += \
     dialogs/skillusagedialog.h \
     conditions/condition.h \
     conditions/relativepointscondition.h \
-    dialogs/addconditiondialog.h
+    dialogs/addconditiondialog.h \
+    widgets/effectwidget.h
 
 FORMS += \
         mainwindow.ui \
@@ -82,7 +84,8 @@ FORMS += \
     widgets/skillwidget.ui \
     widgets/skilllistwidget.ui \
     dialogs/skillusagedialog.ui \
-    dialogs/addconditiondialog.ui
+    dialogs/addconditiondialog.ui \
+    widgets/effectwidget.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/release/ -llineageIPC
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/debug/ -llineageIPC

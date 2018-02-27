@@ -28,6 +28,8 @@ void SkillWidget::update(SkillRepresentation skill)
 
 void SkillWidget::mousePressEvent(QMouseEvent *event)
 {
+    if(!_botInstance->isInGame())
+        return;
     if(event->buttons() == Qt::LeftButton)
     {
         _botInstance->useSkill(_skill.id);

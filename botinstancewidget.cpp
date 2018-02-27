@@ -38,6 +38,8 @@ void BotInstanceWidget::updateInfo()
 {
     if(_botInstance->isInGame())
     {
+        qDebug() << _botInstance->l2representation.playerEffects.size();
+        qDebug() << _botInstance->l2representation.targetEffects.size();
         ui->lblMessage->setText(QString::fromUtf16(_botInstance->l2representation.character.name));
         ui->lblHP->setText(QString("%1/%2").arg(QString::number(_botInstance->l2representation.character.hp))
                            .arg(QString::number(_botInstance->l2representation.character.maxHp)));
