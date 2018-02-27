@@ -10,6 +10,14 @@
 #include "widgets/skillwidget.h"
 #include "widgets/skilllistwidget.h"
 #include "botcommands/skillusage.h"
+#include <memory>
+
+enum BotState
+{
+    ATTACKING,
+    PICKINGUP,
+    STANDING
+};
 
 class BotInstance : public QObject
 {
@@ -34,7 +42,7 @@ public:
     l2ipc::Command isDead(DWORD mobAddress);
     void pickupInRadius(double radius);
     void pickup();
-    void useSkill(DWORD id);
+    bool useSkill(DWORD id);
     void useSkills();
     std::vector<DroppedItemRepresentation> getItemsInRadius(QPointF center, double radius);
 
@@ -60,6 +68,9 @@ public:
 
     MobRepresentation makeInvalidMob();
 
+    BotState getState() const;
+    void setState(const BotState &state);
+
 private:
     HANDLE _commandPipe;
     HANDLE _dataManagmentPipe;
@@ -76,11 +87,12 @@ private:
     bool _inGame = false;
     bool _refreshed = true;
     bool _pipeUsed = false;
+    BotState _state;
 
     QWaitCondition _stateRefreshed;
     QMutex _mutex;
 
-    QMap<DWORD, SkillUsage> _skillUsages;
+    QMap<DWORD, std::shared_ptr<SkillUsage>> _skillUsages;
 
 public slots:
     void startBotting();

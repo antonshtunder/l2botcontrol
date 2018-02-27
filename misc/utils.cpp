@@ -1,4 +1,5 @@
 #include "utils.h"
+#include <QWidget>
 
 using namespace std;
 
@@ -27,4 +28,21 @@ vector<int> strToIntVector(const QString &str)
         result.push_back(strInt.toInt());
     }
     return result;
+}
+
+void clearGridLayout(QGridLayout **grid)
+{
+    if(*grid != NULL)
+    {
+        auto layoutChildren = (*grid)->children();
+        for(auto child : layoutChildren)
+        {
+            (*grid)->removeWidget(qobject_cast<QWidget*>(child));
+        }
+        delete *grid;
+    }
+    *grid = new QGridLayout;
+    (*grid)->setAlignment(Qt::AlignTop);
+    (*grid)->setSpacing(0);
+    (*grid)->setMargin(0);
 }

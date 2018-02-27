@@ -48,7 +48,10 @@ SOURCES += \
     conditions/condition.cpp \
     conditions/relativepointscondition.cpp \
     dialogs/addconditiondialog.cpp \
-    widgets/effectwidget.cpp
+    widgets/effectwidget.cpp \
+    widgets/effectlist.cpp \
+    conditions/effectcondition.cpp \
+    conditions/botstatecondition.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -74,7 +77,10 @@ HEADERS += \
     conditions/condition.h \
     conditions/relativepointscondition.h \
     dialogs/addconditiondialog.h \
-    widgets/effectwidget.h
+    widgets/effectwidget.h \
+    widgets/effectlist.h \
+    conditions/effectcondition.h \
+    conditions/botstatecondition.h
 
 FORMS += \
         mainwindow.ui \
@@ -85,7 +91,8 @@ FORMS += \
     widgets/skilllistwidget.ui \
     dialogs/skillusagedialog.ui \
     dialogs/addconditiondialog.ui \
-    widgets/effectwidget.ui
+    widgets/effectwidget.ui \
+    widgets/effectlist.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/release/ -llineageIPC
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/debug/ -llineageIPC

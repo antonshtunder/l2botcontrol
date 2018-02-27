@@ -9,12 +9,24 @@ SkillUsage::SkillUsage(BotInstance *botInstance, SkillRepresentation skill):
     _botInstance(botInstance),
     _skill(skill)
 {
-
+    qDebug() << "SKILLUSAGE(b)";
+    _lastUse = 0;
 }
 
 SkillUsage::SkillUsage()
 {
+    qDebug() << "SKILLUSAGE()";
+    _lastUse = 0;
+}
 
+SkillUsage::SkillUsage(const SkillUsage &skillUsage)
+{
+    qDebug() << "SKILLUSAGE(c)";
+    _lastUse = skillUsage._lastUse;
+    _enabled = skillUsage._enabled;
+    _botInstance = skillUsage._botInstance;
+    _conditions = skillUsage._conditions;
+    _skill = skillUsage._skill;
 }
 
 void SkillUsage::setEnabled(bool enabled)
@@ -45,11 +57,24 @@ void SkillUsage::use()
 
     auto skillInfo = InstanceInfoBank::instance()->getSkillInfo(_skill.id);
     auto currTime = QDateTime::currentMSecsSinceEpoch();
-    if(currTime - lastUse > skillInfo.getCooldown())
+    qDebug() << (currTime - _lastUse);
+    qDebug() << _lastUse;
+    qDebug() << currTime;
+    qDebug() << skillInfo.getCooldown();
+    if(currTime - _lastUse > skillInfo.getCooldown())
     {
-        lastUse = QDateTime::currentMSecsSinceEpoch();
-        _botInstance->useSkill(_skill.id);
+        if(_botInstance->useSkill(_skill.id))
+        {
+            qDebug() << "skill success";
+            _lastUse = QDateTime::currentMSecsSinceEpoch();
+            qDebug() << "_lastUse = " << _lastUse;
+        }
     }
+}
+
+DWORD SkillUsage::getId() const
+{
+    return _skill.id;
 }
 
 QList<std::shared_ptr<Condition> > &SkillUsage::getConditions()

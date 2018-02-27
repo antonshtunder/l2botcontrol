@@ -36,7 +36,6 @@ SkillInfo::SkillInfo(DWORD id)
             if(xmlReader.name() == "skill" && xmlReader.attributes().value("", "id").toInt() == id)
             {
                 name = xmlReader.attributes().value("", "name").toString();
-                qDebug() << name;
                 while(true)
                 {
                     auto token = xmlReader.readNext();

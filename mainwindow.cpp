@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     _skillListWidget(new SkillListWidget()),
+    _effectList(new EffectList()),
     _testClientsTimer(this)
 {
     ui->setupUi(this);
@@ -24,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->botsCointainer->setLayout(&_botsLayout);
     _botsLayout.setAlignment(Qt::AlignTop);
     ui->skillsLayout->addWidget(_skillListWidget);
+
+    ui->effectsTab->layout()->addWidget(_effectList);
 
     connectSlotsAndSignals();
 
@@ -86,6 +89,7 @@ void MainWindow::updateUI()
         }
         auto currentBotInstance = BotManager::instance()->getCurrentBotInstance();
         _skillListWidget->update(currentBotInstance);
+        _effectList->update(currentBotInstance);
         _mapWidget->updateInfo();
     }
 }

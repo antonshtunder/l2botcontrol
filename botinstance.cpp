@@ -175,19 +175,28 @@ void BotInstance::pickup()
     l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
 }
 
-void BotInstance::useSkill(DWORD id)
+bool BotInstance::useSkill(DWORD id)
 {
+    _pipeUsed = true;
     DWORD command[2];
     command[0] = l2ipc::Command::USE_SKILL;
     command[1] = id;
-    l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
+    auto reply = l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
+    _pipeUsed = false;
+    if(reply == l2ipc::Command::REPLY_NO)
+    {
+
+        qDebug() << "skill cast fail";
+        return false;
+    }
+    return true;
 }
 
 void BotInstance::useSkills()
 {
     for(auto skillUsage : _skillUsages.values())
     {
-        skillUsage.use();
+        skillUsage->use();
     }
 }
 
@@ -215,6 +224,16 @@ MobRepresentation BotInstance::makeInvalidMob()
     invalidMob.id = 0;
 
     return invalidMob;
+}
+
+BotState BotInstance::getState() const
+{
+    return _state;
+}
+
+void BotInstance::setState(const BotState &state)
+{
+    _state = state;
 }
 
 void BotInstance::startBotting()
@@ -281,9 +300,9 @@ SkillUsage *BotInstance::getSkillUsage(SkillRepresentation &skillRepresentation)
 {
     if(!_skillUsages.contains(skillRepresentation.id))
     {
-        _skillUsages[skillRepresentation.id] = SkillUsage(this, skillRepresentation);
+        _skillUsages[skillRepresentation.id] = std::make_shared<SkillUsage>(this, skillRepresentation);
     }
-    return &_skillUsages[skillRepresentation.id];
+    return _skillUsages[skillRepresentation.id].get();
 }
 
 MobRepresentation BotInstance::focusNextMob(double radius, bool ignoreHP)

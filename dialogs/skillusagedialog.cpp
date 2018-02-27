@@ -42,7 +42,7 @@ void SkillUsageDialog::saveSkillUsage()
 void SkillUsageDialog::addCondition()
 {
     Condition *newCondition = NULL;
-    auto dialog = new AddConditionDialog(_skillUsage->getBotInstance(), &newCondition, this);
+    auto dialog = new AddConditionDialog(_skillUsage->getId(), _skillUsage->getBotInstance(), &newCondition, this);
     dialog->exec();
     if(newCondition != NULL)
     {

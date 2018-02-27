@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "conditions/relativepointscondition.h"
+#include <Windows.h>
 
 namespace Ui {
 class AddConditionDialog;
@@ -13,7 +14,7 @@ class AddConditionDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit AddConditionDialog(BotInstance *botInstance, Condition **result, QWidget *parent = 0);
+    explicit AddConditionDialog(DWORD id, BotInstance *botInstance, Condition **result, QWidget *parent = 0);
     ~AddConditionDialog();
 
 private:
@@ -21,6 +22,8 @@ private:
 
     Condition **_result;
     BotInstance *_botInstance;
+
+    DWORD _id;
 
 private slots:
     void addCondition();

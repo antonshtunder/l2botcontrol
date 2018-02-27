@@ -12,14 +12,18 @@ class SkillUsage
 {
 public:
     SkillUsage(BotInstance *botInstance, SkillRepresentation skill);
-
     SkillUsage();
+    SkillUsage(const SkillUsage &skillUsage);
+
+
 
     void setEnabled(bool enabled);
     bool isEnabled() const;
 
     void update(SkillRepresentation skillRep);
     void use();
+
+    DWORD getId() const;
 
     QList<std::shared_ptr<Condition>> &getConditions();
     BotInstance *getBotInstance();
@@ -29,7 +33,7 @@ private:
     SkillRepresentation _skill;
     QList<std::shared_ptr<Condition>> _conditions;
 
-    qint64 lastUse = 0;
+    qint64 _lastUse;
     bool _enabled = false;
 };
 

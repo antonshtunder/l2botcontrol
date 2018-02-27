@@ -22,6 +22,8 @@ bool BottingThread::isBotting()
 void BottingThread::run()
 {
     qDebug() << "started botting";
+    _bot->setState(BotState::STANDING);
+    _bot->useSkills();
     _botting = true;
     while(_botting)
     {
@@ -37,14 +39,22 @@ void BottingThread::run()
             if(!_botting)
                 break;
             msleep(300);
+            _bot->setState(BotState::ATTACKING);
             _bot->useSkills();
             if(_bot->isDead(mob.address) == l2ipc::Command::REPLY_YES)
             {
                 qDebug() << "mob dead";
+                _bot->setState(BotState::PICKINGUP);
+                _bot->useSkills();
+
                 mob = _bot->focusNextMob(150.0, true);
                 if(mob.id != 0)
                     continue;
+
                 _bot->pickupInRadius(PICKUP_RADIUS);
+
+                _bot->setState(BotState::STANDING);
+                _bot->useSkills();
                 break;
             }
             if(!_bot->doesHasTarget())

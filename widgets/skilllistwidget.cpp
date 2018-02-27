@@ -1,6 +1,7 @@
 #include "skilllistwidget.h"
 #include "ui_skilllistwidget.h"
 #include "botinstance.h"
+#include "misc/utils.h"
 
 #define ICON_SIZE 32
 
@@ -54,19 +55,7 @@ void SkillListWidget::update(BotInstance *botInstance)
 
 void SkillListWidget::clearLayout()
 {
-    if(_skillWidgetLayout != NULL)
-    {
-        auto layoutChildren = _skillWidgetLayout->children();
-        for(auto child : layoutChildren)
-        {
-            _skillWidgetLayout->removeWidget(qobject_cast<QWidget*>(child));
-        }
-        delete _skillWidgetLayout;
-    }
-    _skillWidgetLayout = new QGridLayout;
-    _skillWidgetLayout->setAlignment(Qt::AlignTop);
-    _skillWidgetLayout->setSpacing(0);
-    _skillWidgetLayout->setMargin(0);
+    clearGridLayout(&_skillWidgetLayout);
     setLayout(_skillWidgetLayout);
 }
 

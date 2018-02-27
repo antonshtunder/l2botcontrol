@@ -7,6 +7,7 @@
 #include "dllinjector.h"
 #include "optionswindow.h"
 #include "widgets/mapwidget.h"
+#include "widgets/effectlist.h"
 
 namespace Ui {
 class MainWindow;
@@ -30,6 +31,7 @@ private:
     OptionsWindow *_optionsWindow;
     MapWidget *_mapWidget;
     SkillListWidget *_skillListWidget;
+    EffectList *_effectList;
 
     QVBoxLayout _botsLayout;
     QList<BotInstanceWidget*> _bots;

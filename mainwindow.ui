@@ -137,22 +137,7 @@
        <attribute name="title">
         <string>Effects</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QGroupBox" name="groupBox">
-          <property name="title">
-           <string>Player effects</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="groupBox_2">
-          <property name="title">
-           <string>Target effects</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <layout class="QVBoxLayout" name="verticalLayout_2"/>
       </widget>
      </widget>
     </item>
