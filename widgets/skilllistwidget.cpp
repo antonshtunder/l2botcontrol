@@ -48,7 +48,7 @@ void SkillListWidget::update(BotInstance *botInstance)
     int rowNum = width() / ICON_SIZE;
     for(int i = 0; i < _skillWidgets.size(); ++i)
     {
-        _skillWidgets.at(i)->update(_botInstance->l2representation.activeSkills.at(i));
+        _skillWidgets.at(i)->update(_botInstance->l2representation.activeSkills.at(i), _botInstance);
         _skillWidgetLayout->addWidget(_skillWidgets.at(i), i / rowNum, i % rowNum);
     }
 }

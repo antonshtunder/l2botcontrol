@@ -22,13 +22,13 @@ bool BottingThread::isBotting()
 void BottingThread::run()
 {
     qDebug() << "started botting";
+    _botting = true;
     _bot->setState(BotState::STANDING);
     _bot->useSkills();
-    _botting = true;
     while(_botting)
     {
         auto mob = _bot->focusNextMob(10000.0, false);
-        qDebug() << "1new mob id = " << (LPVOID)mob.id;
+        qDebug() << "1new mob address = " << (LPVOID)mob.address;
         if(mob.id == 0)
         {
             msleep(200);
@@ -38,18 +38,23 @@ void BottingThread::run()
         {
             if(!_botting)
                 break;
-            msleep(300);
+            msleep(200);
+            _bot->alert();
             _bot->setState(BotState::ATTACKING);
             _bot->useSkills();
             if(_bot->isDead(mob.address) == l2ipc::Command::REPLY_YES)
             {
-                qDebug() << "mob dead";
+                qDebug() << "mob dead, address = " << (LPVOID)mob.address;
+                _bot->waitForRefreshed();
                 _bot->setState(BotState::PICKINGUP);
                 _bot->useSkills();
 
                 mob = _bot->focusNextMob(150.0, true);
                 if(mob.id != 0)
+                {
+                    qDebug() << "found new close range mob";
                     continue;
+                }
 
                 _bot->pickupInRadius(PICKUP_RADIUS);
 

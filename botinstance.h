@@ -11,6 +11,7 @@
 #include "widgets/skilllistwidget.h"
 #include "botcommands/skillusage.h"
 #include <memory>
+#include "misc/audioplayer.h"
 
 enum BotState
 {
@@ -36,6 +37,8 @@ public:
     void refreshData();
     void waitForRefreshed();
     DWORD getPID();
+    void lockRepresentation();
+    void unlockRepresentation();
 
     l2ipc::Command performActionOn(DWORD instanceID, DWORD instanceAddress, Representations instanceType);
     l2ipc::Command attack();
@@ -44,12 +47,15 @@ public:
     void pickup();
     bool useSkill(DWORD id);
     void useSkills();
+
+    void alert();
     std::vector<DroppedItemRepresentation> getItemsInRadius(QPointF center, double radius);
 
     MobRepresentation focusNextMob(double radius, bool ignoreHP);
     MobRepresentation getMobWithID(DWORD id);
     MobRepresentation findNearestMonsterInRadius(double radius, bool ignoreHP);
     MobRepresentation getTargetedMob();
+    MobRepresentation getCurrentTarget();
 
     SkillUsage *getSkillUsage(SkillRepresentation &skillRepresentation);
 
@@ -77,6 +83,7 @@ private:
     HANDLE _sharedMemoryHandle;
     BYTE *_sharedMemoryData = NULL;
     DWORD _PID;
+    static AudioPlayer _audioPlayer;
 
     BotInstanceWidget *_widget = NULL;
 
@@ -91,6 +98,7 @@ private:
 
     QWaitCondition _stateRefreshed;
     QMutex _mutex;
+    QMutex _representationMutex;
 
     QMap<DWORD, std::shared_ptr<SkillUsage>> _skillUsages;
 

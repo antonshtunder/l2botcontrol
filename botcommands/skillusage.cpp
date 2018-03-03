@@ -57,17 +57,25 @@ void SkillUsage::use()
 
     auto skillInfo = InstanceInfoBank::instance()->getSkillInfo(_skill.id);
     auto currTime = QDateTime::currentMSecsSinceEpoch();
-    qDebug() << (currTime - _lastUse);
-    qDebug() << _lastUse;
-    qDebug() << currTime;
-    qDebug() << skillInfo.getCooldown();
     if(currTime - _lastUse > skillInfo.getCooldown())
     {
+        if(_botInstance->getState() == BotState::ATTACKING)
+        {
+            auto target = _botInstance->getCurrentTarget();
+            auto distance = getDistance({_botInstance->l2representation.character.x, _botInstance->l2representation.character.y},
+            {target.x, target.y});
+            if(distance > skillInfo.getCastRange() + 120.0)
+            {
+                return;
+            }
+        }
         if(_botInstance->useSkill(_skill.id))
         {
-            qDebug() << "skill success";
             _lastUse = QDateTime::currentMSecsSinceEpoch();
-            qDebug() << "_lastUse = " << _lastUse;
+        }
+        else
+        {
+            qDebug() << "failed to use skill with name - " << skillInfo.getName();
         }
     }
 }

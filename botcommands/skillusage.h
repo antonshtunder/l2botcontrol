@@ -28,6 +28,7 @@ public:
     QList<std::shared_ptr<Condition>> &getConditions();
     BotInstance *getBotInstance();
 
+
 private:
     BotInstance *_botInstance;
     SkillRepresentation _skill;

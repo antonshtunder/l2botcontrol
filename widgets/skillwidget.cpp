@@ -17,8 +17,9 @@ SkillWidget::~SkillWidget()
     delete ui;
 }
 
-void SkillWidget::update(SkillRepresentation skill)
+void SkillWidget::update(SkillRepresentation skill, BotInstance *botInstance)
 {
+    _botInstance = botInstance;
     SkillInfo &skillInfo = InstanceInfoBank::instance()->getSkillInfo(skill.id);
     _skill = skill;
     setPixmap(skillInfo.getIcon());
@@ -37,6 +38,7 @@ void SkillWidget::mousePressEvent(QMouseEvent *event)
     }
     else if(event->buttons() == Qt::RightButton)
     {
+        qDebug() << _botInstance->l2representation.character.hp;
         SkillUsageDialog suDialog(_botInstance->getSkillUsage(_skill), this);
         suDialog.exec();
     }

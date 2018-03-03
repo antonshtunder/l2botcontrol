@@ -44,6 +44,7 @@ bool DllInjector::InjectToProcess(LPCWSTR processName, LPCWSTR dllPath)
     {
         if(wcscmp(processName, pe32.szExeFile) == 0)
         {
+            qDebug() << "attach";
             if(!InjectDll(pe32.th32ProcessID, dllPath))
                 return false;
         }

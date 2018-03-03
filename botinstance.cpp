@@ -5,6 +5,8 @@
 
 using namespace std;
 
+AudioPlayer BotInstance::_audioPlayer;
+
 BotInstance &BotInstance::BotInstance::operator=(const BotInstance &botInstance)
 {
     return *this;
@@ -66,11 +68,17 @@ void BotInstance::refreshData()
 
     DWORD command = l2ipc::DataCommand::GET_DATA;
     if(WriteFile(_dataManagmentPipe, reinterpret_cast<LPBYTE>(&command), 4, NULL, NULL) == FALSE)
+    {
+        qDebug() << "Data WriteFile fail";
         return;
+    }
 
     l2ipc::DataCommand response;
     if(!ReadFile(_dataManagmentPipe, &response, 4, NULL, NULL))
+    {
+        qDebug() << "Data ReadFile fail";
         return;
+    }
 
 
 
@@ -81,7 +89,9 @@ void BotInstance::refreshData()
     else
     {
         _inGame = true;
+        lockRepresentation();
         l2representation.fromData(_sharedMemoryData);
+        unlockRepresentation();
     }
     _refreshed = true;
 
@@ -100,6 +110,16 @@ void BotInstance::waitForRefreshed()
 DWORD BotInstance::getPID()
 {
     return _PID;
+}
+
+void BotInstance::lockRepresentation()
+{
+    _representationMutex.lock();
+}
+
+void BotInstance::unlockRepresentation()
+{
+    _representationMutex.unlock();
 }
 
 void BotInstance::detach()
@@ -132,7 +152,6 @@ void BotInstance::pickupInRadius(double radius)
     qDebug() << "starting picking up";
     QThread::msleep(100);
     QPointF loc(l2representation.character.x, l2representation.character.y);
-    waitForRefreshed();
     auto items = getItemsInRadius(loc, radius);
     DWORD pickupTime = 250;
     if(isDecreasedPerformance())
@@ -186,7 +205,6 @@ bool BotInstance::useSkill(DWORD id)
     if(reply == l2ipc::Command::REPLY_NO)
     {
 
-        qDebug() << "skill cast fail";
         return false;
     }
     return true;
@@ -200,10 +218,40 @@ void BotInstance::useSkills()
     }
 }
 
+void BotInstance::alert()
+{
+    double radius = 750.0;
+    lockRepresentation();
+    auto name = QString::fromUtf16(l2representation.character.name);
+    QString mobName;
+    for(auto mob : l2representation.mobs)
+    {
+        if(mob.mobType == MobType::PLAYER)
+        {
+            auto distance = getDistance({l2representation.character.x, l2representation.character.y}, {mob.x, mob.y});
+
+            if(distance < radius && qAbs(l2representation.character.z - mob.z) < 250.0)
+            {
+                mobName = QString::fromUtf16(mob.name);
+                if(name != mobName)
+                {
+                    qDebug() << distance;
+                    qDebug() << mobName;
+                    _audioPlayer.playAlert();
+                    unlockRepresentation();
+                    return;
+                }
+            }
+        }
+    }
+    unlockRepresentation();
+}
+
 std::vector<DroppedItemRepresentation> BotInstance::getItemsInRadius(QPointF loc, double radius)
 {
     vector<DroppedItemRepresentation> result;
-    auto items = l2representation.droppedItems;
+    lockRepresentation();
+    auto &items = l2representation.droppedItems;
     for(auto item : items)
     {
         if(qAbs(item.z - l2representation.character.z) > 250.0f)
@@ -215,6 +263,7 @@ std::vector<DroppedItemRepresentation> BotInstance::getItemsInRadius(QPointF loc
             result.push_back(item);
         }
     }
+    unlockRepresentation();
     return result;
 }
 
@@ -252,8 +301,9 @@ void BotInstance::stopBotting()
 
 MobRepresentation BotInstance::findNearestMonsterInRadius(double radius, bool ignoreHP)
 {
-    auto mobs = l2representation.mobs;
-    auto character = l2representation.character;
+    lockRepresentation();
+    auto &mobs = l2representation.mobs;
+    auto &character = l2representation.character;
     size_t minDistanceIndex = 0;
     double minDistance = radius;
     QPointF myLoc(character.x, character.y);
@@ -261,22 +311,23 @@ MobRepresentation BotInstance::findNearestMonsterInRadius(double radius, bool ig
 
     for(size_t i = 0; i < mobs.size(); ++i)
     {
-        if(mobs.at(i).hp == 0)
-            continue;
-
         if(mobs.at(i).mobType != MobType::MONSTER || (mobs.at(i).hp < mobs.at(i).maxHp && !ignoreHP))
             continue;
 
         if(qAbs(mobs.at(i).z - character.z) > 250.0)
             continue;
-
         distance = getDistance(myLoc, {mobs.at(i).x, mobs.at(i).y});
         if(distance < minDistance)
         {
+            if(ignoreHP)
+                if(isDead(mobs.at(i).address))
+                    continue;
+
             minDistance = distance;
             minDistanceIndex = i;
         }
     }
+    unlockRepresentation();
 
     if(minDistance < radius)
         return mobs.at(minDistanceIndex);
@@ -293,6 +344,25 @@ MobRepresentation BotInstance::getTargetedMob()
         //if(l2representation.character.targetModelAddress == mob.)
         qDebug() << "not implemented";
     }
+    return makeInvalidMob();
+}
+
+MobRepresentation BotInstance::getCurrentTarget()
+{
+    if(l2representation.character.targetModelAddress == 0)
+        return makeInvalidMob();
+
+    lockRepresentation();
+    auto &mobs = l2representation.mobs;
+    for(auto mob : mobs)
+    {
+        if(mob.modelAddress == l2representation.character.targetModelAddress)
+        {
+            unlockRepresentation();
+            return mob;
+        }
+    }
+    unlockRepresentation();
     return makeInvalidMob();
 }
 
@@ -315,14 +385,17 @@ MobRepresentation BotInstance::focusNextMob(double radius, bool ignoreHP)
 
 MobRepresentation BotInstance::getMobWithID(DWORD id)
 {
-    auto mobs = l2representation.mobs;
+    lockRepresentation();
+    auto &mobs = l2representation.mobs;
     for(auto mob : mobs)
     {
         if(mob.id == id)
         {
+            unlockRepresentation();
             return mob;
         }
     }
+    unlockRepresentation();
     return makeInvalidMob();
 }
 

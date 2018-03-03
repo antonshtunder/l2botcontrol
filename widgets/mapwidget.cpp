@@ -11,7 +11,7 @@ MapWidget::MapWidget(QWidget *parent) :
     QScrollArea(parent),
     ui(new Ui::MapWidget),
     _imageLabel(new QLabel),
-    _image("C:/l2map2.jpg")
+    _image("C:/l2map.gif")
 {
     ui->setupUi(this);
     qDebug() << _image << endl;

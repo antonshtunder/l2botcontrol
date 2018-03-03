@@ -20,7 +20,7 @@ public:
     explicit SkillWidget(BotInstance* botInstance, QWidget *parent = 0);
     ~SkillWidget();
 
-    void update(SkillRepresentation skill);
+    void update(SkillRepresentation skill, BotInstance *botInstance);
 
 private:
     Ui::SkillWidget *ui;

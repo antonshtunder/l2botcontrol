@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -51,7 +51,8 @@ SOURCES += \
     widgets/effectwidget.cpp \
     widgets/effectlist.cpp \
     conditions/effectcondition.cpp \
-    conditions/botstatecondition.cpp
+    conditions/botstatecondition.cpp \
+    misc/audioplayer.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -80,7 +81,8 @@ HEADERS += \
     widgets/effectwidget.h \
     widgets/effectlist.h \
     conditions/effectcondition.h \
-    conditions/botstatecondition.h
+    conditions/botstatecondition.h \
+    misc/audioplayer.h
 
 FORMS += \
         mainwindow.ui \
