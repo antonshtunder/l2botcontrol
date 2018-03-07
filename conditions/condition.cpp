@@ -1,6 +1,7 @@
 #include "condition.h"
 #include <QLabel>
 #include <QWidget>
+#include <QDebug>
 
 static QString name = "Condition";
 
@@ -13,7 +14,7 @@ Condition::Condition(BotInstance *botInstance, Conditions type):
 
 Condition::~Condition()
 {
-
+    qDebug() << "condition removed";
 }
 
 bool Condition::test()

@@ -2,6 +2,7 @@
 #include "ui_addconditiondialog.h"
 #include "conditions/effectcondition.h"
 #include "conditions/botstatecondition.h"
+#include "conditions/effectdurationcondition.h"
 
 AddConditionDialog::AddConditionDialog(DWORD id, BotInstance *botInstance, Condition **result, QWidget *parent) :
     QDialog(parent),
@@ -22,6 +23,7 @@ AddConditionDialog::AddConditionDialog(DWORD id, BotInstance *botInstance, Condi
     cb->addItem(EffectCondition::getName(Conditions::PLAYER_DOESNT_HAVE_EFFECT));
     cb->addItem(EffectCondition::getName(Conditions::TARGET_HAS_EFFECT));
     cb->addItem(EffectCondition::getName(Conditions::TARGET_DOESNT_HAVE_EFFECT));
+    cb->addItem(EffectDurationCondition::getName(Conditions::PLAYER_EFFECT_TIME_LEFT));
     cb->addItem(BotStateCondition::getName(Conditions::BOT_ATTACKING));
     cb->addItem(BotStateCondition::getName(Conditions::BOT_STANDING));
     cb->addItem(BotStateCondition::getName(Conditions::BOT_PICKINGUP));
@@ -69,12 +71,15 @@ void AddConditionDialog::addCondition()
         *_result = new EffectCondition(_botInstance, Conditions::TARGET_DOESNT_HAVE_EFFECT, _id);
         break;
     case 10:
-        *_result = new BotStateCondition(_botInstance, Conditions::BOT_ATTACKING);
+        *_result = new EffectDurationCondition(_botInstance, Conditions::PLAYER_EFFECT_TIME_LEFT, _id, 5);
         break;
     case 11:
-        *_result = new BotStateCondition(_botInstance, Conditions::BOT_STANDING);
+        *_result = new BotStateCondition(_botInstance, Conditions::BOT_ATTACKING);
         break;
     case 12:
+        *_result = new BotStateCondition(_botInstance, Conditions::BOT_STANDING);
+        break;
+    case 13:
         *_result = new BotStateCondition(_botInstance, Conditions::BOT_PICKINGUP);
         break;
     }

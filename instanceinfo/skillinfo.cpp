@@ -10,7 +10,7 @@ QString getSkillDataDocument(int id)
     int firstId = id - id % 100;
     int lastId = firstId + 99;
     QString document = QString("%1%2-%3.xml").arg(skillDataBase).arg(firstId, 5, 10, QChar('0'))
-            .arg(lastId, 5, 10,  QChar('0'));//skillDataBase % QString::number(firstId) % "-" % QString::number(lastId) % ".xml";
+            .arg(lastId, 5, 10,  QChar('0'));
 
     return document;
 }
@@ -32,18 +32,10 @@ SkillInfo::SkillInfo(DWORD id)
     while(!xmlReader.atEnd())
     {
         auto token = xmlReader.readNext();
-        if(id == 1201)
-        {
-            qDebug() << xmlReader.name() << xmlReader.attributes().value("", "id").toInt() << xmlReader.tokenString();
-        }
         if(token == QXmlStreamReader::StartElement)
         {
             if(xmlReader.name() == "skill" && xmlReader.attributes().value("", "id").toInt() == id)
             {
-                if(id == 1201)
-                {
-                    qDebug() << "FOUND!!!";
-                }
                 name = xmlReader.attributes().value("", "name").toString();
                 while(true)
                 {
@@ -124,7 +116,6 @@ int SkillInfo::getCastRange() const
 
 int SkillInfo::getMpCost(int level) const
 {
-    qDebug() << "get mp cost";
     if(mpCost.size() == 0)
     {
         return 0;

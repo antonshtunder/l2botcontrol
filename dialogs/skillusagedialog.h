@@ -8,6 +8,7 @@ class SkillUsageDialog;
 }
 
 class SkillUsage;
+class Condition;
 
 class SkillUsageDialog : public QDialog
 {
@@ -18,6 +19,8 @@ public:
     ~SkillUsageDialog();
 
 private:
+    void createWidgets(int row, Condition *condition);
+
     Ui::SkillUsageDialog *ui;
 
     SkillUsage *_skillUsage;

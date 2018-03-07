@@ -55,11 +55,7 @@
     </layout>
    </item>
    <item>
-    <layout class="QGridLayout" name="conditionsLayout">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetDefaultConstraint</enum>
-     </property>
-    </layout>
+    <layout class="QVBoxLayout" name="conditionsLayout"/>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttons">

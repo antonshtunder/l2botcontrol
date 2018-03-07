@@ -52,7 +52,9 @@ SOURCES += \
     widgets/effectlist.cpp \
     conditions/effectcondition.cpp \
     conditions/botstatecondition.cpp \
-    misc/audioplayer.cpp
+    misc/audioplayer.cpp \
+    conditions/effectdurationcondition.cpp \
+    widgets/conditionwidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -82,7 +84,9 @@ HEADERS += \
     widgets/effectlist.h \
     conditions/effectcondition.h \
     conditions/botstatecondition.h \
-    misc/audioplayer.h
+    misc/audioplayer.h \
+    conditions/effectdurationcondition.h \
+    widgets/conditionwidget.h
 
 FORMS += \
         mainwindow.ui \
@@ -94,7 +98,8 @@ FORMS += \
     dialogs/skillusagedialog.ui \
     dialogs/addconditiondialog.ui \
     widgets/effectwidget.ui \
-    widgets/effectlist.ui
+    widgets/effectlist.ui \
+    widgets/conditionwidget.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/release/ -llineageIPC
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/debug/ -llineageIPC

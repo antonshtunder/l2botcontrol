@@ -4,6 +4,8 @@
 #include "botcommands/skillusage.h"
 #include <QLabel>
 #include <QLineEdit>
+#include <QDebug>
+#include "widgets/conditionwidget.h"
 
 SkillUsageDialog::SkillUsageDialog(SkillUsage *skillUsage, QWidget *parent) :
     QDialog(parent),
@@ -13,11 +15,12 @@ SkillUsageDialog::SkillUsageDialog(SkillUsage *skillUsage, QWidget *parent) :
     ui->setupUi(this);
     ui->checkEnabled->setChecked(_skillUsage->isEnabled());
 
+    ui->conditionsLayout->setAlignment(Qt::AlignTop);
+
     for(auto condition : skillUsage->getConditions())
     {
-        auto rows = ui->conditionsLayout->rowCount();
-        ui->conditionsLayout->addWidget(new QLabel(condition->getName()), rows, 0);
-        ui->conditionsLayout->addWidget(condition->createInputWidget(), rows, 1);
+        qDebug() << "ugu";
+        createWidgets(0, condition.get());
     }
 
     connect(ui->buttons, SIGNAL(accepted()), SLOT(saveSkillUsage()));
@@ -29,13 +32,35 @@ SkillUsageDialog::~SkillUsageDialog()
     delete ui;
 }
 
+void SkillUsageDialog::createWidgets(int row, Condition *condition)
+{
+    ConditionWidget *wgt = new ConditionWidget(_skillUsage, condition);
+    ui->conditionsLayout->addWidget(wgt);
+    /*QWidget *conditionWgt = new QWidget;
+    QHBoxLayout *conditionLayout = new QHBoxLayout;
+    QPushButton *deleteSkillUsageBtn = new QPushButton;
+    deleteSkillUsageBtn->setProperty("rowNum", row);
+    deleteSkillUsageBtn->setIcon(QIcon("C:/l2data/remove.ico"));
+    deleteSkillUsageBtn->setMaximumWidth(26);
+    conditionLayout->addWidget(deleteSkillUsageBtn);
+    conditionLayout->addWidget(new QLabel(condition->getName()));
+    conditionLayout->addWidget(condition->createInputWidget());
+    conditionWgt->setLayout(conditionLayout);
+    ui->conditionsLayout->addWidget(conditionWgt, row, 0);
+    QObject::connect(deleteSkillUsageBtn, SIGNAL(pressed()), conditionWgt, SLOT(hide()));*/
+}
+
 void SkillUsageDialog::saveSkillUsage()
 {
     _skillUsage->setEnabled(ui->checkEnabled->isChecked());
-    auto conditions = _skillUsage->getConditions();
-    for(auto condition : conditions)
+    auto size = ui->conditionsLayout->count();
+    qDebug() << size;
+    for(int i = 0; i < size; ++i)
     {
-        condition->retrieveInput();
+        reinterpret_cast<ConditionWidget*>(ui->conditionsLayout->itemAt(i)->widget())->updateCondition();
+        /*qDebug() << i;
+        qDebug() << ui->conditionsLayout->rowCount();
+        qDebug() << ui->conditionsLayout->itemAtPosition(i + 1, 0)->widget()->isVisible();*/
     }
 }
 
@@ -47,8 +72,7 @@ void SkillUsageDialog::addCondition()
     if(newCondition != NULL)
     {
         _skillUsage->getConditions().push_back(std::shared_ptr<Condition>(newCondition));
-        auto rows = ui->conditionsLayout->rowCount();
-        ui->conditionsLayout->addWidget(new QLabel(newCondition->getName()), rows, 0);
-        ui->conditionsLayout->addWidget(newCondition->createInputWidget(), rows, 1);
+        //auto rows = ui->conditionsLayout->rowCount();
+        createWidgets(0, newCondition);
     }
 }
