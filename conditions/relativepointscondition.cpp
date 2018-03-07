@@ -1,5 +1,5 @@
 #include "relativepointscondition.h"
-#include "botinstance.h"
+#include "bot/botinstance.h"
 
 static QString playerHpMoreName = "Player hp more than";
 static QString playerHpLessName = "Player hp less than";

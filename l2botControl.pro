@@ -28,11 +28,11 @@ SOURCES += \
         mainwindow.cpp \
     botinstancewidget.cpp \
     dllinjector.cpp \
-    botinstance.cpp \
+    bot/botinstance.cpp \
     optionswindow.cpp \
     options.cpp \
     ipcmanager.cpp \
-    botmanager.cpp \
+    bot/botmanager.cpp \
     widgets/mapwidget.cpp \
     threads/commandpipeconnectionthread.cpp \
     threads/datamanagmentpipeconnectionthread.cpp \
@@ -54,17 +54,18 @@ SOURCES += \
     conditions/botstatecondition.cpp \
     misc/audioplayer.cpp \
     conditions/effectdurationcondition.cpp \
-    widgets/conditionwidget.cpp
+    widgets/conditionwidget.cpp \
+    bot/configuration.cpp
 
 HEADERS += \
         mainwindow.h \
     botinstancewidget.h \
     dllinjector.h \
-    botinstance.h \
+    bot/botinstance.h \
     optionswindow.h \
     options.h \
     ipcmanager.h \
-    botmanager.h \
+    bot/botmanager.h \
     widgets/mapwidget.h \
     threads/commandpipeconnectionthread.h \
     threads/datamanagmentpipeconnectionthread.h \
@@ -86,7 +87,8 @@ HEADERS += \
     conditions/botstatecondition.h \
     misc/audioplayer.h \
     conditions/effectdurationcondition.h \
-    widgets/conditionwidget.h
+    widgets/conditionwidget.h \
+    bot/configuration.h
 
 FORMS += \
         mainwindow.ui \

@@ -1,5 +1,5 @@
 #include "effectcondition.h"
-#include "botinstance.h"
+#include "bot/botinstance.h"
 #include <QSpinBox>
 
 static QString playerHasEffectName = "Player has effect with id";

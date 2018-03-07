@@ -1,5 +1,5 @@
 #include "effectdurationcondition.h"
-#include "botinstance.h"
+#include "bot/botinstance.h"
 
 static QString playerEffectTimeLeftName = "Player effect with id, time left";
 

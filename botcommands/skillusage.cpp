@@ -1,5 +1,5 @@
 #include "skillusage.h"
-#include <botinstance.h>
+#include <bot/botinstance.h>
 #include "instanceinfo/instanceinfobank.h"
 #include "conditions/relativepointscondition.h"
 

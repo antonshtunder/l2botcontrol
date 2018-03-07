@@ -1,5 +1,5 @@
 #include "botstatecondition.h"
-#include "botinstance.h"
+#include "bot/botinstance.h"
 
 static QString botAttackingName = "Bot is in attacking state";
 static QString botStandingName = "Bot is in standing state";
