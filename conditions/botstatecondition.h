@@ -12,6 +12,7 @@ public:
     QString &getName() const override;
     QWidget *createInputWidget() override;
     void retrieveInput() override;
+    QJsonObject createJsonRepresentation() override;
 
     static QString &getName(Conditions type);
 };

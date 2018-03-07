@@ -38,6 +38,11 @@ void Condition::retrieveInput()
 
 }
 
+QJsonObject Condition::createJsonRepresentation()
+{
+    return QJsonObject();
+}
+
 QWidget *Condition::lastWidget() const
 {
     return _lastWidget;

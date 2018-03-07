@@ -87,3 +87,13 @@ QString &EffectCondition::getName(Conditions type)
         return Condition::getName(type);
     }
 }
+
+
+QJsonObject EffectCondition::createJsonRepresentation()
+{
+    QJsonObject object;
+    object.insert("class", JsonType::EFFECT_PRESENCE);
+    object.insert("type", _type);
+    object.insert("id", static_cast<int>(_id));
+    return object;
+}

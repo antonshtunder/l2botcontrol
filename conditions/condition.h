@@ -2,6 +2,7 @@
 #define CONDITION_H
 
 #include <QString>
+#include <QJSonObject>
 
 class BotInstance;
 class QWidget;
@@ -24,6 +25,14 @@ enum Conditions
     BOT_PICKINGUP
 };
 
+enum JsonType
+{
+    POINTS_RELATIVE,
+    EFFECT_PRESENCE,
+    EFFECT_TIME,
+    BOT_STATE
+};
+
 class Condition
 {
 public:
@@ -37,6 +46,8 @@ public:
     virtual QWidget *createInputWidget();
 
     virtual void retrieveInput();
+
+    virtual QJsonObject createJsonRepresentation();
 
     QWidget *lastWidget() const;
 

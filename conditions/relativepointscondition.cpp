@@ -89,3 +89,13 @@ QString &RelativePointsCondition::getName(Conditions type)
     }
     return Condition::getName(type);
 }
+
+
+QJsonObject RelativePointsCondition::createJsonRepresentation()
+{
+    QJsonObject object;
+    object.insert("class", JsonType::POINTS_RELATIVE);
+    object.insert("type", _type);
+    object.insert("value", _val);
+    return object;
+}

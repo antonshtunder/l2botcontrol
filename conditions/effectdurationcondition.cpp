@@ -66,3 +66,14 @@ QString &EffectDurationCondition::getName(Conditions type)
     else
         return Condition::getName(type);
 }
+
+
+QJsonObject EffectDurationCondition::createJsonRepresentation()
+{
+    QJsonObject object;
+    object.insert("class", JsonType::EFFECT_TIME);
+    object.insert("type", _type);
+    object.insert("id", static_cast<int>(_id));
+    object.insert("time", static_cast<int>(_timeLeft));
+    return object;
+}

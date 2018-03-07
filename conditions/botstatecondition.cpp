@@ -54,3 +54,12 @@ QString &BotStateCondition::getName(Conditions type)
         return Condition::getName(type);
     }
 }
+
+
+QJsonObject BotStateCondition::createJsonRepresentation()
+{
+    QJsonObject object;
+    object.insert("class", JsonType::BOT_STATE);
+    object.insert("type", _type);
+    return object;
+}
