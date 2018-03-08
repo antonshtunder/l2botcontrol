@@ -77,3 +77,11 @@ QJsonObject EffectDurationCondition::createJsonRepresentation()
     object.insert("time", static_cast<int>(_timeLeft));
     return object;
 }
+
+
+void EffectDurationCondition::parseJsonRepresentation(QJsonObject json)
+{
+    _type = static_cast<Conditions>(json.value("type").toInt());
+    _id = json.value("id").toInt();
+    _timeLeft = json.value("time").toInt();
+}

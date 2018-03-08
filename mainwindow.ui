@@ -49,7 +49,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="mapTab">
        <attribute name="title">
@@ -158,6 +158,9 @@
     </property>
     <addaction name="actionAttach"/>
     <addaction name="actionOptions"/>
+    <addaction name="separator"/>
+    <addaction name="actionSaveBotConfiguration"/>
+    <addaction name="actionLoadBotConfiguration"/>
    </widget>
    <addaction name="menuMenu"/>
   </widget>
@@ -178,6 +181,16 @@
   <action name="actionOptions">
    <property name="text">
     <string>Options</string>
+   </property>
+  </action>
+  <action name="actionSaveBotConfiguration">
+   <property name="text">
+    <string>Save bot configuration</string>
+   </property>
+  </action>
+  <action name="actionLoadBotConfiguration">
+   <property name="text">
+    <string>Load bot configuration</string>
    </property>
   </action>
  </widget>

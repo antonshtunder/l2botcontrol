@@ -99,3 +99,10 @@ QJsonObject RelativePointsCondition::createJsonRepresentation()
     object.insert("value", _val);
     return object;
 }
+
+
+void RelativePointsCondition::parseJsonRepresentation(QJsonObject json)
+{
+    _type = static_cast<Conditions>(json.value("type").toInt());
+    _val = json.value("value").toInt();
+}

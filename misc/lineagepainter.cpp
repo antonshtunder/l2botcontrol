@@ -1,5 +1,5 @@
 #include "lineagepainter.h"
-#include "botmanager.h"
+#include "bot/botmanager.h"
 #include "utils.h"
 
 #define SQUARE_SIZE 9.0

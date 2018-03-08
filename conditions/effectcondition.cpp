@@ -97,3 +97,10 @@ QJsonObject EffectCondition::createJsonRepresentation()
     object.insert("id", static_cast<int>(_id));
     return object;
 }
+
+
+void EffectCondition::parseJsonRepresentation(QJsonObject json)
+{
+    _type = static_cast<Conditions>(json.value("type").toInt());
+    _id = json.value("id").toInt();
+}

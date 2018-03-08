@@ -15,6 +15,7 @@ public:
     QWidget *createInputWidget() override;
     void retrieveInput() override;
     QJsonObject createJsonRepresentation() override;
+    void parseJsonRepresentation(QJsonObject) override;
 
     static QString &getName(Conditions type);
 

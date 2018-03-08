@@ -16,6 +16,7 @@ public:
     virtual QWidget *createInputWidget() override;
     virtual void retrieveInput() override;
     QJsonObject createJsonRepresentation() override;
+    void parseJsonRepresentation(QJsonObject) override;
 
     static QString &getName(Conditions type);
 

@@ -46,6 +46,8 @@ public slots:
 private slots:
     void attach();
     void updateUI();
+    void saveConfigurationSlot();
+    void loadConfigurationSlot();
 };
 
 #endif // MAINWINDOW_H

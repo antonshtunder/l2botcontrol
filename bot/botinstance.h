@@ -12,6 +12,7 @@
 #include "botcommands/skillusage.h"
 #include <memory>
 #include "misc/audioplayer.h"
+#include "configuration.h"
 
 enum BotState
 {
@@ -57,8 +58,6 @@ public:
     MobRepresentation getTargetedMob();
     MobRepresentation getCurrentTarget();
 
-    SkillUsage *getSkillUsage(SkillRepresentation &skillRepresentation);
-
     bool isInGame();
     bool isRefreshed();
     bool isDecreasedPerformance();
@@ -66,6 +65,7 @@ public:
     bool doesHasTarget();
 
     BotInstanceWidget* getWidget();
+    Configuration &getConfiguration();
 
     void updateWidgets();
     QString name;
@@ -90,6 +90,7 @@ private:
     BottingThread _bottingThread;
 
     QTimer *_pipeTestTimer;
+    Configuration _configuration;
 
     bool _inGame = false;
     bool _refreshed = true;
@@ -99,8 +100,6 @@ private:
     QWaitCondition _stateRefreshed;
     QMutex _mutex;
     QMutex _representationMutex;
-
-    QMap<DWORD, std::shared_ptr<SkillUsage>> _skillUsages;
 
 public slots:
     void startBotting();

@@ -2,7 +2,7 @@
 #include "lineageipc.h"
 #include <Windows.h>
 #include "ipcmanager.h"
-#include "botinstance.h"
+#include "bot/botinstance.h"
 
 DataManagmentPipeConnectionThread::DataManagmentPipeConnectionThread()
 {

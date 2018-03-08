@@ -5,6 +5,8 @@
 #include <QDateTime>
 #include "conditions/condition.h"
 #include <memory>
+#include <QJsonObject>
+#include <QJsonArray>
 
 class BotInstance;
 
@@ -26,10 +28,16 @@ public:
     DWORD getId() const;
 
     QList<std::shared_ptr<Condition>> &getConditions();
+    void addCondition(Condition *condition);
     BotInstance *getBotInstance();
+
+    QJsonObject createJsonRepresentation();
+    static SkillUsage *createFromJson(QJsonObject &json, BotInstance *botInstance);
 
 
 private:
+    static Condition *conditionFromJson(QJsonObject &json, BotInstance *botInstance);
+
     BotInstance *_botInstance;
     SkillRepresentation _skill;
     QList<std::shared_ptr<Condition>> _conditions;

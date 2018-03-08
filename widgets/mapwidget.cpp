@@ -1,6 +1,6 @@
 #include "mapwidget.h"
 #include "ui_mapwidget.h"
-#include "botmanager.h"
+#include "bot/botmanager.h"
 #include "misc/lineagepainter.h"
 #include "misc/utils.h"
 #include "options.h"

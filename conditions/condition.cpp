@@ -43,6 +43,11 @@ QJsonObject Condition::createJsonRepresentation()
     return QJsonObject();
 }
 
+void Condition::parseJsonRepresentation(QJsonObject)
+{
+
+}
+
 QWidget *Condition::lastWidget() const
 {
     return _lastWidget;

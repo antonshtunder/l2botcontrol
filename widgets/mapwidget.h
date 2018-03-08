@@ -2,7 +2,7 @@
 #define MAPWIDGET_H
 
 #include <QScrollArea>
-#include "botinstance.h"
+#include "bot/botinstance.h"
 
 namespace Ui {
 class MapWidget;

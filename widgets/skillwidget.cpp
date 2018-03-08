@@ -1,6 +1,6 @@
 #include "skillwidget.h"
 #include "ui_skillwidget.h"
-#include "botinstance.h"
+#include "bot/botinstance.h"
 #include "instanceinfo/instanceinfobank.h"
 #include "dialogs/skillusagedialog.h"
 
@@ -39,7 +39,7 @@ void SkillWidget::mousePressEvent(QMouseEvent *event)
     else if(event->buttons() == Qt::RightButton)
     {
         qDebug() << _botInstance->l2representation.character.hp;
-        SkillUsageDialog suDialog(_botInstance->getSkillUsage(_skill), this);
+        SkillUsageDialog suDialog(_botInstance->getConfiguration().getSkillUsage(_skill), this);
         suDialog.exec();
     }
 }

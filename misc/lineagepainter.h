@@ -2,7 +2,7 @@
 #define LINEAGEPAINTER_H
 
 #include <QPainter>
-#include "botinstance.h"
+#include "bot/botinstance.h"
 
 class LineagePainter
 {

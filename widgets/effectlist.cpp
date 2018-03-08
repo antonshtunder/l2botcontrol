@@ -1,6 +1,6 @@
 #include "effectlist.h"
 #include "ui_effectlist.h"
-#include "botinstance.h"
+#include "bot/botinstance.h"
 #include "misc/utils.h"
 
 #define ICON_SIZE 32

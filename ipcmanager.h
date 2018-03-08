@@ -2,7 +2,7 @@
 #define IPCMANAGER_H
 
 #include <QMap>
-#include "botinstance.h"
+#include "bot/botinstance.h"
 #include <Windows.h>
 #include "threads/commandpipeconnectionthread.h"
 #include "threads/datamanagmentpipeconnectionthread.h"

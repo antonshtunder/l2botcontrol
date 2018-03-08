@@ -63,3 +63,9 @@ QJsonObject BotStateCondition::createJsonRepresentation()
     object.insert("type", _type);
     return object;
 }
+
+
+void BotStateCondition::parseJsonRepresentation(QJsonObject json)
+{
+    _type = static_cast<Conditions>(json.value("type").toInt());
+}

@@ -1,6 +1,6 @@
 #include "skilllistwidget.h"
 #include "ui_skilllistwidget.h"
-#include "botinstance.h"
+#include "bot/botinstance.h"
 #include "misc/utils.h"
 
 #define ICON_SIZE 32

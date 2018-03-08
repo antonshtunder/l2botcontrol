@@ -1,5 +1,5 @@
 #include "bottingthread.h"
-#include "botinstance.h"
+#include "bot/botinstance.h"
 
 #define PICKUP_RADIUS 200.0
 

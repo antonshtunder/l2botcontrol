@@ -13,13 +13,15 @@ BotInstance &BotInstance::BotInstance::operator=(const BotInstance &botInstance)
 }
 
 BotInstance::BotInstance(const BotInstance &botInstance):
-    _bottingThread(this)
+    _bottingThread(this),
+    _configuration(this)
 {
 
 }
 
 BotInstance::BotInstance(DWORD PID):
-    _bottingThread(this)
+    _bottingThread(this),
+    _configuration(this)
 {
     _PID = PID;
 }
@@ -212,7 +214,8 @@ bool BotInstance::useSkill(DWORD id)
 
 void BotInstance::useSkills()
 {
-    for(auto skillUsage : _skillUsages.values())
+
+    for(auto skillUsage : _configuration._skillUsages.values())
     {
         skillUsage->use();
     }
@@ -366,15 +369,6 @@ MobRepresentation BotInstance::getCurrentTarget()
     return makeInvalidMob();
 }
 
-SkillUsage *BotInstance::getSkillUsage(SkillRepresentation &skillRepresentation)
-{
-    if(!_skillUsages.contains(skillRepresentation.id))
-    {
-        _skillUsages[skillRepresentation.id] = std::make_shared<SkillUsage>(this, skillRepresentation);
-    }
-    return _skillUsages[skillRepresentation.id].get();
-}
-
 MobRepresentation BotInstance::focusNextMob(double radius, bool ignoreHP)
 {
     auto mob = findNearestMonsterInRadius(radius, ignoreHP);
@@ -462,4 +456,9 @@ BotInstanceWidget* BotInstance::getWidget()
         _widget = new BotInstanceWidget(this);
     }
     return _widget;
+}
+
+Configuration &BotInstance::getConfiguration()
+{
+    return _configuration;
 }

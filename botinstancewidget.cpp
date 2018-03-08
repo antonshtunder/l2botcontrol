@@ -1,7 +1,7 @@
 #include "botinstancewidget.h"
 #include "ui_botinstancewidget.h"
-#include "botinstance.h"
-#include "botmanager.h"
+#include "bot/botinstance.h"
+#include "bot/botmanager.h"
 #include "mainwindow.h"
 
 BotInstanceWidget::BotInstanceWidget(BotInstance *botInstance, QWidget *parent) :

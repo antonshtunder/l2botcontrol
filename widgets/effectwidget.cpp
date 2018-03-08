@@ -1,6 +1,6 @@
 #include "effectwidget.h"
 #include "ui_effectwidget.h"
-#include "botinstance.h"
+#include "bot/botinstance.h"
 #include "instanceinfo/instanceinfobank.h"
 #include "dialogs/skillusagedialog.h"
 

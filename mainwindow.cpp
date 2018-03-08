@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "lineageipc.h"
-#include "botmanager.h"
+#include "bot/botmanager.h"
 
 MainWindow *MainWindow::_instance = NULL;
 
@@ -56,6 +56,9 @@ void MainWindow::connectSlotsAndSignals()
 
     QObject::connect(&_testClientsTimer, SIGNAL(timeout()), BotManager::instance(), SLOT(testClients()));
     QObject::connect(&_refreshDataTimer, SIGNAL(timeout()), BotManager::instance(), SLOT(refreshData()));
+
+    connect(ui->actionSaveBotConfiguration, SIGNAL(triggered(bool)), SLOT(saveConfigurationSlot()));
+    connect(ui->actionLoadBotConfiguration, SIGNAL(triggered(bool)), SLOT(loadConfigurationSlot()));
 }
 
 void MainWindow::attach()
@@ -91,6 +94,32 @@ void MainWindow::updateUI()
         _skillListWidget->update(currentBotInstance);
         _effectList->update(currentBotInstance);
         _mapWidget->updateInfo();
+    }
+}
+
+void MainWindow::saveConfigurationSlot()
+{
+    auto botInstance = BotManager::instance()->getCurrentBotInstance();
+    if(botInstance == NULL)
+        return;
+
+    auto path = QFileDialog::getSaveFileName(this, "Configuration text file", "C:/", "Text file (*.txt)");
+    if(!path.isEmpty())
+    {
+        botInstance->getConfiguration().saveConfiguration(path);
+    }
+}
+
+void MainWindow::loadConfigurationSlot()
+{
+    auto botInstance = BotManager::instance()->getCurrentBotInstance();
+    if(botInstance == NULL)
+        return;
+
+    auto path = QFileDialog::getOpenFileName(this, "Configuration text file", "C:/", "Text file (*.txt)");
+    if(!path.isEmpty())
+    {
+        botInstance->getConfiguration().loadConfiguration(path);
     }
 }
 

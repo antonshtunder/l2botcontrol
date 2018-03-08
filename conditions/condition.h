@@ -9,6 +9,7 @@ class QWidget;
 
 enum Conditions
 {
+    NONE,
     PLAYER_HP_MORE_RELATIVE,
     PLAYER_HP_LESS_RELATIVE,
     PLAYER_MP_MORE_RELATIVE,
@@ -48,6 +49,7 @@ public:
     virtual void retrieveInput();
 
     virtual QJsonObject createJsonRepresentation();
+    virtual void parseJsonRepresentation(QJsonObject);
 
     QWidget *lastWidget() const;
 
