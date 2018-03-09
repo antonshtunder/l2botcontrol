@@ -5,7 +5,8 @@
 #include <QtCore>
 #include <vector>
 
-QPointF translateCoordinates(QPointF source, double scaleFactor, double ppu);
+QPointF translateGameToMap(QPointF source, double scaleFactor, double ppu);
+QPointF translateMapToGame(QPointF source, double scaleFactor, double ppu);
 
 double getDistance(QPointF a, QPointF b);
 

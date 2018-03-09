@@ -190,7 +190,7 @@ void LineagePainter::drawArrowDown(QPointF loc, double size)
 
 QPointF LineagePainter::translateCoordinates(QPointF source)
 {
-    return ::translateCoordinates(source, _sf, _ppu);
+    return ::translateGameToMap(source, _sf, _ppu);
 }
 
 bool LineagePainter::checkIfContains(QPointF pos)

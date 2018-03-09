@@ -98,7 +98,7 @@ void MapWidget::mouseDoubleClickEvent(QMouseEvent *event)
             return;
 
         QPointF charOrigPos(botInstance->l2representation.character.x, botInstance->l2representation.character.y);
-        auto charMapPos = translateCoordinates(charOrigPos, _scaleFactor, _pixelsPerUnit);
+        auto charMapPos = translateGameToMap(charOrigPos, _scaleFactor, _pixelsPerUnit);
         _imageX = (charMapPos.x() - width() / 2.0) / _scaleFactor;
         _imageY = (charMapPos.y() - height() / 2.0) / _scaleFactor;
         adjustMapDimensions();

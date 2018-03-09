@@ -8,6 +8,7 @@
 #include "optionswindow.h"
 #include "widgets/mapwidget.h"
 #include "widgets/effectlist.h"
+#include "widgets/mapcontrolswidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -30,8 +31,12 @@ private:
 
     OptionsWindow *_optionsWindow;
     MapWidget *_mapWidget;
+    MapControlsWidget *_mapControlsWidget;
     SkillListWidget *_skillListWidget;
     EffectList *_effectList;
+
+    QToolBar *_mapControls;
+    QActionGroup *_mapControlsActionGroup;
 
     QVBoxLayout _botsLayout;
     QList<BotInstanceWidget*> _bots;
@@ -48,6 +53,7 @@ private slots:
     void updateUI();
     void saveConfigurationSlot();
     void loadConfigurationSlot();
+    void mapControlSlot(QAction *action);
 };
 
 #endif // MAINWINDOW_H

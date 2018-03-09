@@ -6,10 +6,17 @@ using namespace std;
 #define X_UNITS_OFFSET 327680.0
 #define Y_UNITS_OFFSET 261400.0
 
-QPointF translateCoordinates(QPointF source, double scaleFactor, double ppu)
+QPointF translateGameToMap(QPointF source, double scaleFactor, double ppu)
 {
     QPointF result = {(source.x() + X_UNITS_OFFSET) * ppu * scaleFactor,
                       (source.y() + Y_UNITS_OFFSET) * ppu * scaleFactor};
+    return result;
+}
+
+QPointF translateMapToGame(QPointF source, double scaleFactor, double ppu)
+{
+    QPointF result = {source.x() / ppu / scaleFactor - X_UNITS_OFFSET,
+                      source.y() / ppu / scaleFactor - Y_UNITS_OFFSET};
     return result;
 }
 

@@ -17,8 +17,36 @@ MainWindow::MainWindow(QWidget *parent) :
 
     _optionsWindow = new OptionsWindow;
     _mapWidget = new MapWidget;
+    _mapControlsWidget = new MapControlsWidget;
 
     QVBoxLayout *mapTabLayout = new QVBoxLayout;
+    mapTabLayout->setSpacing(0);
+    //mapTabLayout->addWidget(_mapControlsWidget);
+
+    _mapControls = new QToolBar;
+    _mapControlsActionGroup = new QActionGroup(this);
+    _mapControls->setOrientation(Qt::Horizontal);
+    QAction *mapActionAction = new QAction("Action", _mapControlsActionGroup);
+    mapActionAction->setCheckable(true);
+    mapActionAction->setChecked(true);
+    mapActionAction->setProperty("MapAction", 0);
+    QAction *mapAddNodeAction = new QAction("Add node", _mapControlsActionGroup);
+    mapAddNodeAction->setCheckable(true);
+    mapAddNodeAction->setProperty("MapAction", 1);
+    QAction *mapMoveNodeAction = new QAction("Move node", _mapControlsActionGroup);
+    mapMoveNodeAction->setCheckable(true);
+    mapMoveNodeAction->setProperty("MapAction", 2);
+    QAction *mapRemoveNodeAction = new QAction("Remove node", _mapControlsActionGroup);
+    mapRemoveNodeAction->setCheckable(true);
+    mapRemoveNodeAction->setProperty("MapAction", 3);
+
+    _mapControls->addAction(mapActionAction);
+    _mapControls->addAction(mapAddNodeAction);
+    _mapControls->addAction(mapMoveNodeAction);
+    _mapControls->addAction(mapRemoveNodeAction);
+    connect(_mapControls, SIGNAL(actionTriggered(QAction*)), SLOT(mapControlSlot(QAction*)));
+
+    mapTabLayout->addWidget(_mapControls);
     mapTabLayout->addWidget(_mapWidget);
     ui->mapTab->setLayout(mapTabLayout);
 
@@ -121,6 +149,11 @@ void MainWindow::loadConfigurationSlot()
     {
         botInstance->getConfiguration().loadConfiguration(path);
     }
+}
+
+void MainWindow::mapControlSlot(QAction *action)
+{
+    qDebug() << action->property("MapAction");
 }
 
 void MainWindow::clientDisconnected(BotInstance *botInstance)
