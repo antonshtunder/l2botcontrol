@@ -36,7 +36,6 @@ SOURCES += \
     widgets/mapwidget.cpp \
     threads/commandpipeconnectionthread.cpp \
     threads/datamanagmentpipeconnectionthread.cpp \
-    misc/lineagepainter.cpp \
     misc/utils.cpp \
     threads/bottingthread.cpp \
     widgets/skillwidget.cpp \
@@ -56,7 +55,8 @@ SOURCES += \
     conditions/effectdurationcondition.cpp \
     widgets/conditionwidget.cpp \
     bot/configuration.cpp \
-    widgets/mapcontrolswidget.cpp
+    widgets/mapcontrolswidget.cpp \
+    misc/lineagemapcontroller.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -70,7 +70,6 @@ HEADERS += \
     widgets/mapwidget.h \
     threads/commandpipeconnectionthread.h \
     threads/datamanagmentpipeconnectionthread.h \
-    misc/lineagepainter.h \
     misc/utils.h \
     threads/bottingthread.h \
     widgets/skillwidget.h \
@@ -90,7 +89,8 @@ HEADERS += \
     conditions/effectdurationcondition.h \
     widgets/conditionwidget.h \
     bot/configuration.h \
-    widgets/mapcontrolswidget.h
+    widgets/mapcontrolswidget.h \
+    misc/lineagemapcontroller.h
 
 FORMS += \
         mainwindow.ui \

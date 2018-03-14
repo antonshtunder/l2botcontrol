@@ -49,7 +49,7 @@ void clearGridLayout(QGridLayout **grid)
         delete *grid;
     }
     *grid = new QGridLayout;
-    (*grid)->setAlignment(Qt::AlignTop);
+    (*grid)->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     (*grid)->setSpacing(0);
     (*grid)->setMargin(0);
 }

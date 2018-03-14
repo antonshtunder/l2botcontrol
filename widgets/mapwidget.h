@@ -33,7 +33,6 @@ private:
     void adjustMapDimensions();
     void moveMap(double deltaX, double deltaY);
     void paintMap();
-    void drawMapState(QPainter &painter);
     QRectF getDrawingArea();
 
     Ui::MapWidget *ui;

@@ -19,6 +19,16 @@ SkillUsage *Configuration::getSkillUsage(SkillRepresentation &skillRepresentatio
     return _skillUsages[skillRepresentation.id].get();
 }
 
+QList<QPointF> &Configuration::getNodes()
+{
+    return _nodes;
+}
+
+void Configuration::addNode(const QPointF &node)
+{
+    _nodes.append(node);
+}
+
 void Configuration::saveConfiguration(QString path)
 {
     QFile confFile(path);
@@ -34,6 +44,16 @@ void Configuration::saveConfiguration(QString path)
             skillUsages.append(skillUsage->createJsonRepresentation());
         }
         confJson.insert("skillUsages", skillUsages);
+
+        QJsonArray nodes;
+        for(auto node : _nodes)
+        {
+            QJsonObject nodeObj;
+            nodeObj.insert("x", node.x());
+            nodeObj.insert("y", node.y());
+            nodes.append(nodeObj);
+        }
+        confJson.insert("nodes", nodes);
 
         jsonDoc.setObject(confJson);
         confFile.write(jsonDoc.toJson());
@@ -64,10 +84,42 @@ void Configuration::loadConfiguration(QString path)
             {
                 _skillUsages[realSkillUsage->getId()] = std::shared_ptr<SkillUsage>(realSkillUsage);
             }
+
+        }
+
+        auto nodes = jsonConf.value("nodes").toArray();
+        if(nodes.size() > 0)
+            _nodes.clear();
+
+        for(auto node : nodes)
+        {
+            auto nodeObj = node.toObject();
+            _nodes.append({nodeObj.value("x").toDouble(), nodeObj.value("y").toDouble()});
         }
     }
     else
     {
         qDebug() << "failed to load configuration";
     }
+}
+
+QPainterPath Configuration::getNodeArea()
+{
+    QPainterPath area;
+    int i = 0;
+    for(auto &node : _nodes)
+    {
+        if(i == 0)
+        {
+            area.moveTo(node);
+        }
+        else
+        {
+            area.lineTo(node);
+        }
+        ++i;
+    }
+    area.closeSubpath();
+
+    return area;
 }

@@ -1,7 +1,7 @@
 #include "mapwidget.h"
 #include "ui_mapwidget.h"
 #include "bot/botmanager.h"
-#include "misc/lineagepainter.h"
+#include "misc/lineagemapcontroller.h"
 #include "misc/utils.h"
 #include "options.h"
 
@@ -11,7 +11,7 @@ MapWidget::MapWidget(QWidget *parent) :
     QScrollArea(parent),
     ui(new Ui::MapWidget),
     _imageLabel(new QLabel),
-    _image("C:/l2map.gif")
+    _image("C:/l2map2.jpg")
 {
     ui->setupUi(this);
     qDebug() << _image << endl;
@@ -41,7 +41,7 @@ void MapWidget::mousePressEvent(QMouseEvent *event)
     }
     else
     {
-        LineagePainter::instance()->mousePressed(event, getDrawingArea());
+        LineageMapController::instance()->mousePressed(event, getDrawingArea());
     }
 }
 
@@ -155,18 +155,7 @@ void MapWidget::paintMap()
                                         _imageLabel->height() / _scaleFactor);
     painter.drawPixmap(map.rect(), mapImagePiece);
     QRectF drawingArea = getDrawingArea();
-    LineagePainter::instance()->drawMap(drawingArea, _pixelsPerUnit, _scaleFactor, &painter);
+    LineageMapController::instance()->drawMap(drawingArea, _pixelsPerUnit, _scaleFactor, &painter);
 
     _imageLabel->setPixmap(map);
-}
-
-void MapWidget::drawMapState(QPainter &painter)
-{
-    /*painter.setBrush(Qt::NoBrush);
-    QRectF drawingArea = {_imageX, _imageY, _imageX + width() / _scaleFactor, _imageY + height() / _scaleFactor};
-    LineageRepresentation l2rep = BotManager::instance()->getCurrentBotInstance()->l2representation;
-    if(drawingArea.contains(l2rep.character.x * _pixelsPerUnit, l2rep.character.y * _pixelsPerUnit))
-    {
-
-    }*/
 }

@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "lineageipc.h"
 #include "bot/botmanager.h"
+#include "misc/lineagemapcontroller.h"
 
 MainWindow *MainWindow::_instance = NULL;
 
@@ -29,21 +30,25 @@ MainWindow::MainWindow(QWidget *parent) :
     QAction *mapActionAction = new QAction("Action", _mapControlsActionGroup);
     mapActionAction->setCheckable(true);
     mapActionAction->setChecked(true);
-    mapActionAction->setProperty("MapAction", 0);
+    mapActionAction->setProperty("MapAction", MapAction::ACTION);
     QAction *mapAddNodeAction = new QAction("Add node", _mapControlsActionGroup);
     mapAddNodeAction->setCheckable(true);
-    mapAddNodeAction->setProperty("MapAction", 1);
+    mapAddNodeAction->setProperty("MapAction", MapAction::ADD_NODE);
     QAction *mapMoveNodeAction = new QAction("Move node", _mapControlsActionGroup);
     mapMoveNodeAction->setCheckable(true);
-    mapMoveNodeAction->setProperty("MapAction", 2);
+    mapMoveNodeAction->setProperty("MapAction", MapAction::MOVE_NODE);
     QAction *mapRemoveNodeAction = new QAction("Remove node", _mapControlsActionGroup);
     mapRemoveNodeAction->setCheckable(true);
-    mapRemoveNodeAction->setProperty("MapAction", 3);
+    mapRemoveNodeAction->setProperty("MapAction", MapAction::REMOVE_NODE);
+    QAction *mapClearNodesAction = new QAction("Clear nodes");
+    mapClearNodesAction->setCheckable(false);
+    mapClearNodesAction->setProperty("MapAction", MapAction::CLEAR_NODES);
 
     _mapControls->addAction(mapActionAction);
     _mapControls->addAction(mapAddNodeAction);
     _mapControls->addAction(mapMoveNodeAction);
     _mapControls->addAction(mapRemoveNodeAction);
+    _mapControls->addAction(mapClearNodesAction);
     connect(_mapControls, SIGNAL(actionTriggered(QAction*)), SLOT(mapControlSlot(QAction*)));
 
     mapTabLayout->addWidget(_mapControls);
@@ -153,7 +158,19 @@ void MainWindow::loadConfigurationSlot()
 
 void MainWindow::mapControlSlot(QAction *action)
 {
-    qDebug() << action->property("MapAction");
+    auto bot = BotManager::instance()->getCurrentBotInstance();
+    if(bot == NULL || !bot->isInGame())
+    {
+        return;
+    }
+    if(action->property("MapAction") == MapAction::CLEAR_NODES)
+    {
+        LineageMapController::instance()->clearNodes();
+    }
+    else
+    {
+        LineageMapController::instance()->setAction(static_cast<MapAction>(action->property("MapAction").toInt()));
+    }
 }
 
 void MainWindow::clientDisconnected(BotInstance *botInstance)

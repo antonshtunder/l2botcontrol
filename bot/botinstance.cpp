@@ -302,7 +302,7 @@ void BotInstance::stopBotting()
     _bottingThread.stopBotting();
 }
 
-MobRepresentation BotInstance::findNearestMonsterInRadius(double radius, bool ignoreHP)
+MobRepresentation BotInstance::findNearestMonsterInRadius(double radius, bool ignoreHP, bool ignoreArea)
 {
     lockRepresentation();
     auto &mobs = l2representation.mobs;
@@ -311,6 +311,18 @@ MobRepresentation BotInstance::findNearestMonsterInRadius(double radius, bool ig
     double minDistance = radius;
     QPointF myLoc(character.x, character.y);
     double distance;
+    bool areaIsPresent = false;
+    QPainterPath nodeArea;
+
+    if(!ignoreArea)
+    {
+        areaIsPresent = _configuration.getNodes().size() >= 3;
+    }
+
+    if(areaIsPresent)
+    {
+        nodeArea = _configuration.getNodeArea();
+    }
 
     for(size_t i = 0; i < mobs.size(); ++i)
     {
@@ -319,6 +331,12 @@ MobRepresentation BotInstance::findNearestMonsterInRadius(double radius, bool ig
 
         if(qAbs(mobs.at(i).z - character.z) > 250.0)
             continue;
+
+        if(areaIsPresent && !nodeArea.contains({mobs.at(i).x, mobs.at(i).y}))
+        {
+            continue;
+        }
+
         distance = getDistance(myLoc, {mobs.at(i).x, mobs.at(i).y});
         if(distance < minDistance)
         {
@@ -369,9 +387,9 @@ MobRepresentation BotInstance::getCurrentTarget()
     return makeInvalidMob();
 }
 
-MobRepresentation BotInstance::focusNextMob(double radius, bool ignoreHP)
+MobRepresentation BotInstance::focusNextMob(double radius, bool ignoreHP, bool ignoreArea)
 {
-    auto mob = findNearestMonsterInRadius(radius, ignoreHP);
+    auto mob = findNearestMonsterInRadius(radius, ignoreHP, ignoreArea);
     if(mob.id != 0)
         performActionOn(mob.id, mob.address, Representations::MOB);
     return mob;

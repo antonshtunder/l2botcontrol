@@ -4,7 +4,7 @@ Options Options::instance;
 
 Options::Options()
 {
-    _dllPath = "C:\\Users\\aannt\\Documents\\QtProjects\\hackdlls\\build-abr-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug\\debug\\abr.dll";
+    _dllPath = "C:\\Users\\Anton\\Documents\\QtProjects\\hackdlls\\build-abr-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug\\debug\\abr.dll";
     _processName = "AsteriosGame.exe";
 }
 

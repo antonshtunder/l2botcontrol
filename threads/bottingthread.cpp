@@ -49,7 +49,7 @@ void BottingThread::run()
                 _bot->setState(BotState::PICKINGUP);
                 _bot->useSkills();
 
-                mob = _bot->focusNextMob(150.0, true);
+                mob = _bot->focusNextMob(150.0, true, true);
                 if(mob.id != 0)
                 {
                     qDebug() << "found new close range mob";

@@ -52,9 +52,9 @@ public:
     void alert();
     std::vector<DroppedItemRepresentation> getItemsInRadius(QPointF center, double radius);
 
-    MobRepresentation focusNextMob(double radius, bool ignoreHP);
+    MobRepresentation focusNextMob(double radius, bool ignoreHP, bool ignoreArea = false);
     MobRepresentation getMobWithID(DWORD id);
-    MobRepresentation findNearestMonsterInRadius(double radius, bool ignoreHP);
+    MobRepresentation findNearestMonsterInRadius(double radius, bool ignoreHP, bool ignoreArea = false);
     MobRepresentation getTargetedMob();
     MobRepresentation getCurrentTarget();
 
