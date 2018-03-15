@@ -8,6 +8,12 @@
 #include <memory>
 #include "botcommands/skillusage.h"
 
+enum Targeting
+{
+    MOB_IN_AREA,
+    ASSIST
+};
+
 class Configuration
 {
     friend BotInstance;
@@ -23,10 +29,18 @@ public:
 
     QPainterPath getNodeArea();
 
+    Targeting getTargeting() const;
+    void setTargeting(const Targeting &targeting);
+
+    QString getAssistPlayerName() const;
+    void setAssistPlayerName(const QString &assistPlayerName);
+
 private:
     QMap<DWORD, std::shared_ptr<SkillUsage>> _skillUsages;
     QList<QPointF> _nodes;
     BotInstance *_botInstance;
+    Targeting _targeting;
+    QString _assistPlayerName;
 };
 
 #endif // CONFIGURATION_H

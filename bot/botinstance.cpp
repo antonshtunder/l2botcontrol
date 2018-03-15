@@ -131,7 +131,6 @@ void BotInstance::detach()
 
 l2ipc::Command BotInstance::performActionOn(DWORD instanceID, DWORD instanceAddress, Representations instanceType)
 {
-    //qDebug() << (LPVOID)instanceID;
     DWORD command[4];
     command[0] = l2ipc::Command::PERFORM_ACTION_ON;
     command[1] = instanceID;
@@ -151,7 +150,6 @@ l2ipc::Command BotInstance::isDead(DWORD mobAddress)
 
 void BotInstance::pickupInRadius(double radius)
 {
-    qDebug() << "starting picking up";
     QThread::msleep(100);
     QPointF loc(l2representation.character.x, l2representation.character.y);
     auto items = getItemsInRadius(loc, radius);
@@ -159,14 +157,12 @@ void BotInstance::pickupInRadius(double radius)
     if(isDecreasedPerformance())
     {
         pickupTime *= 2.5;
-        qDebug() << "decreased performance";
     }
     for(int i = 0; i < items.size() * 2; ++i)
     {
         pickup();
         QThread::msleep(pickupTime);
     }
-    auto ugu = items.size();
 
     waitForRefreshed();
     items = getItemsInRadius(loc, radius);
@@ -174,17 +170,7 @@ void BotInstance::pickupInRadius(double radius)
     for(auto item : items)
     {
         auto reply = performActionOn(item.id, item.address, Representations::DROPPED_ITEM);
-        if(reply == l2ipc::Command::REPLY_YES)
-            qDebug() << "pickup success";
-        else
-        {
-            qDebug() << "pickup fail";
-            qDebug() << "item address = " << (LPVOID)item.address;
-            qDebug() << "item id = " << (LPVOID)item.id;
-        }
     }
-    qDebug() << "init size - " << ugu;
-    qDebug() << "picked up automatically - " << (ugu - items.size());
     _pipeUsed = false;
 }
 
@@ -221,6 +207,43 @@ void BotInstance::useSkills()
     }
 }
 
+void BotInstance::assist()
+{
+    DWORD command = l2ipc::Command::ASSIST;
+    l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
+}
+
+MobRepresentation BotInstance::assist(const QString &name)
+{
+    lockRepresentation();
+    auto &mobs = l2representation.mobs;
+    MobRepresentation target;
+    for(auto mob : mobs)
+    {
+        if(QString::fromUtf16(mob.name) == name)
+        {
+            target = mob;
+            break;
+        }
+    }
+
+    MobRepresentation assistedMob;
+    if(target.address != 0)
+    {
+        for(auto mob : mobs)
+        {
+            if(target.targetModelAddress == mob.modelAddress)
+            {
+                assistedMob = mob;
+                focusMob(mob);
+                break;
+            }
+        }
+    }
+    unlockRepresentation();
+    return assistedMob;
+}
+
 void BotInstance::alert()
 {
     double radius = 750.0;
@@ -236,7 +259,7 @@ void BotInstance::alert()
             if(distance < radius && qAbs(l2representation.character.z - mob.z) < 250.0)
             {
                 mobName = QString::fromUtf16(mob.name);
-                if(name != mobName)
+                if(name != mobName && mobName != QString("GroznijKarlik") && mobName != QString("Opezdal"))
                 {
                     qDebug() << distance;
                     qDebug() << mobName;
@@ -290,7 +313,6 @@ void BotInstance::setState(const BotState &state)
 
 void BotInstance::startBotting()
 {
-    qDebug() << "startBotting()";
     if(!_bottingThread.isRunning())
     {
         _bottingThread.start();
@@ -362,7 +384,6 @@ MobRepresentation BotInstance::getTargetedMob()
 {
     for(auto mob : l2representation.mobs)
     {
-        //if(l2representation.character.targetModelAddress == mob.)
         qDebug() << "not implemented";
     }
     return makeInvalidMob();
@@ -387,11 +408,19 @@ MobRepresentation BotInstance::getCurrentTarget()
     return makeInvalidMob();
 }
 
+void BotInstance::focusMob(const MobRepresentation &mob)
+{
+    performActionOn(mob.id, mob.address, Representations::MOB);
+}
+
 MobRepresentation BotInstance::focusNextMob(double radius, bool ignoreHP, bool ignoreArea)
 {
-    auto mob = findNearestMonsterInRadius(radius, ignoreHP, ignoreArea);
+    MobRepresentation mob;
+    mob = findNearestMonsterInRadius(radius, ignoreHP, ignoreArea);
     if(mob.id != 0)
-        performActionOn(mob.id, mob.address, Representations::MOB);
+    {
+        focusMob(mob);
+    }
     return mob;
 }
 

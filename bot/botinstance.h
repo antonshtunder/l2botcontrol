@@ -48,6 +48,8 @@ public:
     void pickup();
     bool useSkill(DWORD id);
     void useSkills();
+    void assist();
+    MobRepresentation assist(const QString &name);
 
     void alert();
     std::vector<DroppedItemRepresentation> getItemsInRadius(QPointF center, double radius);
@@ -57,6 +59,7 @@ public:
     MobRepresentation findNearestMonsterInRadius(double radius, bool ignoreHP, bool ignoreArea = false);
     MobRepresentation getTargetedMob();
     MobRepresentation getCurrentTarget();
+    void focusMob(const MobRepresentation &mob);
 
     bool isInGame();
     bool isRefreshed();

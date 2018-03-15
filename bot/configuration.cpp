@@ -7,7 +7,7 @@
 Configuration::Configuration(BotInstance *botInstance):
     _botInstance(botInstance)
 {
-
+    _targeting = Targeting::MOB_IN_AREA;
 }
 
 SkillUsage *Configuration::getSkillUsage(SkillRepresentation &skillRepresentation)
@@ -122,4 +122,24 @@ QPainterPath Configuration::getNodeArea()
     area.closeSubpath();
 
     return area;
+}
+
+Targeting Configuration::getTargeting() const
+{
+    return _targeting;
+}
+
+void Configuration::setTargeting(const Targeting &targeting)
+{
+    _targeting = targeting;
+}
+
+QString Configuration::getAssistPlayerName() const
+{
+    return _assistPlayerName;
+}
+
+void Configuration::setAssistPlayerName(const QString &assistPlayerName)
+{
+    _assistPlayerName = assistPlayerName;
 }

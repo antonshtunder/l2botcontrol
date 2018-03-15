@@ -49,7 +49,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="mapTab">
        <attribute name="title">
@@ -60,45 +60,6 @@
        <attribute name="title">
         <string>Actions</string>
        </attribute>
-       <widget class="QPushButton" name="btnAttack">
-        <property name="geometry">
-         <rect>
-          <x>70</x>
-          <y>40</y>
-          <width>75</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Attack</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="btnPickup">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>90</y>
-          <width>75</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Pickup</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="lblBotInstance">
-        <property name="geometry">
-         <rect>
-          <x>50</x>
-          <y>190</y>
-          <width>101</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>no bot instance</string>
-        </property>
-       </widget>
       </widget>
       <widget class="QWidget" name="inventoryTab">
        <attribute name="title">

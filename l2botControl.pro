@@ -56,7 +56,8 @@ SOURCES += \
     widgets/conditionwidget.cpp \
     bot/configuration.cpp \
     widgets/mapcontrolswidget.cpp \
-    misc/lineagemapcontroller.cpp
+    misc/lineagemapcontroller.cpp \
+    widgets/actionconfigurationwidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -90,7 +91,8 @@ HEADERS += \
     widgets/conditionwidget.h \
     bot/configuration.h \
     widgets/mapcontrolswidget.h \
-    misc/lineagemapcontroller.h
+    misc/lineagemapcontroller.h \
+    widgets/actionconfigurationwidget.h
 
 FORMS += \
         mainwindow.ui \
@@ -104,7 +106,8 @@ FORMS += \
     widgets/effectwidget.ui \
     widgets/effectlist.ui \
     widgets/conditionwidget.ui \
-    widgets/mapcontrolswidget.ui
+    widgets/mapcontrolswidget.ui \
+    widgets/actionconfigurationwidget.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/release/ -llineageIPC
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/debug/ -llineageIPC

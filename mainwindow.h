@@ -9,6 +9,7 @@
 #include "widgets/mapwidget.h"
 #include "widgets/effectlist.h"
 #include "widgets/mapcontrolswidget.h"
+#include "widgets/actionconfigurationwidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -34,6 +35,7 @@ private:
     MapControlsWidget *_mapControlsWidget;
     SkillListWidget *_skillListWidget;
     EffectList *_effectList;
+    ActionConfigurationWidget *_actionConfWgt;
 
     QToolBar *_mapControls;
     QActionGroup *_mapControlsActionGroup;

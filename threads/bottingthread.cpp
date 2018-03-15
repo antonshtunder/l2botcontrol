@@ -22,12 +22,21 @@ bool BottingThread::isBotting()
 void BottingThread::run()
 {
     qDebug() << "started botting";
+    const auto &configuration = _bot->getConfiguration();
     _botting = true;
     _bot->setState(BotState::STANDING);
     _bot->useSkills();
     while(_botting)
     {
-        auto mob = _bot->focusNextMob(10000.0, false);
+        MobRepresentation mob;
+        if(configuration.getTargeting() == Targeting::ASSIST)
+        {
+            mob = _bot->assist(configuration.getAssistPlayerName());
+        }
+        else if(configuration.getTargeting() == Targeting::MOB_IN_AREA)
+        {
+            mob = _bot->focusNextMob(10000.0, false);
+        }
         qDebug() << "1new mob address = " << (LPVOID)mob.address;
         if(mob.id == 0)
         {
@@ -49,11 +58,14 @@ void BottingThread::run()
                 _bot->setState(BotState::PICKINGUP);
                 _bot->useSkills();
 
-                mob = _bot->focusNextMob(150.0, true, true);
-                if(mob.id != 0)
+                if(configuration.getTargeting() == Targeting::MOB_IN_AREA)
                 {
-                    qDebug() << "found new close range mob";
-                    continue;
+                    mob = _bot->focusNextMob(150.0, true, true);
+                    if(mob.id != 0)
+                    {
+                        qDebug() << "found new close range mob";
+                        continue;
+                    }
                 }
 
                 _bot->pickupInRadius(PICKUP_RADIUS);

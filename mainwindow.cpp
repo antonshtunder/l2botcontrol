@@ -59,6 +59,8 @@ MainWindow::MainWindow(QWidget *parent) :
     _botsLayout.setAlignment(Qt::AlignTop);
     ui->skillsLayout->addWidget(_skillListWidget);
 
+    _actionConfWgt = new ActionConfigurationWidget(ui->actionsTab);
+
     ui->effectsTab->layout()->addWidget(_effectList);
 
     connectSlotsAndSignals();
@@ -83,7 +85,6 @@ void MainWindow::connectSlotsAndSignals()
 {
     QObject::connect(ui->actionOptions, SIGNAL(triggered(bool)), _optionsWindow, SLOT(show()));
     QObject::connect(ui->actionAttach, SIGNAL(triggered(bool)), SLOT(attach()));
-    QObject::connect(ui->btnAttack, SIGNAL(pressed()), BotManager::instance(), SLOT(attack()));
     QObject::connect(BotManager::instance(), SIGNAL(updateUISignal()), SLOT(updateUI()));
     QObject::connect(BotManager::instance(), SIGNAL(clientDisconnected(BotInstance*)), SLOT(clientDisconnected(BotInstance*)));
 
@@ -109,11 +110,11 @@ void MainWindow::updateUI()
     auto botInstances = BotManager::instance()->getBotInstances();
     if(botInstances.isEmpty())
     {
-        ui->lblBotInstance->setText("no bot instance");
+
     }
     else
     {
-        ui->lblBotInstance->setText(BotManager::instance()->getCurrentBotInstance()->name);
+
         for(auto instance : botInstances)
         {
             auto instanceWidget = instance->getWidget();
@@ -126,6 +127,7 @@ void MainWindow::updateUI()
         auto currentBotInstance = BotManager::instance()->getCurrentBotInstance();
         _skillListWidget->update(currentBotInstance);
         _effectList->update(currentBotInstance);
+        _actionConfWgt->update(currentBotInstance, false);
         _mapWidget->updateInfo();
     }
 }
