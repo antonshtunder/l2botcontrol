@@ -1,6 +1,7 @@
 #include "lineagemapcontroller.h"
 #include "bot/botmanager.h"
 #include "utils.h"
+#include "instanceinfo/instanceinfobank.h"
 
 #define SQUARE_SIZE 9.0
 #define SQUARE_OFFSET -(SQUARE_SIZE - 1.0) / 2.0
@@ -234,7 +235,7 @@ void LineageMapController::mouseAction(QMouseEvent *event, QRectF &area)
         {
             instance->stopBotting();
             instance->performActionOn(mob.id, mob.address, Representations::MOB);
-            qDebug() << "mob pressed1";
+            return;
         }
     }
 
@@ -244,9 +245,14 @@ void LineageMapController::mouseAction(QMouseEvent *event, QRectF &area)
         {
             instance->stopBotting();
             instance->performActionOn(item.id, item.address, Representations::DROPPED_ITEM);
-            qDebug() << "item pressed";
+            return;
         }
     }
+
+    auto point = translateMapToGame(mouseLoc, _sf, _ppu);
+    instance->moveTo(point.x(), point.y());
+    qDebug() << point;
+    qDebug() << InstanceInfoBank::instance()->getCellHeight(point.x(), point.y(), _l2r.character.z);
 }
 
 void LineageMapController::addNode(QMouseEvent *event, QRectF &area)

@@ -11,6 +11,8 @@ ActionConfigurationWidget::ActionConfigurationWidget(QWidget *parent) :
     connect(ui->btnAssist, SIGNAL(pressed()), SLOT(assist()));
     connect(ui->btnUpdate, SIGNAL(pressed()), SLOT(updateSlot()));
     connect(ui->btnRevert, SIGNAL(pressed()), SLOT(revertSlot()));
+    connect(ui->btnAcceptAction, SIGNAL(pressed()), SLOT(acceptAction()));
+    connect(ui->btnNpcChat, SIGNAL(pressed()), SLOT(npcChatSlot()));
 }
 
 ActionConfigurationWidget::~ActionConfigurationWidget()
@@ -64,4 +66,14 @@ void ActionConfigurationWidget::updateSlot()
 void ActionConfigurationWidget::revertSlot()
 {
     update(_botInstance, true);
+}
+
+void ActionConfigurationWidget::npcChatSlot()
+{
+    _botInstance->npcChat(ui->spNpcChatId->value());
+}
+
+void ActionConfigurationWidget::acceptAction()
+{
+    _botInstance->acceptAction();
 }

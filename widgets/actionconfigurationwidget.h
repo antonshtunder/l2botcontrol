@@ -27,6 +27,8 @@ private slots:
     void assist();
     void updateSlot();
     void revertSlot();
+    void npcChatSlot();
+    void acceptAction();
 };
 
 #endif // ACTIONCONFIGURATIONWIDGET_H

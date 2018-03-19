@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>261</width>
-    <height>152</height>
+    <height>232</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -62,6 +62,23 @@
        <widget class="QPushButton" name="btnRevert">
         <property name="text">
          <string>Revert</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QPushButton" name="btnNpcChat">
+        <property name="text">
+         <string>Npc Chat</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QSpinBox" name="spNpcChatId"/>
+      </item>
+      <item row="5" column="0">
+       <widget class="QPushButton" name="btnAcceptAction">
+        <property name="text">
+         <string>Accept Action</string>
         </property>
        </widget>
       </item>

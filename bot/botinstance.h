@@ -49,6 +49,9 @@ public:
     bool useSkill(DWORD id);
     void useSkills();
     void assist();
+    void moveTo(float x, float y);
+    void npcChat(DWORD index);
+    void acceptAction();
     MobRepresentation assist(const QString &name);
 
     void alert();

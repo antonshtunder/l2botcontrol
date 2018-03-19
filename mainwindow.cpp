@@ -22,7 +22,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QVBoxLayout *mapTabLayout = new QVBoxLayout;
     mapTabLayout->setSpacing(0);
-    //mapTabLayout->addWidget(_mapControlsWidget);
 
     _mapControls = new QToolBar;
     _mapControlsActionGroup = new QActionGroup(this);

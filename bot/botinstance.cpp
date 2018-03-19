@@ -2,6 +2,7 @@
 #include "lineageipc.h"
 #include "misc/utils.h"
 #include <QtMath>
+#include "instanceinfo/instanceinfobank.h"
 
 using namespace std;
 
@@ -210,6 +211,34 @@ void BotInstance::useSkills()
 void BotInstance::assist()
 {
     DWORD command = l2ipc::Command::ASSIST;
+    l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
+}
+
+void BotInstance::moveTo(float x, float y)
+{
+    float z = InstanceInfoBank::instance()->getCellHeight(x, y, l2representation.character.z) - 30.0f;
+    qDebug() << "moving to (" << x << ", " << y << ", " << z << ")";
+
+    DWORD command[4];
+    command[0] = l2ipc::Command::MOVE_TO;
+    memcpy(&(command[1]), &x, sizeof(DWORD));
+    memcpy(&(command[2]), &y, sizeof(DWORD));
+    memcpy(&(command[3]), &z, sizeof(DWORD));
+    l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
+}
+
+void BotInstance::npcChat(DWORD index)
+{
+    DWORD command[2];
+    command[0] = l2ipc::Command::NPC_CHAT;
+    command[1] = index;
+    l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
+}
+
+void BotInstance::acceptAction()
+{
+    DWORD command;
+    command = l2ipc::Command::ACCEPT_ACTION;
     l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
 }
 

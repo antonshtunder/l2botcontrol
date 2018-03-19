@@ -57,7 +57,14 @@ SOURCES += \
     bot/configuration.cpp \
     widgets/mapcontrolswidget.cpp \
     misc/lineagemapcontroller.cpp \
-    widgets/actionconfigurationwidget.cpp
+    widgets/actionconfigurationwidget.cpp \
+    instanceinfo/geodataregion.cpp \
+    instanceinfo/geo/geodatasquare.cpp \
+    instanceinfo/geo/geoflatsquare.cpp \
+    instanceinfo/geo/geocomplexsquare.cpp \
+    instanceinfo/geo/geomultisquare.cpp \
+    instanceinfo/geo/multicell.cpp \
+    widgets/scriptswidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -92,7 +99,14 @@ HEADERS += \
     bot/configuration.h \
     widgets/mapcontrolswidget.h \
     misc/lineagemapcontroller.h \
-    widgets/actionconfigurationwidget.h
+    widgets/actionconfigurationwidget.h \
+    instanceinfo/geodataregion.h \
+    instanceinfo/geo/geodatasquare.h \
+    instanceinfo/geo/geoflatsquare.h \
+    instanceinfo/geo/geocomplexsquare.h \
+    instanceinfo/geo/geomultisquare.h \
+    instanceinfo/geo/multicell.h \
+    widgets/scriptswidget.h
 
 FORMS += \
         mainwindow.ui \
@@ -107,7 +121,8 @@ FORMS += \
     widgets/effectlist.ui \
     widgets/conditionwidget.ui \
     widgets/mapcontrolswidget.ui \
-    widgets/actionconfigurationwidget.ui
+    widgets/actionconfigurationwidget.ui \
+    widgets/scriptswidget.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/release/ -llineageIPC
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/debug/ -llineageIPC
