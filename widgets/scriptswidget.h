@@ -17,6 +17,9 @@ public:
 
 private:
     Ui::ScriptsWidget *ui;
+
+private slots:
+    void execute();
 };
 
 #endif // SCRIPTSWIDGET_H

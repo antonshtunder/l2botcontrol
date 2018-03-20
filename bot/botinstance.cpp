@@ -242,6 +242,14 @@ void BotInstance::acceptAction()
     l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
 }
 
+void BotInstance::speakTo(int npcId)
+{
+    DWORD command[2];
+    command[0] = l2ipc::Command::SPEAK_TO;
+    command[1] = npcId;
+    l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
+}
+
 MobRepresentation BotInstance::assist(const QString &name)
 {
     lockRepresentation();
@@ -338,6 +346,11 @@ BotState BotInstance::getState() const
 void BotInstance::setState(const BotState &state)
 {
     _state = state;
+}
+
+GameDataManager &BotInstance::getDataManager()
+{
+    return _dataManager;
 }
 
 void BotInstance::startBotting()

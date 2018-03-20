@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui multimedia
+QT       += core gui multimedia qml concurrent
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -64,7 +64,12 @@ SOURCES += \
     instanceinfo/geo/geocomplexsquare.cpp \
     instanceinfo/geo/geomultisquare.cpp \
     instanceinfo/geo/multicell.cpp \
-    widgets/scriptswidget.cpp
+    widgets/scriptswidget.cpp \
+    scripting/sbot.cpp \
+    scripting/scriptingengine.cpp \
+    scripting/sconsole.cpp \
+    scripting/scriptingthread.cpp \
+    bot/gamedatamanager.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -106,7 +111,12 @@ HEADERS += \
     instanceinfo/geo/geocomplexsquare.h \
     instanceinfo/geo/geomultisquare.h \
     instanceinfo/geo/multicell.h \
-    widgets/scriptswidget.h
+    widgets/scriptswidget.h \
+    scripting/sbot.h \
+    scripting/scriptingengine.h \
+    scripting/sconsole.h \
+    scripting/scriptingthread.h \
+    bot/gamedatamanager.h
 
 FORMS += \
         mainwindow.ui \

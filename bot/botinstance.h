@@ -13,6 +13,7 @@
 #include <memory>
 #include "misc/audioplayer.h"
 #include "configuration.h"
+#include "gamedatamanager.h"
 
 enum BotState
 {
@@ -52,6 +53,7 @@ public:
     void moveTo(float x, float y);
     void npcChat(DWORD index);
     void acceptAction();
+    void speakTo(int npcId);
     MobRepresentation assist(const QString &name);
 
     void alert();
@@ -106,6 +108,7 @@ private:
     QWaitCondition _stateRefreshed;
     QMutex _mutex;
     QMutex _representationMutex;
+    QMutex _actionMutex;
 
 public slots:
     void startBotting();

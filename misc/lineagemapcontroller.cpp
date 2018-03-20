@@ -233,6 +233,7 @@ void LineageMapController::mouseAction(QMouseEvent *event, QRectF &area)
     {
         if(checkIfPressed(mouseLoc, {mob.x, mob.y}, SQUARE_SIZE, SQUARE_OFFSET))
         {
+            qDebug() << "mob type id = " << mob.typeID;
             instance->stopBotting();
             instance->performActionOn(mob.id, mob.address, Representations::MOB);
             return;
@@ -243,6 +244,7 @@ void LineageMapController::mouseAction(QMouseEvent *event, QRectF &area)
     {
         if(checkIfPressed(mouseLoc, {item.x, item.y}, ROUND_SIZE, ROUND_OFFSET))
         {
+            qDebug() << "item type id = " << item.typeID;
             instance->stopBotting();
             instance->performActionOn(item.id, item.address, Representations::DROPPED_ITEM);
             return;
