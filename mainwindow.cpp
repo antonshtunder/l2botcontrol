@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _optionsWindow = new OptionsWindow;
     _mapWidget = new MapWidget;
     _mapControlsWidget = new MapControlsWidget;
+    _scriptsWgt = new ScriptsWidget;
 
     QVBoxLayout *mapTabLayout = new QVBoxLayout;
     mapTabLayout->setSpacing(0);
@@ -61,6 +62,8 @@ MainWindow::MainWindow(QWidget *parent) :
     _actionConfWgt = new ActionConfigurationWidget(ui->actionsTab);
 
     ui->effectsTab->layout()->addWidget(_effectList);
+
+    ui->scriptsTab->layout()->addWidget(_scriptsWgt);
 
     connectSlotsAndSignals();
 
