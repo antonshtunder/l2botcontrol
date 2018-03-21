@@ -65,8 +65,11 @@ void SkillUsage::use()
         if(_botInstance->getState() == BotState::ATTACKING)
         {
             auto target = _botInstance->getCurrentTarget();
-            auto distance = getDistance({_botInstance->l2representation.character.x, _botInstance->l2representation.character.y},
+            auto l2representation = _botInstance->getDataManager().lockRepresentation();
+            auto distance = getDistance({l2representation->character.x, l2representation->character.y},
             {target.x, target.y});
+            _botInstance->getDataManager().unlockRepresentation();
+
             if(distance > skillInfo.getCastRange() + 120.0)
             {
                 return;
@@ -121,8 +124,8 @@ QJsonObject SkillUsage::createJsonRepresentation()
 
 SkillUsage *SkillUsage::createFromJson(QJsonObject &json, BotInstance *botInstance)
 {
-
-    auto skills = botInstance->l2representation.activeSkills;
+    auto l2representation = botInstance->getDataManager().lockRepresentation();
+    auto &skills = l2representation->activeSkills;
     bool present = false;
     DWORD id = json.value("id").toInt();
     SkillRepresentation skillRep;
@@ -135,6 +138,7 @@ SkillUsage *SkillUsage::createFromJson(QJsonObject &json, BotInstance *botInstan
             present = true;
         }
     }
+    botInstance->getDataManager().unlockRepresentation();
 
     if(!present)
         return NULL;

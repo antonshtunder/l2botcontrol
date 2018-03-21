@@ -17,14 +17,17 @@ EffectCondition::EffectCondition(BotInstance *botInstance, Conditions type, DWOR
 bool EffectCondition::test()
 {
     std::vector<EffectRepresentation> *effects = NULL;
+    auto &dataManager = _botInstance->getDataManager();
+    auto l2representation = dataManager.lockRepresentation();
     if(_type == Conditions::TARGET_DOESNT_HAVE_EFFECT || _type == Conditions::TARGET_DOESNT_HAVE_EFFECT)
     {
-        effects = &_botInstance->l2representation.targetEffects;
+        effects = &l2representation->targetEffects;
     }
     else
     {
-        effects = &_botInstance->l2representation.playerEffects;
+        effects = &l2representation->playerEffects;
     }
+    bool result = false;
     switch(_type)
     {
     case Conditions::PLAYER_HAS_EFFECT:
@@ -32,21 +35,32 @@ bool EffectCondition::test()
         for(auto effect : *effects)
         {
             if(effect.id == _id)
-                return true;
+            {
+                result = true;
+                break;
+            }
         }
-        return false;
+        result = false;
+        break;
     case Conditions::PLAYER_DOESNT_HAVE_EFFECT:
+        break;
     case Conditions::TARGET_DOESNT_HAVE_EFFECT:
         for(auto effect : *effects)
         {
             if(effect.id == _id)
-                return false;
+            {
+                result = false;
+                break;
+            }
         }
-        return true;
+        result = true;
+        break;
     default:
         qDebug() << "effects wrong type";
-        return false;
+        break;
     }
+    dataManager.unlockRepresentation();
+    return result;
 }
 
 QString &EffectCondition::getName() const

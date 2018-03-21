@@ -26,6 +26,7 @@ void BottingThread::run()
     _botting = true;
     _bot->setState(BotState::STANDING);
     _bot->useSkills();
+    auto &data = _bot->getDataManager();
     while(_botting)
     {
         MobRepresentation mob;
@@ -37,11 +38,15 @@ void BottingThread::run()
         {
             mob = _bot->focusNextMob(10000.0, false);
         }
-        qDebug() << "1new mob address = " << (LPVOID)mob.address;
+        qDebug() << "new mob address = " << (LPVOID)mob.address;
         if(mob.id == 0)
         {
             msleep(200);
             continue;
+        }
+        if(data.getDistanceToMob(mob) > 1000.0f)
+        {
+            _bot->forceMoveTo(mob.x, mob.y, 400.0f);
         }
         while(true)
         {
@@ -54,7 +59,7 @@ void BottingThread::run()
             if(_bot->isDead(mob.address) == l2ipc::Command::REPLY_YES)
             {
                 qDebug() << "mob dead, address = " << (LPVOID)mob.address;
-                _bot->waitForRefreshed();
+                _bot->getDataManager().waitForRefreshed();
                 _bot->setState(BotState::PICKINGUP);
                 _bot->useSkills();
 

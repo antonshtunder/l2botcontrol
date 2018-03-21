@@ -30,12 +30,13 @@ void LineageMapController::drawMap(QRectF drawingArea, double pixelsPerUnit, dou
     _ppu = pixelsPerUnit;
     _sf = scaleFactor;
     _painter = painter;
-    _l2r = instance->l2representation;
+    _l2r = instance->getDataManager().lockRepresentation();
 
     drawMobs();
     drawCharacter();
     drawItems();
     drawNodes();
+    instance->getDataManager().unlockRepresentation();
 }
 
 void LineageMapController::mousePressed(QMouseEvent *event, QRectF area)
@@ -69,7 +70,7 @@ void LineageMapController::drawCharacter()
     _painter->setBrush(Qt::white);
     _painter->setPen(Qt::yellow);
 
-    auto pos = translateCoordinates({_l2r.character.x, _l2r.character.y});
+    auto pos = translateCoordinates({_l2r->character.x, _l2r->character.y});
     if(checkIfContains(pos))
     {
         drawSquareInstance(pos);
@@ -105,8 +106,8 @@ void LineageMapController::clearNodes()
 void LineageMapController::drawMobs()
 {
     _painter->setBrush(Qt::NoBrush);
-    auto charZ = _l2r.character.z;
-    for(auto mobRep : _l2r.mobs)
+    auto charZ = _l2r->character.z;
+    for(auto mobRep : _l2r->mobs)
     {
         switch(mobRep.mobType)
         {
@@ -144,10 +145,10 @@ void LineageMapController::drawMobs()
 
 void LineageMapController::drawItems()
 {
-    auto charZ = _l2r.character.z;
+    auto charZ = _l2r->character.z;
     _painter->setPen(Qt::blue);
     QColor defColor = QColor::fromRgb(108, 209, 41);
-    for(auto droppedItemRep : _l2r.droppedItems)
+    for(auto droppedItemRep : _l2r->droppedItems)
     {
         if(droppedItemRep.typeID == 57)
         {
@@ -227,26 +228,29 @@ void LineageMapController::mouseAction(QMouseEvent *event, QRectF &area)
     auto instance = BotManager::instance()->getCurrentBotInstance();
     if(instance == 0 || !instance->isInGame())
         return;
-    _l2r = instance->l2representation;
+    auto &dataManager = instance->getDataManager();
+    _l2r = dataManager.lockRepresentation();
     auto mouseLoc = area.topLeft() + event->localPos();
-    for(auto mob : _l2r.mobs)
+    for(auto mob : _l2r->mobs)
     {
         if(checkIfPressed(mouseLoc, {mob.x, mob.y}, SQUARE_SIZE, SQUARE_OFFSET))
         {
             qDebug() << "mob type id = " << mob.typeID;
             instance->stopBotting();
             instance->performActionOn(mob.id, mob.address, Representations::MOB);
+            dataManager.unlockRepresentation();
             return;
         }
     }
 
-    for(auto item : _l2r.droppedItems)
+    for(auto item : _l2r->droppedItems)
     {
         if(checkIfPressed(mouseLoc, {item.x, item.y}, ROUND_SIZE, ROUND_OFFSET))
         {
             qDebug() << "item type id = " << item.typeID;
             instance->stopBotting();
             instance->performActionOn(item.id, item.address, Representations::DROPPED_ITEM);
+            dataManager.unlockRepresentation();
             return;
         }
     }
@@ -254,7 +258,8 @@ void LineageMapController::mouseAction(QMouseEvent *event, QRectF &area)
     auto point = translateMapToGame(mouseLoc, _sf, _ppu);
     instance->moveTo(point.x(), point.y());
     qDebug() << point;
-    qDebug() << InstanceInfoBank::instance()->getCellHeight(point.x(), point.y(), _l2r.character.z);
+    qDebug() << InstanceInfoBank::instance()->getCellHeight(point.x(), point.y(), _l2r->character.z);
+    dataManager.unlockRepresentation();
 }
 
 void LineageMapController::addNode(QMouseEvent *event, QRectF &area)

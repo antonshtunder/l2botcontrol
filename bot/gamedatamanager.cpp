@@ -7,8 +7,7 @@
 
 using namespace std;
 
-GameDataManager::GameDataManager(BotInstance *botInstance):
-    _botInstance(botInstance)
+GameDataManager::GameDataManager()
 {
 
 }
@@ -84,13 +83,28 @@ void GameDataManager::waitForRefreshed()
     _mutex.unlock();
 }
 
-LineageRepresentation &GameDataManager::lockRepresentation()
+LineageRepresentation *GameDataManager::lockRepresentation()
 {
+    static DWORD calledFrom;
+    /*__asm
+    {
+        mov eax, dword ptr ss:[ebp + 0x4];
+        mov calledFrom, eax;
+    }
+    qDebug() << "l " << (LPVOID)calledFrom;*/
     _representationMutex.lock();
+    return &l2representation;
 }
 
 void GameDataManager::unlockRepresentation()
 {
+    static DWORD calledFrom;
+    /*__asm
+    {
+        mov eax, dword ptr ss:[ebp + 0x4];
+        mov calledFrom, eax;
+    }
+    qDebug() << "u " << (LPVOID)calledFrom;*/
     _representationMutex.unlock();
 }
 
@@ -98,10 +112,10 @@ std::vector<DroppedItemRepresentation> GameDataManager::getItemsInRadius(QPointF
 {
     vector<DroppedItemRepresentation> result;
     auto representation = lockRepresentation();
-    auto &items = representation.droppedItems;
+    auto &items = representation->droppedItems;
     for(auto item : items)
     {
-        if(qAbs(item.z - representation.character.z) > 250.0f)
+        if(qAbs(item.z - representation->character.z) > 250.0f)
         {
             continue;
         }
@@ -126,16 +140,16 @@ MobRepresentation GameDataManager::getCurrentTarget()
 {
     auto representation = lockRepresentation();
 
-    if(representation.character.targetModelAddress == 0)
+    if(representation->character.targetModelAddress == 0)
     {
         unlockRepresentation();
         return makeInvalidMob();
     }
 
-    auto &mobs = representation.mobs;
+    auto &mobs = representation->mobs;
     for(auto mob : mobs)
     {
-        if(mob.modelAddress == representation.character.targetModelAddress)
+        if(mob.modelAddress == representation->character.targetModelAddress)
         {
             unlockRepresentation();
             return mob;
@@ -145,10 +159,20 @@ MobRepresentation GameDataManager::getCurrentTarget()
     return makeInvalidMob();
 }
 
+float GameDataManager::getDistanceToMob(MobRepresentation &mob)
+{
+    return getDistance({mob.x, mob.y}, getPlayerXY());
+}
+
+QPointF GameDataManager::getPlayerXY()
+{
+    return {l2representation.character.x, l2representation.character.y};
+}
+
 MobRepresentation GameDataManager::getMobWithID(DWORD id)
 {
     auto representation = lockRepresentation();
-    auto &mobs = representation.mobs;
+    auto &mobs = representation->mobs;
     for(auto mob : mobs)
     {
         if(mob.id == id)

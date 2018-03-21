@@ -10,12 +10,7 @@ SBot::SBot(BotInstance *botInstance, QObject *parent):
 
 void SBot::moveTo(float x, float y)
 {
-    QPointF moveToLoc(x, y);
-    _bot->moveTo(x, y);
-    while(getDistance(moveToLoc, {_bot->l2representation.character.x, _bot->l2representation.character.y}) > 100.0f)
-    {
-        Sleep(50);
-    }
+    _bot->forceMoveTo(x, y, 100.0f);
 }
 
 void SBot::npcChat(int index)

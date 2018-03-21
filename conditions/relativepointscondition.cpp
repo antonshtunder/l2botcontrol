@@ -18,7 +18,9 @@ RelativePointsCondition::RelativePointsCondition(BotInstance *botInstance, Condi
 
 bool RelativePointsCondition::test()
 {
-    auto player = _botInstance->l2representation.character;
+    auto l2representation = _botInstance->getDataManager().lockRepresentation();
+    auto player = l2representation->character;
+    _botInstance->getDataManager().unlockRepresentation();
     switch(_type)
     {
     case Conditions::PLAYER_HP_MORE_RELATIVE:

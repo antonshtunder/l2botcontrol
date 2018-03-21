@@ -22,8 +22,10 @@ EffectList::~EffectList()
 void EffectList::update(BotInstance *botInstance)
 {
     _botInstance = botInstance;
-    updateWidgets(_playerEffectWidgets, ui->gbPlayerEffects, _playerEffectWidgetLayout, _botInstance->l2representation.playerEffects);
-    updateWidgets(_targetEffectWidgets, ui->gbTargetEffects, _targetEffectWidgetLayout, _botInstance->l2representation.targetEffects);
+    auto l2representation = _botInstance->getDataManager().lockRepresentation();
+    updateWidgets(_playerEffectWidgets, ui->gbPlayerEffects, _playerEffectWidgetLayout, l2representation->playerEffects);
+    updateWidgets(_targetEffectWidgets, ui->gbTargetEffects, _targetEffectWidgetLayout, l2representation->targetEffects);
+    _botInstance->getDataManager().unlockRepresentation();
 }
 
 void EffectList::updateWidgets(QVector<EffectWidget *> &_effectWidgets, QGroupBox *gb,

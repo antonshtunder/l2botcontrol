@@ -37,10 +37,7 @@ public:
     void initCommandPipe(HANDLE pipe);
     void initDataManagmentPipe(HANDLE pipe);
     void refreshData();
-    void waitForRefreshed();
     DWORD getPID();
-    void lockRepresentation();
-    void unlockRepresentation();
 
     l2ipc::Command performActionOn(DWORD instanceID, DWORD instanceAddress, Representations instanceType);
     l2ipc::Command attack();
@@ -49,15 +46,16 @@ public:
     void pickup();
     bool useSkill(DWORD id);
     void useSkills();
+    void useItem(DWORD id);
     void assist();
     void moveTo(float x, float y);
+    void forceMoveTo(float x, float y, float radius);
     void npcChat(DWORD index);
     void acceptAction();
     void speakTo(int npcId);
     MobRepresentation assist(const QString &name);
 
     void alert();
-    std::vector<DroppedItemRepresentation> getItemsInRadius(QPointF center, double radius);
 
     MobRepresentation focusNextMob(double radius, bool ignoreHP, bool ignoreArea = false);
     MobRepresentation getMobWithID(DWORD id);
@@ -78,12 +76,10 @@ public:
     void updateWidgets();
     QString name;
 
-    LineageRepresentation l2representation;
-
-    MobRepresentation makeInvalidMob();
-
     BotState getState() const;
     void setState(const BotState &state);
+
+    GameDataManager &getDataManager();
 
 private:
     HANDLE _commandPipe;
@@ -99,6 +95,7 @@ private:
 
     QTimer *_pipeTestTimer;
     Configuration _configuration;
+    GameDataManager _dataManager;
 
     bool _inGame = false;
     bool _refreshed = true;

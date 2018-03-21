@@ -38,7 +38,7 @@ void SkillWidget::mousePressEvent(QMouseEvent *event)
     }
     else if(event->buttons() == Qt::RightButton)
     {
-        qDebug() << _botInstance->l2representation.character.hp;
+        qDebug() << _botInstance->getDataManager().l2representation.character.hp;
         SkillUsageDialog suDialog(_botInstance->getConfiguration().getSkillUsage(_skill), this);
         suDialog.exec();
     }

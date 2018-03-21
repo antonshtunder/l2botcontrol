@@ -10,6 +10,7 @@ SkillListWidget::SkillListWidget(QWidget *parent) :
     ui(new Ui::SkillListWidget)
 {
     ui->setupUi(this);
+    _resizeTimer.setSingleShot(true);
     connect(&_resizeTimer, SIGNAL(timeout()), SLOT(resizeEnded()));
 }
 
@@ -27,7 +28,9 @@ void SkillListWidget::update(BotInstance *botInstance)
     if(_botInstance == NULL)
         return;
 
-    int activeSkillSizeDifference = _skillWidgets.size() - _botInstance->l2representation.activeSkills.size();
+    auto l2representation = _botInstance->getDataManager().lockRepresentation();
+
+    int activeSkillSizeDifference = _skillWidgets.size() - l2representation->activeSkills.size();
     if(activeSkillSizeDifference < 0)
     {
         for(int i = 0; i < qAbs(activeSkillSizeDifference); ++i)
@@ -48,9 +51,10 @@ void SkillListWidget::update(BotInstance *botInstance)
     int rowNum = width() / ICON_SIZE;
     for(int i = 0; i < _skillWidgets.size(); ++i)
     {
-        _skillWidgets.at(i)->update(_botInstance->l2representation.activeSkills.at(i), _botInstance);
+        _skillWidgets.at(i)->update(l2representation->activeSkills.at(i), _botInstance);
         _skillWidgetLayout->addWidget(_skillWidgets.at(i), i / rowNum, i % rowNum);
     }
+    _botInstance->getDataManager().unlockRepresentation();
 }
 
 void SkillListWidget::clearLayout()
@@ -74,5 +78,6 @@ void SkillListWidget::mouseMoveEvent(QMouseEvent *event)
 
 void SkillListWidget::resizeEnded()
 {
+    qDebug() << "resize ended";
     update(_botInstance);
 }

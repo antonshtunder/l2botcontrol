@@ -51,7 +51,7 @@ private:
     double _ppu;
     double _sf;
     QPainter *_painter;
-    LineageRepresentation _l2r;
+    LineageRepresentation *_l2r;
     MapAction _action;
 
     static LineageMapController *_instance;

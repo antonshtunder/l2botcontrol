@@ -13,17 +13,21 @@ EffectDurationCondition::EffectDurationCondition(BotInstance *botInstance, Condi
 
 bool EffectDurationCondition::test()
 {
-    auto effects = _botInstance->l2representation.playerEffects;
+    auto &dataManager = _botInstance->getDataManager();
+    auto l2representation = dataManager.lockRepresentation();
+    auto &effects = l2representation->playerEffects;
     for(auto effect : effects)
     {
         if(effect.id == _id)
         {
+            dataManager.unlockRepresentation();
             if(effect.remainingTime <= _timeLeft)
                 return true;
             else
                 return false;
         }
     }
+    dataManager.unlockRepresentation();
     return true;
 }
 

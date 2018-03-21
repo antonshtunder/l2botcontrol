@@ -1,7 +1,10 @@
 #ifndef GAMEDATAMANAGER_H
 #define GAMEDATAMANAGER_H
 
-#include "bot/botinstance.h"
+#include <Windows.h>
+#include "lineagerepresentation.h"
+#include <QString>
+#include "misc/utils.h"
 
 class GameDataManager
 {
@@ -12,7 +15,7 @@ public:
     void initDataManagmentPipe(HANDLE pipe);
     void refreshData();
     void waitForRefreshed();
-    LineageRepresentation &lockRepresentation();
+    LineageRepresentation *lockRepresentation();
     void unlockRepresentation();
 
     std::vector<DroppedItemRepresentation> getItemsInRadius(QPointF loc, double radius);
@@ -20,6 +23,9 @@ public:
     MobRepresentation findNearestMonsterInRadius(double radius, bool ignoreHP, bool ignoreArea = false);
     MobRepresentation getCurrentTarget();
     void focusMob(const MobRepresentation &mob);
+
+    float getDistanceToMob(MobRepresentation &mob);
+    QPointF getPlayerXY();
 
     bool isInGame();
     bool isRefreshed();

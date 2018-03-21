@@ -13,6 +13,7 @@ ActionConfigurationWidget::ActionConfigurationWidget(QWidget *parent) :
     connect(ui->btnRevert, SIGNAL(pressed()), SLOT(revertSlot()));
     connect(ui->btnAcceptAction, SIGNAL(pressed()), SLOT(acceptAction()));
     connect(ui->btnNpcChat, SIGNAL(pressed()), SLOT(npcChatSlot()));
+    connect(ui->btnTest, SIGNAL(pressed()), SLOT(testSlot()));
 }
 
 ActionConfigurationWidget::~ActionConfigurationWidget()
@@ -76,4 +77,10 @@ void ActionConfigurationWidget::npcChatSlot()
 void ActionConfigurationWidget::acceptAction()
 {
     _botInstance->acceptAction();
+}
+
+void ActionConfigurationWidget::testSlot()
+{
+    _botInstance->useItem(ui->inputTest->value());
+    //
 }

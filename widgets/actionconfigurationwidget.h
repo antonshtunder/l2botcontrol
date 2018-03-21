@@ -29,6 +29,7 @@ private slots:
     void revertSlot();
     void npcChatSlot();
     void acceptAction();
+    void testSlot();
 };
 
 #endif // ACTIONCONFIGURATIONWIDGET_H
