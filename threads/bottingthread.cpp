@@ -25,7 +25,7 @@ void BottingThread::run()
     const auto &configuration = _bot->getConfiguration();
     _botting = true;
     _bot->setState(BotState::STANDING);
-    _bot->useSkills();
+    _bot->useCommands();
     auto &data = _bot->getDataManager();
     while(_botting)
     {
@@ -55,13 +55,13 @@ void BottingThread::run()
             msleep(200);
             _bot->alert();
             _bot->setState(BotState::ATTACKING);
-            _bot->useSkills();
+            _bot->useCommands();
             if(_bot->isDead(mob.address) == l2ipc::Command::REPLY_YES)
             {
                 qDebug() << "mob dead, address = " << (LPVOID)mob.address;
                 _bot->getDataManager().waitForRefreshed();
                 _bot->setState(BotState::PICKINGUP);
-                _bot->useSkills();
+                _bot->useCommands();
 
                 if(configuration.getTargeting() == Targeting::MOB_IN_AREA)
                 {
@@ -76,7 +76,7 @@ void BottingThread::run()
                 _bot->pickupInRadius(PICKUP_RADIUS);
 
                 _bot->setState(BotState::STANDING);
-                _bot->useSkills();
+                _bot->useCommands();
                 break;
             }
             if(!_bot->doesHasTarget())

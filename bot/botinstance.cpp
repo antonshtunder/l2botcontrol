@@ -132,19 +132,40 @@ bool BotInstance::useSkill(DWORD id)
     return true;
 }
 
-void BotInstance::useSkills()
+void BotInstance::useCommands()
 {
     for(auto skillUsage : _configuration._skillUsages.values())
     {
         skillUsage->use();
     }
+    for(auto itemUsage : _configuration._itemUsages)
+    {
+        itemUsage->use();
+    }
 }
 
 void BotInstance::useItem(DWORD id)
 {
+    ItemRepresentation usedItem;
+    auto representation = _dataManager.lockRepresentation();
+    for(auto item : representation->items)
+    {
+        if(id == item.typeID)
+        {
+            usedItem = item;
+            break;
+        }
+    }
+    _dataManager.unlockRepresentation();
+
+    if(usedItem.id == 0)
+    {
+        return;
+    }
+
     DWORD command[2];
     command[0] = l2ipc::Command::USE_ITEM;
-    command[1] = id;
+    command[1] = usedItem.id;
     l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
 }
 

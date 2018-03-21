@@ -3,6 +3,8 @@
 
 #include <QString>
 #include <QJSonObject>
+#include <QComboBox>
+#include <Windows.h>
 
 class BotInstance;
 class QWidget;
@@ -54,6 +56,9 @@ public:
     QWidget *lastWidget() const;
 
     static QString &getName(Conditions type);
+
+    static void fillConditionComboBox(QComboBox *cb);
+    static Condition *processConditionComboBox(QComboBox *cb, BotInstance *botInstance, DWORD id);
 
 protected:
     BotInstance *_botInstance = NULL;

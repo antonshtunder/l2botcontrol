@@ -45,7 +45,7 @@ public:
     void pickupInRadius(double radius);
     void pickup();
     bool useSkill(DWORD id);
-    void useSkills();
+    void useCommands();
     void useItem(DWORD id);
     void assist();
     void moveTo(float x, float y);

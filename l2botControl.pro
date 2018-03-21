@@ -69,7 +69,13 @@ SOURCES += \
     scripting/scriptingengine.cpp \
     scripting/sconsole.cpp \
     scripting/scriptingthread.cpp \
-    bot/gamedatamanager.cpp
+    bot/gamedatamanager.cpp \
+    widgets/itemswidget.cpp \
+    instanceinfo/iteminfo.cpp \
+    instanceinfo/instanceinfo.cpp \
+    botcommands/itemusage.cpp \
+    botcommands/usage.cpp \
+    dialogs/additemusagedialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -116,7 +122,13 @@ HEADERS += \
     scripting/scriptingengine.h \
     scripting/sconsole.h \
     scripting/scriptingthread.h \
-    bot/gamedatamanager.h
+    bot/gamedatamanager.h \
+    widgets/itemswidget.h \
+    instanceinfo/iteminfo.h \
+    instanceinfo/instanceinfo.h \
+    botcommands/itemusage.h \
+    botcommands/usage.h \
+    dialogs/additemusagedialog.h
 
 FORMS += \
         mainwindow.ui \
@@ -132,7 +144,9 @@ FORMS += \
     widgets/conditionwidget.ui \
     widgets/mapcontrolswidget.ui \
     widgets/actionconfigurationwidget.ui \
-    widgets/scriptswidget.ui
+    widgets/scriptswidget.ui \
+    widgets/itemswidget.ui \
+    dialogs/additemusagedialog.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/release/ -llineageIPC
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/debug/ -llineageIPC

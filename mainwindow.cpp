@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _mapWidget = new MapWidget;
     _mapControlsWidget = new MapControlsWidget;
     _scriptsWgt = new ScriptsWidget;
+    _itemsWidget = new ItemsWidget;
 
     QVBoxLayout *mapTabLayout = new QVBoxLayout;
     mapTabLayout->setSpacing(0);
@@ -62,8 +63,8 @@ MainWindow::MainWindow(QWidget *parent) :
     _actionConfWgt = new ActionConfigurationWidget(ui->actionsTab);
 
     ui->effectsTab->layout()->addWidget(_effectList);
-
     ui->scriptsTab->layout()->addWidget(_scriptsWgt);
+    ui->itemsTab->layout()->addWidget(_itemsWidget);
 
     connectSlotsAndSignals();
 
@@ -129,6 +130,7 @@ void MainWindow::updateUI()
         auto currentBotInstance = BotManager::instance()->getCurrentBotInstance();
         _skillListWidget->update(currentBotInstance);
         _effectList->update(currentBotInstance);
+        _itemsWidget->update(currentBotInstance);
         _actionConfWgt->update(currentBotInstance, false);
         _mapWidget->updateInfo();
     }

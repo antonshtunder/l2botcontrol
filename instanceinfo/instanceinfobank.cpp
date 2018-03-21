@@ -14,6 +14,16 @@ SkillInfo &InstanceInfoBank::getSkillInfo(DWORD id)
     return _skillInfoBank[id];
 }
 
+ItemInfo &InstanceInfoBank::getItemInfo(DWORD id)
+{
+    if(_itemInfoBank.count(id) == 0)
+    {
+        ItemInfo itemInfo(id);
+        _itemInfoBank[id] = itemInfo;
+    }
+    return _itemInfoBank[id];
+}
+
 float InstanceInfoBank::getCellHeight(float x, float y, float z)
 {
     float posX = x - GEO_LEFT_BORDER;

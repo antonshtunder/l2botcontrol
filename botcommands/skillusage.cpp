@@ -9,7 +9,7 @@
 using namespace std;
 
 SkillUsage::SkillUsage(BotInstance *botInstance, SkillRepresentation skill):
-    _botInstance(botInstance),
+    Usage(botInstance),
     _skill(skill)
 {
     qDebug() << "SKILLUSAGE(b)";
@@ -30,16 +30,6 @@ SkillUsage::SkillUsage(const SkillUsage &skillUsage)
     _botInstance = skillUsage._botInstance;
     _conditions = skillUsage._conditions;
     _skill = skillUsage._skill;
-}
-
-void SkillUsage::setEnabled(bool enabled)
-{
-    _enabled = enabled;
-}
-
-bool SkillUsage::isEnabled() const
-{
-    return _enabled;
 }
 
 void SkillUsage::update(SkillRepresentation skillRep)
@@ -89,21 +79,6 @@ void SkillUsage::use()
 DWORD SkillUsage::getId() const
 {
     return _skill.id;
-}
-
-QList<std::shared_ptr<Condition> > &SkillUsage::getConditions()
-{
-    return _conditions;
-}
-
-void SkillUsage::addCondition(Condition *condition)
-{
-    _conditions.append(std::shared_ptr<Condition>(condition));
-}
-
-BotInstance *SkillUsage::getBotInstance()
-{
-    return _botInstance;
 }
 
 QJsonObject SkillUsage::createJsonRepresentation()

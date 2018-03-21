@@ -143,3 +143,8 @@ void Configuration::setAssistPlayerName(const QString &assistPlayerName)
 {
     _assistPlayerName = assistPlayerName;
 }
+
+QList<std::shared_ptr<ItemUsage> > &Configuration::getItemUsages()
+{
+    return _itemUsages;
+}

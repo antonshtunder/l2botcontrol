@@ -6,6 +6,7 @@
 #include <QPointF>
 #include <Windows.h>
 #include <memory>
+#include <botcommands/itemusage.h>
 #include "botcommands/skillusage.h"
 
 enum Targeting
@@ -21,6 +22,7 @@ public:
     Configuration(BotInstance *botInstance);
 
     SkillUsage *getSkillUsage(SkillRepresentation &skillRepresentation);
+    ItemUsage *getItemUsage(ItemRepresentation &itemRepresentation);
     QList<QPointF> &getNodes();
     void addNode(const QPointF &node);
 
@@ -35,8 +37,11 @@ public:
     QString getAssistPlayerName() const;
     void setAssistPlayerName(const QString &assistPlayerName);
 
+    QList<std::shared_ptr<ItemUsage>> &getItemUsages();
+
 private:
     QMap<DWORD, std::shared_ptr<SkillUsage>> _skillUsages;
+    QList<std::shared_ptr<ItemUsage>> _itemUsages;
     QList<QPointF> _nodes;
     BotInstance *_botInstance;
     Targeting _targeting;
