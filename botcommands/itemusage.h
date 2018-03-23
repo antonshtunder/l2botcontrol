@@ -4,7 +4,7 @@
 #include "usage.h"
 #include "itemrepresentation.h"
 
-class ItemUsage : Usage
+class ItemUsage : public Usage
 {
 public:
     ItemUsage(BotInstance *_instance, ItemRepresentation &item);
@@ -17,9 +17,11 @@ public:
     const QString &getName();
     void setName(const QString &name);
 
+    void setItem(DWORD id);
+
 private:
     ItemRepresentation _item;
     QString _name;
 };
 
-#endif // ITEMUSAGE_H
+#endif // ITEMUSAGE_Hc

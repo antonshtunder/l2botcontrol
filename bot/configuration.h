@@ -39,6 +39,9 @@ public:
 
     QList<std::shared_ptr<ItemUsage>> &getItemUsages();
 
+    bool getAttackingEnabled() const;
+    void setAttackingEnabled(bool attackingEnabled);
+
 private:
     QMap<DWORD, std::shared_ptr<SkillUsage>> _skillUsages;
     QList<std::shared_ptr<ItemUsage>> _itemUsages;
@@ -46,6 +49,8 @@ private:
     BotInstance *_botInstance;
     Targeting _targeting;
     QString _assistPlayerName;
+
+    bool _attackingEnabled;
 };
 
 #endif // CONFIGURATION_H

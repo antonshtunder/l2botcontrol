@@ -69,7 +69,7 @@ l2ipc::Command BotInstance::performActionOn(DWORD instanceID, DWORD instanceAddr
     command[1] = instanceID;
     command[2] = instanceAddress;
     command[3] = instanceType;
-    auto reply = l2ipc::sendCommand(_commandPipe, command, sizeof(command));
+    auto reply = sendCommand(command, sizeof(command));
     return reply;
 }
 
@@ -78,7 +78,7 @@ l2ipc::Command BotInstance::isDead(DWORD mobAddress)
     DWORD command[2];
     command[0] = l2ipc::Command::IS_MOB_DEAD;
     command[1] = mobAddress;
-    return l2ipc::sendCommand(_commandPipe, command, sizeof(command));
+    return sendCommand(command, sizeof(command));
 }
 
 void BotInstance::pickupInRadius(double radius)
@@ -113,7 +113,7 @@ void BotInstance::pickup()
     DWORD command[2];
     command[0] = l2ipc::Command::DO_ACTION;
     command[1] = 5;
-    l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
+    sendCommand(&command, sizeof(command));
 }
 
 bool BotInstance::useSkill(DWORD id)
@@ -122,7 +122,7 @@ bool BotInstance::useSkill(DWORD id)
     DWORD command[2];
     command[0] = l2ipc::Command::USE_SKILL;
     command[1] = id;
-    auto reply = l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
+    auto reply = sendCommand(&command, sizeof(command));
     _pipeUsed = false;
     if(reply == l2ipc::Command::REPLY_NO)
     {
@@ -134,6 +134,10 @@ bool BotInstance::useSkill(DWORD id)
 
 void BotInstance::useCommands()
 {
+    if(_state == BotState::ATTACKING && _configuration.getAttackingEnabled())
+    {
+        attack();
+    }
     for(auto skillUsage : _configuration._skillUsages.values())
     {
         skillUsage->use();
@@ -166,13 +170,13 @@ void BotInstance::useItem(DWORD id)
     DWORD command[2];
     command[0] = l2ipc::Command::USE_ITEM;
     command[1] = usedItem.id;
-    l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
+    sendCommand(&command, sizeof(command));
 }
 
 void BotInstance::assist()
 {
     DWORD command = l2ipc::Command::ASSIST;
-    l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
+    sendCommand(&command, sizeof(command));
 }
 
 void BotInstance::moveTo(float x, float y)
@@ -185,11 +189,12 @@ void BotInstance::moveTo(float x, float y)
     memcpy(&(command[1]), &x, sizeof(DWORD));
     memcpy(&(command[2]), &y, sizeof(DWORD));
     memcpy(&(command[3]), &z, sizeof(DWORD));
-    l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
+    sendCommand(&command, sizeof(command));
 }
 
 void BotInstance::forceMoveTo(float x, float y, float radius)
 {
+    qDebug() << "force move";
     QtConcurrent::run([this, x, y, radius]{
         QPointF moveToLoc(x, y);
         moveTo(x, y);
@@ -207,14 +212,14 @@ void BotInstance::npcChat(DWORD index)
     DWORD command[2];
     command[0] = l2ipc::Command::NPC_CHAT;
     command[1] = index;
-    l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
+    sendCommand(&command, sizeof(command));
 }
 
 void BotInstance::acceptAction()
 {
     DWORD command;
     command = l2ipc::Command::ACCEPT_ACTION;
-    l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
+    sendCommand(&command, sizeof(command));
 }
 
 void BotInstance::speakTo(int npcId)
@@ -222,7 +227,7 @@ void BotInstance::speakTo(int npcId)
     DWORD command[2];
     command[0] = l2ipc::Command::SPEAK_TO;
     command[1] = npcId;
-    l2ipc::sendCommand(_commandPipe, &command, sizeof(command));
+    sendCommand(&command, sizeof(command));
 }
 
 MobRepresentation BotInstance::assist(const QString &name)
@@ -271,7 +276,8 @@ void BotInstance::alert()
             if(distance < radius && qAbs(representation->character.z - mob.z) < 250.0)
             {
                 mobName = QString::fromUtf16(mob.name);
-                if(name != mobName && mobName != QString("GroznijKarlik") && mobName != QString("Opezdal"))
+                if((name != mobName && mobName != QString("GroznijKarlik") && mobName != QString("Opezdal")) ||
+                        representation->character.cp < representation->character.maxCp)
                 {
                     qDebug() << distance;
                     qDebug() << mobName;
@@ -298,6 +304,18 @@ void BotInstance::setState(const BotState &state)
 GameDataManager &BotInstance::getDataManager()
 {
     return _dataManager;
+}
+
+l2ipc::Command BotInstance::sendCommand(LPVOID command, size_t size)
+{
+    if(!_commandPipeMutex.tryLock(2000))
+        return l2ipc::Command::REPLY_NO;
+    _pipeUsed = true;
+    //qDebug() << "sendCommand " << reinterpret_cast<LPDWORD>(command)[0];
+    auto reply = l2ipc::sendCommand(_commandPipe, command, size);
+    _pipeUsed = false;
+    _commandPipeMutex.unlock();
+    return reply;
 }
 
 void BotInstance::startBotting()
@@ -385,6 +403,7 @@ MobRepresentation BotInstance::focusNextMob(double radius, bool ignoreHP, bool i
     mob = findNearestMonsterInRadius(radius, ignoreHP, ignoreArea);
     if(mob.id != 0)
     {
+        InstanceInfoBank::instance()->getNpcInfo(mob.typeID);
         focusMob(mob);
     }
     return mob;
@@ -420,23 +439,60 @@ bool BotInstance::doesHasTarget()
     return _dataManager.doesHasTarget();
 }
 
+bool BotInstance::checkIfAttacking()
+{
+    if(_attackCheck != 0)
+    {
+        if(QDateTime::currentMSecsSinceEpoch() - _attackCheck > 1000)
+        {
+            auto mob = _dataManager.getCurrentTarget();
+            if(mob.id == 0)
+                return true;
+            _attackCheck = 0;
+            if(mob.hp < _lastHp)
+                return true;
+            if(_lastLoc != QPointF(_dataManager.l2representation.character.x, _dataManager.l2representation.character.y))
+            {
+                return true;
+            }
+            qDebug() << "not attacking";
+            return false;
+        }
+    }
+    else
+    {
+        auto mob = _dataManager.getCurrentTarget();
+        _lastHp = mob.hp;
+        _lastLoc = {_dataManager.l2representation.character.x, _dataManager.l2representation.character.y};
+        _attackCheck = QDateTime::currentMSecsSinceEpoch();
+        return true;
+    }
+}
+
+bool BotInstance::isDead()
+{
+    return _dataManager.l2representation.character.hp == 0;
+}
+
 l2ipc::Command BotInstance::attack()
 {
     DWORD command = l2ipc::Command::ATTACK;
-    auto reply = l2ipc::sendCommand(_commandPipe, reinterpret_cast<LPBYTE>(&command), sizeof(command));
+    auto reply = sendCommand(&command, sizeof(command));
     return reply;
 }
 
 void BotInstance::testClient()
 {
-    if(_pipeUsed)
+    if(!_commandPipeMutex.tryLock(0))
         return;
-
     DWORD command = l2ipc::Command::TEST;
-    if(WriteFile(_commandPipe, reinterpret_cast<LPBYTE>(&command), 4, NULL, NULL) == FALSE)
+    if(l2ipc::sendCommand(_commandPipe, &command, sizeof(command)) != l2ipc::Command::REPLY_YES)
     {
+        _commandPipeMutex.unlock();
         emit clientDisconnected(this);
+        return;
     }
+    _commandPipeMutex.unlock();
 }
 
 BotInstanceWidget* BotInstance::getWidget()

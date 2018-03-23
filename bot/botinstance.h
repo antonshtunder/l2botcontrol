@@ -69,6 +69,8 @@ public:
     bool isDecreasedPerformance();
     bool isBotting();
     bool doesHasTarget();
+    bool checkIfAttacking();
+    bool isDead();
 
     BotInstanceWidget* getWidget();
     Configuration &getConfiguration();
@@ -82,6 +84,8 @@ public:
     GameDataManager &getDataManager();
 
 private:
+    l2ipc::Command sendCommand(LPVOID command, size_t size);
+
     HANDLE _commandPipe;
     HANDLE _dataManagmentPipe;
     HANDLE _sharedMemoryHandle;
@@ -106,6 +110,11 @@ private:
     QMutex _mutex;
     QMutex _representationMutex;
     QMutex _actionMutex;
+    QMutex _commandPipeMutex;
+
+    qint64 _attackCheck = 0;
+    DWORD _lastHp;
+    QPointF _lastLoc;
 
 public slots:
     void startBotting();

@@ -69,7 +69,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connectSlotsAndSignals();
 
     _testClientsTimer.start(200);
-    _refreshDataTimer.start(200);
+    _refreshDataTimer.start(100);
 }
 
 MainWindow *MainWindow::instance()
@@ -130,7 +130,7 @@ void MainWindow::updateUI()
         auto currentBotInstance = BotManager::instance()->getCurrentBotInstance();
         _skillListWidget->update(currentBotInstance);
         _effectList->update(currentBotInstance);
-        _itemsWidget->update(currentBotInstance);
+        _itemsWidget->update(currentBotInstance, false);
         _actionConfWgt->update(currentBotInstance, false);
         _mapWidget->updateInfo();
     }

@@ -6,8 +6,9 @@
 #include "conditions/effectcondition.h"
 #include "conditions/effectdurationcondition.h"
 
-ItemUsage::ItemUsage(BotInstance *botInstance):
-    Usage(botInstance)
+ItemUsage::ItemUsage(BotInstance *botInstance, ItemRepresentation &item):
+    Usage(botInstance),
+    _item(item)
 {
     _lastUse = 0;
 }
@@ -29,17 +30,21 @@ void ItemUsage::use()
             return;
     }
 
+
     auto itemInfo = InstanceInfoBank::instance()->getItemInfo(_item.typeID);
     auto currTime = QDateTime::currentMSecsSinceEpoch();
     if(currTime - _lastUse > itemInfo.getCooldown())
     {
+        qDebug() << "item used";
+        qDebug() << "cooldown" << itemInfo.getCooldown();
         _lastUse = QDateTime::currentMSecsSinceEpoch();
+        _botInstance->useItem(_item.typeID);
     }
 }
 
 DWORD ItemUsage::getId() const
 {
-    return _item.id;
+    return _item.typeID;
 }
 
 QJsonObject ItemUsage::createJsonRepresentation()
@@ -55,4 +60,9 @@ const QString &ItemUsage::getName()
 void ItemUsage::setName(const QString &name)
 {
     _name = name;
+}
+
+void ItemUsage::setItem(DWORD id)
+{
+    _item.typeID = id;
 }

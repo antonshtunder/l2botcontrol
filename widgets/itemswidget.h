@@ -17,7 +17,11 @@ public:
     explicit ItemsWidget(QWidget *parent = 0);
     ~ItemsWidget();
 
-    void update(BotInstance *botInstance);
+public slots:
+    void update(BotInstance *botInstance, bool force = true);
+
+private slots:
+    void addUsage();
 
 private:
     Ui::ItemsWidget *ui;

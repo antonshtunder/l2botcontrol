@@ -44,7 +44,7 @@ ItemInfo::ItemInfo(DWORD id)
                     {
                     case QXmlStreamReader::StartElement:
                         element = xmlReader.attributes().value("", "name").toString();
-                        if(element == "reuseDelay")
+                        if(element == "reuse_delay")
                             cooldown = xmlReader.attributes().value("", "val").toInt();
                         else if(element == "icon")
                         {

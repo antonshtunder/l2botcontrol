@@ -20,7 +20,7 @@ public:
     static QString &getName(Conditions type);
 
 private:
-    float _val;
+    double _val;
 };
 
 #endif // RELATIVEPOINTSCONDITION_H

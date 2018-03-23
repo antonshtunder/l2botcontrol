@@ -24,6 +24,17 @@ ItemInfo &InstanceInfoBank::getItemInfo(DWORD id)
     return _itemInfoBank[id];
 }
 
+NpcInfo &InstanceInfoBank::getNpcInfo(DWORD id)
+{
+    if(_npcInfoBank.count(id) == 0)
+    {
+        qDebug() << "new npc info";
+        NpcInfo npcInfo(id);
+        _npcInfoBank[id] = npcInfo;
+    }
+    return _npcInfoBank[id];
+}
+
 float InstanceInfoBank::getCellHeight(float x, float y, float z)
 {
     float posX = x - GEO_LEFT_BORDER;

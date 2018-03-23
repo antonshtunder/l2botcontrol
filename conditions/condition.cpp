@@ -10,7 +10,7 @@
 static QString name = "Condition";
 
 Condition::Condition(BotInstance *botInstance, Conditions type):
-    botInstance(botInstance),
+    _botInstance(botInstance),
     _type(type)
 {
 

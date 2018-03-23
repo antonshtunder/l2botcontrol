@@ -13,8 +13,12 @@ class AddItemUsageDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit AddItemUsageDialog(QWidget *parent = 0);
+    explicit AddItemUsageDialog(ItemUsage *itemUsage, QWidget *parent = 0);
     ~AddItemUsageDialog();
+
+private slots:
+    void saveItemUsage();
+    void addCondition();
 
 private:
     Ui::AddItemUsageDialog *ui;

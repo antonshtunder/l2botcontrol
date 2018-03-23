@@ -14,14 +14,14 @@ class ConditionWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ConditionWidget(SkillUsage *skillUsage, Condition *condition, QWidget *parent = 0);
+    explicit ConditionWidget(Usage *usage, Condition *condition, QWidget *parent = 0);
     ~ConditionWidget();
 
     void updateCondition();
 
 private:
     Ui::ConditionWidget *ui;
-    SkillUsage *_skillUsage;
+    Usage *_usage;
     Condition *_condition;
     bool _deleted = false;
 

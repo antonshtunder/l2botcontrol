@@ -9,10 +9,10 @@ ConditionWidget::ConditionWidget(QWidget *parent) :
     ui->setupUi(this);
 }
 */
-ConditionWidget::ConditionWidget(SkillUsage *skillUsage, Condition *condition, QWidget *parent) :
+ConditionWidget::ConditionWidget(Usage *usage, Condition *condition, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ConditionWidget),
-    _skillUsage(skillUsage),
+    _usage(usage),
     _condition(condition)
 {
     ui->setupUi(this);
@@ -33,9 +33,9 @@ void ConditionWidget::updateCondition()
     if(_deleted)
     {
         qDebug() << "deleted";
-        qDebug() << _skillUsage;
+        qDebug() << _usage;
         qDebug() << _condition;
-        auto &conditions = _skillUsage->getConditions();
+        auto &conditions = _usage->getConditions();
         for(int i = 0; i < conditions.size(); ++i)
         {
             if(conditions.at(i).get() == _condition)

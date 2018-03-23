@@ -8,6 +8,7 @@ Configuration::Configuration(BotInstance *botInstance):
     _botInstance(botInstance)
 {
     _targeting = Targeting::MOB_IN_AREA;
+    _attackingEnabled = true;
 }
 
 SkillUsage *Configuration::getSkillUsage(SkillRepresentation &skillRepresentation)
@@ -147,4 +148,14 @@ void Configuration::setAssistPlayerName(const QString &assistPlayerName)
 QList<std::shared_ptr<ItemUsage> > &Configuration::getItemUsages()
 {
     return _itemUsages;
+}
+
+bool Configuration::getAttackingEnabled() const
+{
+    return _attackingEnabled;
+}
+
+void Configuration::setAttackingEnabled(bool attackingEnabled)
+{
+    _attackingEnabled = attackingEnabled;
 }

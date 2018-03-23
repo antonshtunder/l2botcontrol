@@ -4,6 +4,7 @@
 #include "geodataregion.h"
 #include "iteminfo.h"
 #include "skillinfo.h"
+#include "npcinfo.h"
 #include <Windows.h>
 #include <map>
 
@@ -14,6 +15,7 @@ public:
 
     SkillInfo &getSkillInfo(DWORD id);
     ItemInfo &getItemInfo(DWORD id);
+    NpcInfo &getNpcInfo(DWORD id);
     float getCellHeight(float x, float y, float z);
 
 private:
@@ -23,6 +25,7 @@ private:
 
     std::map<DWORD, SkillInfo> _skillInfoBank;
     std::map<DWORD, ItemInfo> _itemInfoBank;
+    std::map<DWORD, NpcInfo> _npcInfoBank;
     QMap<QString, GeodataRegion> _geodata;
 
     int lastXRegion = 0, lastYRegion = 0;

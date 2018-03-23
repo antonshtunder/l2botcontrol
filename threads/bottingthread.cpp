@@ -44,15 +44,30 @@ void BottingThread::run()
             msleep(200);
             continue;
         }
+        _bot->attack();
+        if(_bot->isDead())
+        {
+            _botting = false;
+            break;
+        }
         if(data.getDistanceToMob(mob) > 1000.0f)
         {
-            _bot->forceMoveTo(mob.x, mob.y, 400.0f);
+            _bot->moveTo(mob.x, mob.y);
         }
         while(true)
         {
             if(!_botting)
                 break;
             msleep(200);
+            if(_bot->isDead())
+            {
+                _botting = false;
+                break;
+            }
+            if(!_bot->checkIfAttacking())
+            {
+                _bot->moveTo(mob.x, mob.y);
+            }
             _bot->alert();
             _bot->setState(BotState::ATTACKING);
             _bot->useCommands();
@@ -81,7 +96,6 @@ void BottingThread::run()
             }
             if(!_bot->doesHasTarget())
                 break;
-            _bot->attack();
         }
     }
 }

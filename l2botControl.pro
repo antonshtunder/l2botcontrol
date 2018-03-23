@@ -75,7 +75,9 @@ SOURCES += \
     instanceinfo/instanceinfo.cpp \
     botcommands/itemusage.cpp \
     botcommands/usage.cpp \
-    dialogs/additemusagedialog.cpp
+    dialogs/additemusagedialog.cpp \
+    widgets/itemusagewidget.cpp \
+    instanceinfo/npcinfo.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -128,7 +130,9 @@ HEADERS += \
     instanceinfo/instanceinfo.h \
     botcommands/itemusage.h \
     botcommands/usage.h \
-    dialogs/additemusagedialog.h
+    dialogs/additemusagedialog.h \
+    widgets/itemusagewidget.h \
+    instanceinfo/npcinfo.h
 
 FORMS += \
         mainwindow.ui \
@@ -146,7 +150,8 @@ FORMS += \
     widgets/actionconfigurationwidget.ui \
     widgets/scriptswidget.ui \
     widgets/itemswidget.ui \
-    dialogs/additemusagedialog.ui
+    dialogs/additemusagedialog.ui \
+    widgets/itemusagewidget.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/release/ -llineageIPC
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Libs/build-lineageIPC-Desktop_Qt_5_9_2_MSVC2015_32bit-Debug/debug/ -llineageIPC

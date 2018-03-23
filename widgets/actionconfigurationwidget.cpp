@@ -39,6 +39,7 @@ void ActionConfigurationWidget::update(BotInstance *botInstance, bool force)
         break;
     }
     ui->txtAssistPlayerName->setText(configuration.getAssistPlayerName());
+    ui->cbAttack->setChecked(botInstance->getConfiguration().getAttackingEnabled());
 }
 
 void ActionConfigurationWidget::assist()
@@ -62,6 +63,7 @@ void ActionConfigurationWidget::updateSlot()
         configuration.setTargeting(Targeting::MOB_IN_AREA);
     }
     configuration.setAssistPlayerName(ui->txtAssistPlayerName->text());
+    configuration.setAttackingEnabled(ui->cbAttack->isChecked());
 }
 
 void ActionConfigurationWidget::revertSlot()
