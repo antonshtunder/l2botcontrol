@@ -3,12 +3,15 @@
 #include <QFile>
 #include <QDebug>
 #include <QJsonDocument>
+#include "bot/botinstance.h"
+#include "mainwindow.h"
 
 Configuration::Configuration(BotInstance *botInstance):
     _botInstance(botInstance)
 {
     _targeting = Targeting::MOB_IN_AREA;
-    _attackingEnabled = true;
+    _attack = true;
+    _pickUpItems = true;
 }
 
 SkillUsage *Configuration::getSkillUsage(SkillRepresentation &skillRepresentation)
@@ -55,6 +58,8 @@ void Configuration::saveConfiguration(QString path)
             nodes.append(nodeObj);
         }
         confJson.insert("nodes", nodes);
+        confJson.insert("attack", _attack);
+        confJson.insert("pickUpItems", _pickUpItems);
 
         jsonDoc.setObject(confJson);
         confFile.write(jsonDoc.toJson());
@@ -85,18 +90,18 @@ void Configuration::loadConfiguration(QString path)
             {
                 _skillUsages[realSkillUsage->getId()] = std::shared_ptr<SkillUsage>(realSkillUsage);
             }
-
         }
-
         auto nodes = jsonConf.value("nodes").toArray();
         if(nodes.size() > 0)
             _nodes.clear();
-
         for(auto node : nodes)
         {
             auto nodeObj = node.toObject();
             _nodes.append({nodeObj.value("x").toDouble(), nodeObj.value("y").toDouble()});
         }
+        _attack = jsonConf.value("attack").toBool();
+        _pickUpItems = jsonConf.value("pickUpItems").toBool();
+        MainWindow::instance()->updateUI(true);
     }
     else
     {
@@ -150,12 +155,37 @@ QList<std::shared_ptr<ItemUsage> > &Configuration::getItemUsages()
     return _itemUsages;
 }
 
+void Configuration::removeItemUsage(ItemUsage *itemUsage)
+{
+    for(auto usage : _itemUsages)
+    {
+        qDebug() << "a = " << itemUsage;
+        qDebug() << "b = " << usage.get();
+        if(usage.get() == itemUsage)
+        {
+            qDebug() << "item usage removed";
+            _itemUsages.removeOne(usage);
+            return;
+        }
+    }
+}
+
 bool Configuration::getAttackingEnabled() const
 {
-    return _attackingEnabled;
+    return _attack;
 }
 
 void Configuration::setAttackingEnabled(bool attackingEnabled)
 {
-    _attackingEnabled = attackingEnabled;
+    _attack = attackingEnabled;
+}
+
+bool Configuration::getPickUpItems() const
+{
+    return _pickUpItems;
+}
+
+void Configuration::setPickUpItems(bool pickUpItems)
+{
+    _pickUpItems = pickUpItems;
 }

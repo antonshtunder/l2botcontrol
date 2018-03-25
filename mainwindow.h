@@ -53,10 +53,10 @@ private:
 
 public slots:
     void clientDisconnected(BotInstance* botInstance);
+    void updateUI(bool force = false);
 
 private slots:
     void attach();
-    void updateUI();
     void saveConfigurationSlot();
     void loadConfigurationSlot();
     void mapControlSlot(QAction *action);

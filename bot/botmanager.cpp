@@ -84,5 +84,6 @@ void BotManager::clientDisconnectedSlot(BotInstance *botInstance)
             _botInstance = NULL;
         }
     }
+    qDebug() << "client disconnected slot";
     emit clientDisconnected(botInstance);
 }

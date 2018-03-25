@@ -25,7 +25,8 @@ enum Conditions
     PLAYER_EFFECT_TIME_LEFT,
     BOT_STANDING,
     BOT_ATTACKING,
-    BOT_PICKINGUP
+    BOT_PICKINGUP,
+    TARGET_RACE_IS
 };
 
 enum JsonType
@@ -33,7 +34,8 @@ enum JsonType
     POINTS_RELATIVE,
     EFFECT_PRESENCE,
     EFFECT_TIME,
-    BOT_STATE
+    BOT_STATE,
+    TARGET_RACE
 };
 
 class Condition

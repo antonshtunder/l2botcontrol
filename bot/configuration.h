@@ -38,9 +38,13 @@ public:
     void setAssistPlayerName(const QString &assistPlayerName);
 
     QList<std::shared_ptr<ItemUsage>> &getItemUsages();
+    void removeItemUsage(ItemUsage *usage);
 
     bool getAttackingEnabled() const;
     void setAttackingEnabled(bool attackingEnabled);
+
+    bool getPickUpItems() const;
+    void setPickUpItems(bool pickUpItems);
 
 private:
     QMap<DWORD, std::shared_ptr<SkillUsage>> _skillUsages;
@@ -50,7 +54,8 @@ private:
     Targeting _targeting;
     QString _assistPlayerName;
 
-    bool _attackingEnabled;
+    bool _attack;
+    bool _pickUpItems;
 };
 
 #endif // CONFIGURATION_H

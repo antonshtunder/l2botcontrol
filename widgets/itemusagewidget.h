@@ -22,6 +22,7 @@ private:
 
 private slots:
     void edit();
+    void remove();
 
 signals:
     void update(BotInstance *botInstance);

@@ -66,3 +66,38 @@ void ItemUsage::setItem(DWORD id)
 {
     _item.typeID = id;
 }
+
+ItemUsage *ItemUsage::createFromJson(QJsonObject &json, BotInstance *botInstance)
+{
+    auto l2representation = botInstance->getDataManager().lockRepresentation();
+    auto &items = l2representation->items;
+    bool present = false;
+    DWORD id = json.value("id").toInt();
+    ItemRepresentation itemRep;
+
+    for(auto &item : items)
+    {
+        if(item.id == id)
+        {
+            itemRep = item;
+            present = true;
+        }
+    }
+    botInstance->getDataManager().unlockRepresentation();
+
+    if(!present)
+        return NULL;
+
+    bool enabled = json.value("enabled").toBool();
+    ItemUsage *itemUsage = new ItemUsage(botInstance, itemRep);
+    itemUsage->setEnabled(enabled);
+
+    auto conditions = json.value("conditions").toArray();
+    for(auto condition : conditions)
+    {
+        auto object = condition.toObject();
+        itemUsage->addCondition(conditionFromJson(object, botInstance));
+    }
+
+    return itemUsage;
+}

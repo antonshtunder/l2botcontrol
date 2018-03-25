@@ -108,7 +108,7 @@ void MainWindow::attach()
     }
 }
 
-void MainWindow::updateUI()
+void MainWindow::updateUI(bool force)
 {
     auto botInstances = BotManager::instance()->getBotInstances();
     if(botInstances.isEmpty())
@@ -131,7 +131,7 @@ void MainWindow::updateUI()
         _skillListWidget->update(currentBotInstance);
         _effectList->update(currentBotInstance);
         _itemsWidget->update(currentBotInstance, false);
-        _actionConfWgt->update(currentBotInstance, false);
+        _actionConfWgt->update(currentBotInstance, force);
         _mapWidget->updateInfo();
     }
 }

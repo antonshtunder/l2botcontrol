@@ -5,6 +5,7 @@
 #include "conditions/botstatecondition.h"
 #include "conditions/effectcondition.h"
 #include "conditions/effectdurationcondition.h"
+#include "conditions/targetracecondition.h"
 
 using namespace std;
 
@@ -130,29 +131,4 @@ SkillUsage *SkillUsage::createFromJson(QJsonObject &json, BotInstance *botInstan
     }
 
     return skillUsage;
-}
-
-Condition *SkillUsage::conditionFromJson(QJsonObject &json, BotInstance *botInstance)
-{
-    auto conditionClass = static_cast<JsonType>(json.value("class").toInt());
-    Condition *result = NULL;
-    switch(conditionClass)
-    {
-    case JsonType::BOT_STATE:
-        result = new BotStateCondition(botInstance, Conditions::NONE);
-        break;
-    case JsonType::EFFECT_PRESENCE:
-        result = new EffectCondition(botInstance, Conditions::NONE, 0);
-        break;
-    case JsonType::EFFECT_TIME:
-        result = new EffectDurationCondition(botInstance, Conditions::NONE, 0, .0);
-        break;
-    case JsonType::POINTS_RELATIVE:
-        result = new RelativePointsCondition(botInstance, Conditions::NONE, .0);
-        break;
-    }
-
-    result->parseJsonRepresentation(json);
-
-    return result;
 }

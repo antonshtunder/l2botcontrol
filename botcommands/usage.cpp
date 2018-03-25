@@ -5,6 +5,7 @@
 #include "conditions/botstatecondition.h"
 #include "conditions/effectcondition.h"
 #include "conditions/effectdurationcondition.h"
+#include "conditions/targetracecondition.h"
 
 using namespace std;
 
@@ -89,6 +90,8 @@ Condition *Usage::conditionFromJson(QJsonObject &json, BotInstance *botInstance)
     case JsonType::POINTS_RELATIVE:
         result = new RelativePointsCondition(botInstance, Conditions::NONE, .0);
         break;
+    case JsonType::TARGET_RACE:
+        result = new TargetRaceCondition(botInstance);
     }
 
     result->parseJsonRepresentation(json);

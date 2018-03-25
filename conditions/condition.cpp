@@ -3,6 +3,7 @@
 #include "effectcondition.h"
 #include "effectdurationcondition.h"
 #include "relativepointscondition.h"
+#include "targetracecondition.h"
 #include <QLabel>
 #include <QWidget>
 #include <QDebug>
@@ -78,6 +79,7 @@ void Condition::fillConditionComboBox(QComboBox *cb)
     cb->addItem(BotStateCondition::getName(Conditions::BOT_ATTACKING));
     cb->addItem(BotStateCondition::getName(Conditions::BOT_STANDING));
     cb->addItem(BotStateCondition::getName(Conditions::BOT_PICKINGUP));
+    cb->addItem(TargetRaceCondition::getName(Conditions::TARGET_RACE_IS));
 }
 
 Condition *Condition::processConditionComboBox(QComboBox *cb, BotInstance *botInstance, DWORD id)
@@ -112,5 +114,7 @@ Condition *Condition::processConditionComboBox(QComboBox *cb, BotInstance *botIn
         return new BotStateCondition(botInstance, Conditions::BOT_STANDING);
     case 13:
         return new BotStateCondition(botInstance, Conditions::BOT_PICKINGUP);
+    case 14:
+        return new TargetRaceCondition(botInstance);
     }
 }

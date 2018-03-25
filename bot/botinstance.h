@@ -60,7 +60,6 @@ public:
     MobRepresentation focusNextMob(double radius, bool ignoreHP, bool ignoreArea = false);
     MobRepresentation getMobWithID(DWORD id);
     MobRepresentation findNearestMonsterInRadius(double radius, bool ignoreHP, bool ignoreArea = false);
-    MobRepresentation getTargetedMob();
     MobRepresentation getCurrentTarget();
     void focusMob(const MobRepresentation &mob);
 

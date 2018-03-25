@@ -36,7 +36,7 @@ void BottingThread::run()
         }
         else if(configuration.getTargeting() == Targeting::MOB_IN_AREA)
         {
-            mob = _bot->focusNextMob(10000.0, false);
+            mob = _bot->focusNextMob(4000.0, false);
         }
         qDebug() << "new mob address = " << (LPVOID)mob.address;
         if(mob.id == 0)

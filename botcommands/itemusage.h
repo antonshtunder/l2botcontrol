@@ -19,6 +19,8 @@ public:
 
     void setItem(DWORD id);
 
+    static ItemUsage *createFromJson(QJsonObject &json, BotInstance *botInstance);
+
 private:
     ItemRepresentation _item;
     QString _name;

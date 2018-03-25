@@ -23,8 +23,6 @@ public:
 
 
 private:
-    static Condition *conditionFromJson(QJsonObject &json, BotInstance *botInstance);
-
     SkillRepresentation _skill;
 };
 

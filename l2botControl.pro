@@ -77,7 +77,8 @@ SOURCES += \
     botcommands/usage.cpp \
     dialogs/additemusagedialog.cpp \
     widgets/itemusagewidget.cpp \
-    instanceinfo/npcinfo.cpp
+    instanceinfo/npcinfo.cpp \
+    conditions/targetracecondition.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -132,7 +133,8 @@ HEADERS += \
     botcommands/usage.h \
     dialogs/additemusagedialog.h \
     widgets/itemusagewidget.h \
-    instanceinfo/npcinfo.h
+    instanceinfo/npcinfo.h \
+    conditions/targetracecondition.h
 
 FORMS += \
         mainwindow.ui \

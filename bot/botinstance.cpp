@@ -83,6 +83,9 @@ l2ipc::Command BotInstance::isDead(DWORD mobAddress)
 
 void BotInstance::pickupInRadius(double radius)
 {
+    if(!_configuration.getPickUpItems())
+        return;
+
     QThread::msleep(100);
     auto l2representation = &_dataManager.l2representation;
     QPointF loc(l2representation->character.x, l2representation->character.y);
@@ -276,7 +279,7 @@ void BotInstance::alert()
             if(distance < radius && qAbs(representation->character.z - mob.z) < 250.0)
             {
                 mobName = QString::fromUtf16(mob.name);
-                if((name != mobName && mobName != QString("GroznijKarlik") && mobName != QString("Opezdal")) ||
+                if((name != mobName && mobName != QString("GroznijKarlik") && mobName != QString("Opezdal") && mobName != QString("KorolKorolej")) ||
                         representation->character.cp < representation->character.maxCp)
                 {
                     qDebug() << distance;
@@ -358,6 +361,9 @@ MobRepresentation BotInstance::findNearestMonsterInRadius(double radius, bool ig
         if(mobs.at(i).mobType != MobType::MONSTER || (mobs.at(i).hp < mobs.at(i).maxHp && !ignoreHP))
             continue;
 
+        if(InstanceInfoBank::instance()->getNpcInfo(mobs.at(i).typeID).getHp() < mobs.at(i).maxHp / 5)
+            continue;
+
         if(qAbs(mobs.at(i).z - character.z) > 400.0f)
             continue;
 
@@ -394,6 +400,7 @@ MobRepresentation BotInstance::getCurrentTarget()
 
 void BotInstance::focusMob(const MobRepresentation &mob)
 {
+    _attackCheck = 0;
     performActionOn(mob.id, mob.address, Representations::MOB);
 }
 
@@ -443,7 +450,7 @@ bool BotInstance::checkIfAttacking()
 {
     if(_attackCheck != 0)
     {
-        if(QDateTime::currentMSecsSinceEpoch() - _attackCheck > 1000)
+        if(QDateTime::currentMSecsSinceEpoch() - _attackCheck > 1500)
         {
             auto mob = _dataManager.getCurrentTarget();
             if(mob.id == 0)
@@ -489,6 +496,7 @@ void BotInstance::testClient()
     if(l2ipc::sendCommand(_commandPipe, &command, sizeof(command)) != l2ipc::Command::REPLY_YES)
     {
         _commandPipeMutex.unlock();
+        qDebug() << "client test fail";
         emit clientDisconnected(this);
         return;
     }

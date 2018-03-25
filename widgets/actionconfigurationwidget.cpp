@@ -40,6 +40,7 @@ void ActionConfigurationWidget::update(BotInstance *botInstance, bool force)
     }
     ui->txtAssistPlayerName->setText(configuration.getAssistPlayerName());
     ui->cbAttack->setChecked(botInstance->getConfiguration().getAttackingEnabled());
+    ui->cbPickupItems->setChecked(botInstance->getConfiguration().getPickUpItems());
 }
 
 void ActionConfigurationWidget::assist()
@@ -64,6 +65,7 @@ void ActionConfigurationWidget::updateSlot()
     }
     configuration.setAssistPlayerName(ui->txtAssistPlayerName->text());
     configuration.setAttackingEnabled(ui->cbAttack->isChecked());
+    configuration.setPickUpItems(ui->cbPickupItems->isChecked());
 }
 
 void ActionConfigurationWidget::revertSlot()

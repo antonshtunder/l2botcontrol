@@ -108,6 +108,21 @@ Race NpcInfo::getRace() const
     return race;
 }
 
+QString NpcInfo::raceToString(Race race)
+{
+    switch(race)
+    {
+    case Race::ANIMAL: return "ANIMAL";
+    case Race::BEAST: return "BEAST";
+    case Race::CONSTRUCT: return "CONSTRUCT";
+    case Race::HUMAN: return "HUMAN";
+    case Race::HUMANOID: return "HUMANOID";
+    case Race::OTHER: return "OTHER";
+    case Race::UNDEAD: return "UNDEAD";
+    default: return "UNKNOWN";
+    }
+}
+
 int NpcInfo::getHp() const
 {
     return hp;

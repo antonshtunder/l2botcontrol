@@ -12,7 +12,8 @@ enum Race
     HUMANOID,
     HUMAN,
     CONSTRUCT,
-    OTHER
+    OTHER,
+    LAST
 };
 
 class NpcInfo
@@ -23,6 +24,8 @@ public:
 
     int getHp() const;
     Race getRace() const;
+
+    static QString raceToString(Race race);
 
 private:
     int hp = 0;

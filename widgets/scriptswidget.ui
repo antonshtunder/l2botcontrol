@@ -13,16 +13,47 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QPlainTextEdit" name="txtScript"/>
-   </item>
-   <item>
-    <widget class="QPushButton" name="btnExecute">
-     <property name="text">
-      <string>Execute</string>
+    <widget class="QListWidget" name="scriptsList">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>150</width>
+       <height>16777215</height>
+      </size>
      </property>
     </widget>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="mainLayout">
+     <item>
+      <widget class="QPlainTextEdit" name="txtScript"/>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="btnsLayout">
+       <item>
+        <widget class="QPushButton" name="btnSave">
+         <property name="text">
+          <string>Save</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnExecute">
+         <property name="text">
+          <string>Execute</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
